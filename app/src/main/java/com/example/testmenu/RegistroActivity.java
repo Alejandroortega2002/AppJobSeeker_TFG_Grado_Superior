@@ -105,7 +105,7 @@ public class RegistroActivity extends AppCompatActivity {
         barraProgreso.setCanceledOnTouchOutside(false);
         barraProgreso.show();
     }
-
+//gg
     private void mostrarError(EditText input, String s) {
         input.setError(s);
         input.requestFocus();
