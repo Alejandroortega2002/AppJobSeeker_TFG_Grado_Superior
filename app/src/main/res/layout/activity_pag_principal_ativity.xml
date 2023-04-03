@@ -1,94 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#3f3f3f"
+    tools:context=".PagPrincipalAtivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#3f3f3f"
-        tools:context=".PagPrincipalAtivity">
-
-        <ImageView
-            android:id="@+id/Logo"
-            android:layout_width="169dp"
-            android:layout_height="161dp"
-            android:layout_marginTop="40dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logoapp" />
+    <ImageView
+        android:id="@+id/Logo"
+        android:layout_width="169dp"
+        android:layout_height="161dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logoapp" />
 
 
-        <TextView
-            android:id="@+id/txtBienvenido"
-            android:layout_width="210dp"
-            android:layout_height="37dp"
-            android:layout_marginTop="30dp"
-            android:text="Bienvenido a "
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Logo" />
+    <TextView
+        android:id="@+id/txtBienvenido"
+        android:layout_width="210dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="30dp"
+        android:text="Bienvenido a "
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Logo" />
 
-        <TextView
-            android:id="@+id/txtTitulo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="JOBSEEKER"
-            android:textAlignment="center"
-            android:textColor="@color/azulGeneral"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtBienvenido" />
+    <TextView
+        android:id="@+id/txtTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="JOBSEEKER"
+        android:textAlignment="center"
+        android:textColor="@color/azulGeneral"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtBienvenido" />
 
-        <TextView
-            android:id="@+id/txtParrafo"
-            android:layout_width="315dp"
-            android:layout_height="109dp"
-            android:layout_marginTop="30dp"
-            android:text="Busca a quienes deseen trabajar o crea ofertas para otros quienes necesiten de tus labores"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtTitulo" />
+    <TextView
+        android:id="@+id/txtParrafo"
+        android:layout_width="315dp"
+        android:layout_height="109dp"
+        android:layout_marginTop="30dp"
+        android:text="Busca a quienes deseen trabajar o crea ofertas para otros quienes necesiten de tus labores"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitulo" />
 
-        <Button
-            android:id="@+id/PbtnLogin"
-            android:layout_width="189dp"
-            android:layout_height="53dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/btn_pag_principales"
-            android:text="Inicia Sesión"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtParrafo" />
+    <Button
+        android:id="@+id/PbtnLogin"
+        android:layout_width="189dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/btn_pag_principales"
+        android:text="Inicia Sesión"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtParrafo" />
 
-        <Button
-            android:id="@+id/PbtnRegistro"
-            android:layout_width="190dp"
-            android:layout_height="53dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/btn_pag_principales"
-            android:text="Registrate"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/PbtnLogin" />
+    <Button
+        android:id="@+id/PbtnRegistro"
+        android:layout_width="190dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/btn_pag_principales"
+        android:text="Registrate"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PbtnLogin" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

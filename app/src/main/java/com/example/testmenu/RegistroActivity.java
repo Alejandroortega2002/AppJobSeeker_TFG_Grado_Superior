@@ -55,6 +55,13 @@ public class RegistroActivity extends AppCompatActivity {
         barraProgreso = new ProgressDialog(RegistroActivity.this);
     }
 
+    /**
+
+     Este método verifica las credenciales introducidas comprobando la longitud del nombre de usuario, email, contraseña introducidos,
+     y la coincidencia de la contraseña de confirmación. Si las credenciales son válidas, llama al método registrarUsuario
+     para registrar el usuario con Firebase.
+
+     */
     public void verificarCredenciales() {
         String nusuario = editNusuario.getText().toString();
         String email = editEmail.getText().toString();
@@ -75,6 +82,13 @@ public class RegistroActivity extends AppCompatActivity {
         }
 
     }
+
+    /**
+
+     Este método registra al usuario en Firebase utilizando el correo electrónico y la contraseña proporcionados. Muestra una barra de progreso
+     durante el proceso de registro y redirige a la actividad de inicio de sesión si el registro se realiza correctamente.
+
+     */
 
     public void registrarUsuario(String email, String contrasena) {
         mAuth.createUserWithEmailAndPassword(email, contrasena).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -98,6 +112,14 @@ public class RegistroActivity extends AppCompatActivity {
         });
     }
 
+    /**
+
+     Este método muestra una barra de progreso en la pantalla con un título y un mensaje mientras se realiza un proceso de registro.
+     Primero, se establece el título de la barra de progreso en "Proceso de Registro" y el mensaje en "Registrando usuario, espere un momento".
+     Luego, se desactiva la opción de cancelar la barra de progreso cuando se toca fuera de ella y se muestra en la pantalla llamando al método "show()"
+     de la variable "barraProgreso".
+
+     */
     public void mostrarBarraProgreso() {
         //Mostrar ProgressBar
         barraProgreso.setTitle("Proceso de Registro");
@@ -105,7 +127,14 @@ public class RegistroActivity extends AppCompatActivity {
         barraProgreso.setCanceledOnTouchOutside(false);
         barraProgreso.show();
     }
-//gg
+
+    /**
+
+     Muestra un mensaje de error en el EditText especificado y coloca el foco en ese EditText.
+     @param input el EditText en el que se mostrará el error.
+     @param s el mensaje de error que se mostrará en el EditText.
+
+     */
     private void mostrarError(EditText input, String s) {
         input.setError(s);
         input.requestFocus();
