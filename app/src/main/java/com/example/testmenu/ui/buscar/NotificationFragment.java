@@ -13,14 +13,17 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.testmenu.databinding.FragmentNotificarBinding;
 
 public class NotificationFragment extends Fragment {
+    /*Declaramos su Xml correspondiente a traves del ViewBiding*/
 
     private FragmentNotificarBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        /*Instanciamos la clase ViewModel correspondiente*/
         NotificarViewModel notificarViewModel =
                 new ViewModelProvider(this).get(NotificarViewModel.class);
 
+    /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
         binding = FragmentNotificarBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 

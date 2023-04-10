@@ -14,18 +14,20 @@ import com.example.testmenu.databinding.FragmentPerfilBinding;
 
 public class ProfileFragment extends Fragment {
 
+    /*Declaramos su Xml correspondiente a traves del ViewBiding*/
     private FragmentPerfilBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        /*Instanciamos la clase ViewModel correspondiente*/
         ProfileViewModel profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
 
+        /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
         binding = FragmentPerfilBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        profileViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
         return root;
     }
 

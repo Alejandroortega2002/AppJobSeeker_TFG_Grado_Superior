@@ -13,13 +13,18 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.testmenu.databinding.FragmentInicioBinding;
 
 public class InicioFragment extends Fragment {
+    /*Declaramos su Xml correspondiente a traves del ViewBiding*/
+
     private FragmentInicioBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        /*Instanciamos la clase ViewModel correspondiente*/
         InicioViewModel inicioViewModel =
                 new ViewModelProvider(this).get(InicioViewModel.class);
 
+        /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
         binding = FragmentInicioBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
