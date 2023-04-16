@@ -108,7 +108,7 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/icono_persona" />
+                android:src="@drawable/ic_phone" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"

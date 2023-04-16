@@ -27,8 +27,8 @@ public class CrearFragment extends Fragment {
         binding = FragmentCrearBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        creacionViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        final TextView textView = binding.textHome;
+//        creacionViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

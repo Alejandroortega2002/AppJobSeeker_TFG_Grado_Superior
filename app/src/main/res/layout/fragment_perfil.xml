@@ -9,9 +9,10 @@
     tools:context=".MainActivity">
 
     <FrameLayout
-        android:background="@color/negroFondo"
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/negroFondo">
 
         <ImageView
             android:layout_width="match_parent"
@@ -22,64 +23,64 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            android:src="@drawable/foto_registro"
-            app:civ_circle_background_color="@color/azulGeneral"
             android:layout_marginTop="130dp"
+            android:src="@drawable/foto_registro"
             app:civ_border_color="@color/white"
             app:civ_border_width="5dp"
+            app:civ_circle_background_color="@color/azulGeneral"
             tools:ignore="MissingClass" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_gravity="center|right|top"
             android:layout_marginTop="150dp"
             android:layout_marginRight="20dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3132424243"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="15dp" />
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TELEFONO"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="13dp" />
+                android:textSize="13dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_gravity="center|top|left"
-            android:layout_marginTop="150dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="150dp"
             android:layout_marginBottom="5dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="15dp" />
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PUBLICACIONES"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="13dp" />
+                android:textSize="13dp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -87,44 +88,44 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="280dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="NOMBRE DEL PERFIL"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="correo@algo.com"
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 android:layout_marginTop="7dp"
-                android:textSize="15dp" />
+                android:text="correo@algo.com"
+                android:textColor="#9A9A9A"
+                android:textSize="15dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="350dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
                 android:layout_marginBottom="20dp"
                 android:text="Descripción"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="7dp"
-                android:textSize="15dp" />
+                android:textColor="#BCBCBC"
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="350dp"
@@ -167,11 +168,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="380dp"
             android:layout_gravity="bottom"
+            android:layout_marginTop="380dp"
             android:layout_marginBottom="40dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnCerrarSesion"
