@@ -12,6 +12,13 @@
         android:theme="@style/Theme.TestMenu"
         tools:targetApi="31">
         <activity
+            android:name=".Restablecer_Contrasena"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="false">
             <meta-data
