@@ -1,14 +1,14 @@
-package com.example.testmenu.ui.buscar;
+package com.example.testmenu.ui.chat;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificarViewModel extends ViewModel {
+public class ChatViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public NotificarViewModel() {
+    public ChatViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fragment");
     }

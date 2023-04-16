@@ -11,8 +11,8 @@
         android:title="Crear" />
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="Notificaciones" />
+        android:icon="@drawable/ic_chats"
+        android:title="Chat" />
 
     <item
         android:id="@+id/navigation_perfil"

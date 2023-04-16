@@ -19,13 +19,13 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.testmenu.ui.buscar.NotificationFragment"
+        android:name="com.example.testmenu.ui.chat.ChatFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notificar" />
+        tools:layout="@layout/fragment_chat" />
 
     <fragment
         android:id="@+id/navigation_inicio"
         android:name="com.example.testmenu.ui.inicio.InicioFragment"
         android:label="Inicio"
-        tools:layout="@layout/fragment_notificar" />
+        tools:layout="@layout/fragment_chat" />
 </navigation>

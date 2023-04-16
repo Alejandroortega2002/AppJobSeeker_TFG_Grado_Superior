@@ -1,4 +1,4 @@
-package com.example.testmenu.ui.buscar;
+package com.example.testmenu.ui.chat;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,25 +10,25 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.testmenu.databinding.FragmentNotificarBinding;
+import com.example.testmenu.databinding.FragmentChatBinding;
 
-public class NotificationFragment extends Fragment {
+public class ChatFragment extends Fragment {
     /*Declaramos su Xml correspondiente a traves del ViewBiding*/
 
-    private FragmentNotificarBinding binding;
+    private FragmentChatBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         /*Instanciamos la clase ViewModel correspondiente*/
-        NotificarViewModel notificarViewModel =
-                new ViewModelProvider(this).get(NotificarViewModel.class);
+        ChatViewModel chatViewModel =
+                new ViewModelProvider(this).get(ChatViewModel.class);
 
     /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
-        binding = FragmentNotificarBinding.inflate(inflater, container, false);
+        binding = FragmentChatBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
-        notificarViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        chatViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
