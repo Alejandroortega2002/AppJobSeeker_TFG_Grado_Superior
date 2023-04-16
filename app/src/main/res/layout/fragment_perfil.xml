@@ -7,43 +7,14 @@
     android:background="@color/negroFondo"
     tools:context=".ui.perfil.ProfileFragment">
 
-    <TextView
-        android:id="@+id/txtNombreUsr"
-        android:layout_width="134dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="138dp"
-        android:layout_marginEnd="139dp"
-        android:text="Nombre"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
-
-    <TextView
-        android:id="@+id/txtTelefonoUsr"
-        android:layout_width="182dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="36dp"
-        android:text="123456789"
-        android:textAlignment="center"
-        android:textColor="#A1A1A1"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="439dp"
+        android:layout_width="410dp"
         android:layout_height="161dp"
         android:layout_marginTop="1dp"
         android:background="@drawable/btn_pag_principales"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -93,7 +64,7 @@
             android:layout_width="98dp"
             android:layout_height="29dp"
             android:layout_marginStart="16dp"
-            android:text="Ofertas"
+            android:text="Tus ofertas"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="17sp"
@@ -102,6 +73,35 @@
             app:layout_constraintTop_toBottomOf="@+id/txtNumofertas" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/txtNombreUsr"
+        android:layout_width="134dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="138dp"
+        android:layout_marginEnd="139dp"
+        android:text="Nombre"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    <TextView
+        android:id="@+id/txtNickUsr"
+        android:layout_width="182dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="36dp"
+        android:text="user1234"
+        android:textAlignment="center"
+        android:textColor="#A1A1A1"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -136,18 +136,94 @@
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="409dp"
-        android:layout_height="497dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/btn_redes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+    <Button
+        android:id="@+id/btnCerrarS"
+        android:layout_width="175dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="140dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="Cerrar sesión"
+        android:textColor="@color/azulGeneral"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtTelefonoUsr">
+        app:layout_constraintTop_toBottomOf="@+id/textTelfUsr" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/btnEditar"
+        android:layout_width="175dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="16dp"
+        android:text="Editar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTelfUsr" />
+
+    <Button
+        android:id="@+id/btnMisOfertas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="139dp"
+        android:layout_marginEnd="139dp"
+        android:text="Mis ofertas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNickUsr" />
+
+    <TextView
+        android:id="@+id/txtCorreoUsr"
+        android:layout_width="261dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginEnd="75dp"
+        android:text="correoe@gmail.com"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textCorreo" />
+
+    <TextView
+        android:id="@+id/textCorreo"
+        android:layout_width="261dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="75dp"
+        android:text="correo electrónico"
+        android:textColor="#BCBCBC"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMisOfertas" />
+
+    <TextView
+        android:id="@+id/textViewTelf"
+        android:layout_width="261dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="75dp"
+        android:text="teléfono"
+        android:textColor="#BCBCBC"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCorreoUsr" />
+
+    <TextView
+        android:id="@+id/textTelfUsr"
+        android:layout_width="261dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginEnd="75dp"
+        android:text="123456789"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTelf" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
