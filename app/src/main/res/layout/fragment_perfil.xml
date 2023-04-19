@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_gravity="top"
-            android:background="@color/azulGeneral" />
+            android:background="#7E7777" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="match_parent"
@@ -40,19 +39,20 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/nTelefono"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3132424243"
-                android:textColor="@color/white"
-                android:textSize="15dp"
+                android:textColor="@color/azulGeneral"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TELEFONO"
-                android:textColor="@color/white"
-                android:textSize="13dp"
+                android:textColor="@color/azulGeneral"
+                android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -67,19 +67,20 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/nPublicaciones"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textColor="@color/white"
-                android:textSize="15dp"
+                android:textColor="@color/azulGeneral"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PUBLICACIONES"
-                android:textColor="@color/white"
-                android:textSize="13dp"
+                android:textColor="@color/azulGeneral"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
 
@@ -93,6 +94,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/nPerfil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="NOMBRE DEL PERFIL"
@@ -101,12 +103,13 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/pEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:text="correo@algo.com"
                 android:textColor="#9A9A9A"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -124,16 +127,17 @@
                 android:layout_marginBottom="20dp"
                 android:text="Descripción"
                 android:textColor="#BCBCBC"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/pDescripcion"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="12dp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
 
@@ -145,20 +149,22 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/btnMisOfertas"
+                android:id="@+id/btnEditarPerfil"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
+                android:contentDescription="editar perfil"
                 android:src="@drawable/ic_editar_perfil" />
 
 
             <ImageButton
-                android:id="@+id/btnOfertasLike"
+                android:id="@+id/btnCerrarSesion"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="230dp"
+                android:contentDescription="cerrar sesion"
                 android:src="@drawable/ic_cerrar_sesion" />
 
 
@@ -175,14 +181,14 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnCerrarSesion"
+                android:id="@+id/btnMisOfertas"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
                 android:text="Mis Ofertas" />
 
             <Button
-                android:id="@+id/btnEditar"
+                android:id="@+id/btnFavoritos"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:text="Favoritos" />
