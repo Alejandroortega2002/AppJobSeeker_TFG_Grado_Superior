@@ -1,4 +1,4 @@
-package com.example.testmenu;
+package com.example.testmenu.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.testmenu.R;
+import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +22,8 @@ public class Restablecer_Contrasena extends AppCompatActivity {
 
     private Button recuperarContrasena;
     private EditText emailRecuperar;
+
+    AutentificacioFirebase authFirebase;
 
 
     @SuppressLint("MissingInflatedId")
@@ -37,6 +41,8 @@ public class Restablecer_Contrasena extends AppCompatActivity {
                 validarEmail();
             }
         });
+
+        authFirebase = new AutentificacioFirebase();
     }
 
     public void validarEmail(){
@@ -50,10 +56,9 @@ public class Restablecer_Contrasena extends AppCompatActivity {
     }
 
     public void enviarEmail(String email){
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String emailRecuperacion = email;
 
-        auth.sendPasswordResetEmail(emailRecuperacion).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+       authFirebase.recuperarContrasena(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 

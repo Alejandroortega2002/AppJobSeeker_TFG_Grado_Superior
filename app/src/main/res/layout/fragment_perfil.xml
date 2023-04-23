@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_gravity="top"
-            android:background="#7E7777" />
+            android:background="@drawable/foto_registro" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|right|top"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="220dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
             android:orientation="vertical">
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3132424243"
-                android:textColor="@color/azulGeneral"
+                android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TELEFONO"
-                android:textColor="@color/azulGeneral"
+                android:textColor="@color/white"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|top|left"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="220dp"
             android:layout_marginBottom="5dp"
             android:gravity="center"
             android:orientation="vertical">
@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textColor="@color/azulGeneral"
+                android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -79,7 +79,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PUBLICACIONES"
-                android:textColor="@color/azulGeneral"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 

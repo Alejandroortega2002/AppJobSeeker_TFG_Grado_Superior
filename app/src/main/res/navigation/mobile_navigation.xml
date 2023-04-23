@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/navigation_crear"
-        android:name="com.example.testmenu.ui.crear.CrearFragment"
+        android:name="com.example.testmenu.activities.fragmentMenu.CrearFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_crear" />
 
     <fragment
         android:id="@+id/navigation_perfil"
-        android:name="com.example.testmenu.ui.perfil.ProfileFragment"
+        android:name="com.example.testmenu.activities.fragmentMenu.ProfileFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_perfil" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.testmenu.ui.chat.ChatFragment"
+        android:name="com.example.testmenu.activities.fragmentMenu.ChatFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_chat" />
 
     <fragment
         android:id="@+id/navigation_inicio"
-        android:name="com.example.testmenu.ui.inicio.InicioFragment"
+        android:name="com.example.testmenu.activities.fragmentMenu.InicioFragment"
         android:label="Inicio"
         tools:layout="@layout/fragment_chat" />
 </navigation>

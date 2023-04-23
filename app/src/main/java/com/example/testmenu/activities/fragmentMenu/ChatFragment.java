@@ -1,4 +1,4 @@
-package com.example.testmenu.ui.chat;
+package com.example.testmenu.activities.fragmentMenu;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.testmenu.databinding.FragmentChatBinding;
 
@@ -19,16 +18,16 @@ public class ChatFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        /*Instanciamos la clase ViewModel correspondiente*/
-        ChatViewModel chatViewModel =
-                new ViewModelProvider(this).get(ChatViewModel.class);
+//        /*Instanciamos la clase ViewModel correspondiente*/
+//        ChatViewModel chatViewModel =
+//                new ViewModelProvider(this).get(ChatViewModel.class);
 
     /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
         binding = FragmentChatBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
-        chatViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        chatViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

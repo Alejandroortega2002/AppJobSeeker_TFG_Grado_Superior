@@ -1,9 +1,10 @@
-package com.example.testmenu;
+package com.example.testmenu.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import com.example.testmenu.R;
 import com.example.testmenu.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

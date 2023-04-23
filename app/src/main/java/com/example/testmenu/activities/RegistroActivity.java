@@ -1,4 +1,4 @@
-package com.example.testmenu;
+package com.example.testmenu.activities;
 
 import static android.content.ContentValues.TAG;
 
@@ -15,6 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.testmenu.R;
+import com.example.testmenu.entidades.Usuarios;
+import com.example.testmenu.firebase.AutentificacioFirebase;
+import com.example.testmenu.firebase.UsuariosBBDDFirebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,10 +34,9 @@ public class RegistroActivity extends AppCompatActivity {
     private EditText Nusuario, Email, Telefono, editContrasena, editConfirmContrasena;
     private ProgressDialog barraProgreso;
     //FireBase
-    private FirebaseAuth mAuth;
-    //FirestoreDataBase
-    private FirebaseFirestore mFirestore;
 
+    AutentificacioFirebase authFirebase;
+    UsuariosBBDDFirebase usuariosBBDDFirebase;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -64,8 +67,8 @@ public class RegistroActivity extends AppCompatActivity {
             }
         });
 
-        mAuth = FirebaseAuth.getInstance();
-        mFirestore = FirebaseFirestore.getInstance();
+        authFirebase = new AutentificacioFirebase();
+        usuariosBBDDFirebase = new UsuariosBBDDFirebase();
         barraProgreso = new ProgressDialog(RegistroActivity.this);
     }
 
@@ -75,11 +78,13 @@ public class RegistroActivity extends AppCompatActivity {
      * para registrar el usuario con Firebase.
      */
     public void verificarCredenciales() {
+
         String nusuario = Nusuario.getText().toString();
         String telefono = Telefono.getText().toString();
         String email = Email.getText().toString();
         String contrasena = editContrasena.getText().toString();
         String confirmContrasena = editConfirmContrasena.getText().toString();
+
         if (nusuario.isEmpty() || nusuario.length() < 5) {
             mostrarError(Nusuario, "Nombre de Usuario no valido");
         } else if (email.isEmpty() || !email.contains("@")) {
@@ -102,11 +107,11 @@ public class RegistroActivity extends AppCompatActivity {
      */
 
     public void registrarUsuario(final String nUsuario, final String numTelefono, final String email, final String contrasena) {
-        mAuth.createUserWithEmailAndPassword(email, contrasena).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+       authFirebase.registro(email,contrasena).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    String id = mAuth.getCurrentUser().getUid();
+                    String id = authFirebase.getUid();
 
                     Map<String, Object> map = new HashMap<>();
                     map.put("usuario", nUsuario);
@@ -114,7 +119,13 @@ public class RegistroActivity extends AppCompatActivity {
                     map.put("telefono", numTelefono);
                     Log.d(TAG, "Data to be saved: " + map.toString());
 
-                    mFirestore.collection("Usuarios").document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    Usuarios usuario = new Usuarios();
+                    usuario.setId(id);
+                    usuario.setnUsuario(nUsuario);
+                    usuario.setEmail(email);
+                    usuario.setTelefono(numTelefono);
+
+                    usuariosBBDDFirebase.createUsuarios(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {

@@ -1,14 +1,12 @@
-package com.example.testmenu.ui.crear;
+package com.example.testmenu.activities.fragmentMenu;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.testmenu.databinding.FragmentCrearBinding;
 
@@ -19,9 +17,9 @@ public class CrearFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        /*Instanciamos la clase ViewModel correspondiente*/
-        CreacionViewModel creacionViewModel =
-                new ViewModelProvider(this).get(CreacionViewModel.class);
+//        /*Instanciamos la clase ViewModel correspondiente*/
+//        CreacionViewModel creacionViewModel =
+//                new ViewModelProvider(this).get(CreacionViewModel.class);
 
         /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
         binding = FragmentCrearBinding.inflate(inflater, container, false);
