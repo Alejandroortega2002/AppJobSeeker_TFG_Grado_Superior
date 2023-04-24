@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_crear">
+    app:startDestination="@+id/navigation_fav">
 
     <fragment
-        android:id="@+id/navigation_crear"
-        android:name="com.example.testmenu.activities.fragmentMenu.CrearFragment"
+        android:id="@+id/navigation_fav"
+        android:name="com.example.testmenu.activities.fragmentMenu.FavoritoFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_crear" />
+        tools:layout="@layout/fragment_fav" />
 
     <fragment
         android:id="@+id/navigation_perfil"
@@ -18,7 +18,7 @@
         tools:layout="@layout/fragment_perfil" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_chat"
         android:name="com.example.testmenu.activities.fragmentMenu.ChatFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_chat" />

@@ -6,11 +6,11 @@
         android:title="Inicio" />
 
     <item
-        android:id="@+id/navigation_crear"
-        android:icon="@drawable/logoapp"
-        android:title="Crear" />
+        android:id="@+id/navigation_fav"
+        android:icon="@drawable/ic_fav"
+        android:title="Favoritos" />
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_chat"
         android:icon="@drawable/ic_chats"
         android:title="Chat" />
 

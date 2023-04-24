@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.testmenu.databinding.FragmentCrearBinding;
+import com.example.testmenu.databinding.FragmentFavBinding;
 
-public class CrearFragment extends Fragment {
+public class FavoritoFragment extends Fragment {
     /*Declaramos su Xml correspondiente a traves del ViewBiding*/
 
-    private FragmentCrearBinding binding;
+    private FragmentFavBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class CrearFragment extends Fragment {
 //                new ViewModelProvider(this).get(CreacionViewModel.class);
 
         /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
-        binding = FragmentCrearBinding.inflate(inflater, container, false);
+        binding = FragmentFavBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
 //        final TextView textView = binding.textHome;

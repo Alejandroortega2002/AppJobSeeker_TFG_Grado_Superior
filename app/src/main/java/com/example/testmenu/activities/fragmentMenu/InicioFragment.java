@@ -28,7 +28,7 @@ public class InicioFragment extends Fragment {
         binding = FragmentInicioBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textInicio;
+      //  final TextView textView = binding.textInicio;
 //        inicioViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
