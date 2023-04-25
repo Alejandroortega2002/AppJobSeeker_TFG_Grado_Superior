@@ -113,17 +113,11 @@ public class RegistroActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     String id = authFirebase.getUid();
 
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("usuario", nUsuario);
-                    map.put("email", email);
-                    map.put("telefono", numTelefono);
-                    Log.d(TAG, "Data to be saved: " + map.toString());
-
-                    Usuarios usuario = new Usuarios();
-                    usuario.setId(id);
-                    usuario.setnUsuario(nUsuario);
-                    usuario.setEmail(email);
-                    usuario.setTelefono(numTelefono);
+                    Usuarios usuario = new Usuarios(id,email,nUsuario,numTelefono);
+//                    usuario.setId(id);
+//                    usuario.setUsuario(nUsuario);
+//                    usuario.setEmail(email);
+//                    usuario.setTelefono(numTelefono);
 
                     usuariosBBDDFirebase.createUsuarios(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

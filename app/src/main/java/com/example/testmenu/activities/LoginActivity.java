@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Configuración de Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id)) // Solicita el token de ID del cliente de la aplicación
+                .requestIdToken("456658469245-tgmqktro5u6ghg0uu8gr949i6l3rgvou.apps.googleusercontent.com") // Solicita el token de ID del cliente de la aplicación
                 .requestEmail() // Solicita el email del usuario
                 .build();
 
@@ -204,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     Usuarios usuario = new Usuarios();
                     usuario.setId(id);
-                    usuario.setnUsuario(nUser);
+                    usuario.setUsuario(nUser);
                     usuario.setEmail(email);
                     usuario.setTelefono(telefono);
 

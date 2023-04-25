@@ -3,18 +3,18 @@ package com.example.testmenu.entidades;
 public class Usuarios {
 
     private String id;
+    private String usuario;
     private String email;
-    private String nUsuario;
     private String telefono;
 
     public Usuarios(){
 
     }
 
-    public Usuarios(String id, String email, String nUsuario, String telefono, String password) {
+    public Usuarios(String id, String email, String usuario, String telefono) {
         this.id = id;
+        this.usuario = usuario;
         this.email = email;
-        this.nUsuario = nUsuario;
         this.telefono = telefono;
     }
 
@@ -34,12 +34,12 @@ public class Usuarios {
         this.email = email;
     }
 
-    public String getnUsuario() {
-        return nUsuario;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setnUsuario(String nUsuario) {
-        this.nUsuario = nUsuario;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getTelefono() {

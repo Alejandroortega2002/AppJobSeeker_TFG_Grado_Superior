@@ -21,8 +21,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:layout_marginTop="130dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="80dp"
             android:src="@drawable/foto_registro"
             app:civ_border_color="@color/white"
             app:civ_border_width="5dp"
@@ -154,9 +154,19 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="40dp"
                 android:contentDescription="editar perfil"
                 android:src="@drawable/ic_editar_perfil" />
+
+            <ImageButton
+                android:id="@+id/btnBorrarCuenta"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:contentDescription="cerrar sesion"
+                android:src="@drawable/icono_persona" />
 
 
             <ImageButton
@@ -164,7 +174,7 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="230dp"
+                android:layout_marginLeft="70dp"
                 android:contentDescription="cerrar sesion"
                 android:src="@drawable/ic_cerrar_sesion" />
 
