@@ -34,7 +34,7 @@ public class InicioFragment extends Fragment {
         View root = binding.getRoot();
 
         mFab.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), PostActivity.class);
+            Intent intent = new Intent(getActivity(), PostActivity.class);
             startActivity(intent);
         });
 
