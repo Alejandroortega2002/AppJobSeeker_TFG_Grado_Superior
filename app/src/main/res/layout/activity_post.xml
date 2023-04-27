@@ -12,13 +12,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:background="@color/azulGeneral"
             android:orientation="vertical">
-
 
             <TextView
                 android:layout_width="match_parent"
@@ -53,6 +51,7 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_subeimagen" />
                 </androidx.cardview.widget.CardView>
+                ////////
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
@@ -71,6 +70,7 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
         </LinearLayout>
+        /////
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -88,24 +88,25 @@
                 android:src="@drawable/ic_crearpublicacion" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputnombrePublicacion"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/black"
                 app:boxStrokeColor="@color/black"
                 app:hintTextColor="@color/black">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputnombrePublicacion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Título"
                     android:inputType="text"
-                    android:textColor="@color/black"
-                     />
+                    android:textColor="@color/black" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+        /////////
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -123,24 +124,25 @@
                 android:src="@drawable/ic_precio" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputPagar"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/black"
                 app:boxStrokeColor="@color/black"
                 app:hintTextColor="@color/black">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputPagar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Precio"
                     android:inputType="numberSigned"
-                    android:textColor="@color/black"
-                    />
+                    android:textColor="@color/black" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+        //////
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -177,6 +179,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+        /////
 
         <TextView
             android:id="@+id/textViewCategoria"
@@ -304,9 +307,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     android:text="Media Jornada"
-                    android:textSize="11dp"
                     android:textAlignment="center"
                     android:textColor="@color/black"
+                    android:textSize="11dp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -362,6 +365,15 @@
         android:backgroundTint="@color/azulGeneral"
         android:text="Publicar"
         android:textColor="@color/black" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_back"
+        android:layout_margin="15dp"
+        android:scaleType="centerCrop"
+        />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

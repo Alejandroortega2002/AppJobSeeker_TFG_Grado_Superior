@@ -57,32 +57,12 @@ public class LoginActivity extends AppCompatActivity {
         btnRecuperar = findViewById(R.id.LbtnRecuperar);
         btnRegistrar = findViewById(R.id.LbtnRegistrar);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                verificarCredenciales();
-            }
-        });
+        btnLogin.setOnClickListener(view -> verificarCredenciales());
 
-        btnRecuperar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, Restablecer_Contrasena.class));
-            }
-        });
-        btnRegistrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegistroActivity.class));
-            }
-        });
+        btnRecuperar.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, Restablecer_Contrasena.class)));
+        btnRegistrar.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegistroActivity.class)));
 
-        btnloginGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                singIn();
-            }
-        });
+        btnloginGoogle.setOnClickListener(view -> singIn());
 
         // Configuración de Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
