@@ -246,6 +246,7 @@ public class PostActivity extends AppCompatActivity {
                                                 publicacion.setDescripcion(mDescripcion);
                                                 publicacion.setCategoria(mCategoria);
                                                 publicacion.setIdUser(mAutentificacionFirebase.getUid());
+                                                publicacion.setTimeStamp(new Date().getTime());
                                                 mPublicacionFribase.save(publicacion).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> taskSave) {

@@ -4,6 +4,7 @@ import com.example.testmenu.entidades.Publicacion;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class PublicacionFirebase {
@@ -15,5 +16,9 @@ public class PublicacionFirebase {
 
     public Task<Void> save(Publicacion publicacion){
         return mCollection.document().set(publicacion);
+    }
+
+    public Query getAll(){
+        return mCollection.orderBy("titulo", Query.Direction.DESCENDING);
     }
 }

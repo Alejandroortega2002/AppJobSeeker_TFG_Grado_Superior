@@ -6,16 +6,18 @@ public class Usuarios {
     private String usuario;
     private String email;
     private String telefono;
+    private long timeStamp;
 
-    public Usuarios(){
+    public Usuarios() {
 
     }
 
-    public Usuarios(String id, String email, String usuario, String telefono) {
+    public Usuarios(String id, String email, String usuario, String telefono, long timeStamp) {
         this.id = id;
         this.usuario = usuario;
         this.email = email;
         this.telefono = telefono;
+        this.timeStamp = timeStamp;
     }
 
     public String getId() {
@@ -50,4 +52,11 @@ public class Usuarios {
         this.telefono = telefono;
     }
 
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 }

@@ -9,12 +9,13 @@ public class Publicacion {
     private String image2;
     private String idUser;
     private String categoria;
+    private long timeStamp;
 
     public Publicacion(){
 
     }
 
-    public Publicacion(String id, String titulo, int precio, String descripcion, String image1, String image2, String idUser, String categoria) {
+    public Publicacion(String id, String titulo, int precio, String descripcion, String image1, String image2, String idUser, String categoria,long timeStamp ) {
         this.id = id;
         this.titulo = titulo;
         this.precio = precio;
@@ -23,6 +24,7 @@ public class Publicacion {
         this.image2 = image2;
         this.idUser = idUser;
         this.categoria = categoria;
+        this.timeStamp = timeStamp;
     }
 
     public String getId() {
@@ -87,5 +89,13 @@ public class Publicacion {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

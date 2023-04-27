@@ -26,6 +26,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -117,11 +118,14 @@ public class RegistroActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     String id = authFirebase.getUid();
 
-                    Usuarios usuario = new Usuarios(id,email,nUsuario,numTelefono);
-//                    usuario.setId(id);
-//                    usuario.setUsuario(nUsuario);
-//                    usuario.setEmail(email);
-//                    usuario.setTelefono(numTelefono);
+                    Usuarios usuario = new Usuarios();
+                    usuario.setId(id);
+                    usuario.setUsuario(nUsuario);
+                    usuario.setEmail(email);
+                    usuario.setTelefono(numTelefono);
+                    usuario.setTimeStamp(new Date().getTime());
+
+
 
                     usuariosBBDDFirebase.createUsuarios(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
