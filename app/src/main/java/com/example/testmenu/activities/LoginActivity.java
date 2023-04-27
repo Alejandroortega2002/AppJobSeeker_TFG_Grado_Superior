@@ -3,6 +3,7 @@ package com.example.testmenu.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,13 +28,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import dmax.dialog.SpotsDialog;
+
 public class LoginActivity extends AppCompatActivity {
 
 
     private EditText editEmail, editContrasena;
     private Button btnLogin, btnRecuperar, btnRegistrar, btnloginGoogle;
     private ProgressDialog barraProgreso;
-
+    AlertDialog mDialog;
     AutentificacioFirebase authFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
 
@@ -62,7 +65,16 @@ public class LoginActivity extends AppCompatActivity {
         btnRecuperar.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, Restablecer_Contrasena.class)));
         btnRegistrar.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegistroActivity.class)));
 
+
+
         btnloginGoogle.setOnClickListener(view -> singIn());
+
+        mDialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("espere un momento")
+                .setCancelable(false).build();
+
+
 
         // Configuración de Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -145,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
      * de la autenticación. En el método onComplete de esta clase anónima, se verifica si la autenticación fue exitosa o no, y se realiza la acción correspondiente en cada caso.
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount googleSignInAccount) {
-
+        mDialog.show();
         authFirebase.loginGoogle(googleSignInAccount).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -155,6 +167,7 @@ public class LoginActivity extends AppCompatActivity {
                     validarUser(id);
 
                 } else {
+                    mDialog.dismiss();
                     // Si la autenticación falla, se muestra un mensaje de error
                     Log.w(TAG, "signInWithCredential:failure", task.getException());
                 }
@@ -168,6 +181,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
+                    mDialog.dismiss();
                     // Si la autenticación es exitosa, se muestra un mensaje de éxito y se inicia la actividad principal de la aplicación
                     Log.d(TAG, "signInWithCredential:success");
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -192,6 +206,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
+                                mDialog.dismiss();
                                 // Si la autenticación es exitosa, se muestra un mensaje de éxito y se inicia la actividad principal de la aplicación
                                 Log.d(TAG, "signInWithCredential:success");
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -228,7 +243,7 @@ public class LoginActivity extends AppCompatActivity {
             mostrarError(editContrasena, "Password invalida");
         } else {
             // Si las credenciales son válidas, mostrar la barra de progreso y tratar de iniciar sesión
-            mostrarBarraProgreso();
+            mDialog.show();
             iniciarSesionCorreo(email, contrasena);
         }
     }
@@ -238,24 +253,23 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void iniciarSesionCorreo(String email, String contrasena) {
         // Iniciar sesión con el correo electrónico y la contraseña ingresados
-        authFirebase.login(email, contrasena).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    // Si el inicio de sesión fue exitoso, ocultar la barra de progreso y redirigir al usuario a MainActivity
-                    barraProgreso.dismiss();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    // Mostrar un mensaje de inicio de sesión exitoso
-                    Toast.makeText(getApplicationContext(), "Se ha Iniciado Sesion",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    // Si el inicio de sesión falla, ocultar la barra de progreso y mostrar un mensaje de error
-                    barraProgreso.dismiss();
-                    Toast.makeText(getApplicationContext(), "Incorrecto.",
-                            Toast.LENGTH_SHORT).show();
-                }
+        mDialog.show();
+        authFirebase.login(email, contrasena).addOnCompleteListener(this, task -> {
+
+            if (task.isSuccessful()) {
+                // Si el inicio de sesión fue exitoso, ocultar la barra de progreso y redirigir al usuario a MainActivity
+                mDialog.dismiss();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                // Mostrar un mensaje de inicio de sesión exitoso
+                Toast.makeText(getApplicationContext(), "Se ha Iniciado Sesion",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Si el inicio de sesión falla, ocultar la barra de progreso y mostrar un mensaje de error
+               mDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Incorrecto.",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -263,13 +277,13 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Este método se encarga de mostrar la barra de progreso
      */
-    public void mostrarBarraProgreso() {
+   /** public void mostrarBarraProgreso() {
         // Mostrar una barra de progreso mientras se procesa el inicio de sesión
         barraProgreso.setTitle("Proceso de Registro");
         barraProgreso.setMessage("Registrando usuario, espere un momento");
         barraProgreso.setCanceledOnTouchOutside(false);
         barraProgreso.show();
-    }
+    }*/
 
     /**
      * Este método se encarga de mostrar los errores si algo ha salido mal

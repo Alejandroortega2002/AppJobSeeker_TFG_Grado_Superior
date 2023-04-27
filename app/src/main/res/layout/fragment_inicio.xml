@@ -7,6 +7,9 @@
     android:background="@color/negroFondo"
     tools:context=".activities.fragmentMenu.InicioFragment" >
 
+    <include layout="@layout/action_bar_toolbar"/>
+
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

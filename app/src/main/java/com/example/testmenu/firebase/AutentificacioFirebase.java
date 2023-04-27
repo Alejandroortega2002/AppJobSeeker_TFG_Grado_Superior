@@ -27,7 +27,9 @@ public class AutentificacioFirebase {
     }
 
     public void logout() {
+        if(mAuth !=null){
         mAuth.signOut();
+        }
     }
 
     public Task<AuthResult> loginGoogle(GoogleSignInAccount googleSignInAccount) {
@@ -62,6 +64,14 @@ public class AutentificacioFirebase {
         }
 
     }
+    public FirebaseUser getUserSession() {
+        if (mAuth.getCurrentUser() != null) {
+            return mAuth.getCurrentUser();
+        } else {
+            return null;
+        }
+
+    }
 
     public String getEmail() {
         if (mAuth.getCurrentUser() != null) {
@@ -89,6 +99,8 @@ public class AutentificacioFirebase {
         }
 
     }
+
+
 
 
 }

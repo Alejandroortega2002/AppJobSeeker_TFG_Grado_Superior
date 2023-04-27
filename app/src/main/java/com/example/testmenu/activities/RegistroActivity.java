@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,11 +29,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 public class RegistroActivity extends AppCompatActivity {
 
     private Button btnRegistrar, btnLogin;
     private EditText Nusuario, Email, Telefono, editContrasena, editConfirmContrasena;
     private ProgressDialog barraProgreso;
+    AlertDialog mDialog;
+
     //FireBase
 
     AutentificacioFirebase authFirebase;
@@ -53,24 +58,22 @@ public class RegistroActivity extends AppCompatActivity {
         btnRegistrar = findViewById(R.id.btnRegistrar);
         btnLogin = findViewById(R.id.btnLogin);
 
-        btnRegistrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                verificarCredenciales();
-            }
-        });
+        btnRegistrar.setOnClickListener(view -> verificarCredenciales());
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RegistroActivity.this, LoginActivity.class));
-            }
-        });
+        btnLogin.setOnClickListener(v -> startActivity(new Intent(RegistroActivity.this, LoginActivity.class)));
 
         authFirebase = new AutentificacioFirebase();
         usuariosBBDDFirebase = new UsuariosBBDDFirebase();
         barraProgreso = new ProgressDialog(RegistroActivity.this);
+
+
+        mDialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("espere un momento")
+                .setCancelable(false).build();
     }
+
+
 
     /**
      * Este método verifica las credenciales introducidas comprobando la longitud del nombre de usuario, email, contraseña introducidos,
@@ -94,7 +97,7 @@ public class RegistroActivity extends AppCompatActivity {
         } else if (confirmContrasena.isEmpty() || !confirmContrasena.equals(contrasena)) {
             mostrarError(editConfirmContrasena, "Contraseña no valida, no coincide.");
         } else {
-            mostrarBarraProgreso();
+            mDialog.show();
             registrarUsuario(nusuario, telefono, email, contrasena);
 
         }
@@ -107,7 +110,8 @@ public class RegistroActivity extends AppCompatActivity {
      */
 
     public void registrarUsuario(final String nUsuario, final String numTelefono, final String email, final String contrasena) {
-       authFirebase.registro(email,contrasena).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+       mDialog.show();
+        authFirebase.registro(email,contrasena).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
@@ -122,6 +126,7 @@ public class RegistroActivity extends AppCompatActivity {
                     usuariosBBDDFirebase.createUsuarios(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            mDialog.show();
                             if (task.isSuccessful()) {
                                 //Exitoso -> Mostrar toast
                                 Toast.makeText(getApplicationContext(), "Se ha creado el usuario y se ha guardado en la base de datos",
@@ -136,7 +141,7 @@ public class RegistroActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "No se ha podido guardar el usuario en la base de datos",
                                         Toast.LENGTH_SHORT).show();
                                 //ocultar progressBar
-                                barraProgreso.dismiss();
+                                mDialog.dismiss();
                                 // Agregar una excepción para detectar cualquier error al guardar los datos
                                 task.getException().printStackTrace();
                             }
@@ -146,7 +151,7 @@ public class RegistroActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
                     //ocultar progressBar
-                    barraProgreso.dismiss();
+                    mDialog.dismiss();
                 }
             }
         });
@@ -158,13 +163,12 @@ public class RegistroActivity extends AppCompatActivity {
      * Luego, se desactiva la opción de cancelar la barra de progreso cuando se toca fuera de ella y se muestra en la pantalla llamando al método "show()"
      * de la variable "barraProgreso".
      */
-    public void mostrarBarraProgreso() {
+ //   public void mostrarBarraProgreso() {
         //Mostrar ProgressBar
-        barraProgreso.setTitle("Proceso de Registro");
-        barraProgreso.setMessage("Registrando usuario, espere un momento");
-        barraProgreso.setCanceledOnTouchOutside(false);
-        barraProgreso.show();
-    }
+  //      barraProgreso.setTitle("Proceso de Registro");
+    //    barraProgreso.setMessage("Registrando usuario, espere un momento");
+      ////barraProgreso.show();
+ //   }
 
     /**
      * Muestra un mensaje de error en el EditText especificado y coloca el foco en ese EditText.

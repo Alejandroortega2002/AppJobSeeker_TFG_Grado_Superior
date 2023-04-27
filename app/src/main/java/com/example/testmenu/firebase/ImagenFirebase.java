@@ -19,13 +19,14 @@ public class ImagenFirebase {
     }
 
     public UploadTask save(Context context, File file) {
-        byte[] imageByte = CompressorBitmapImage.getImage(context, file.getPath(), 300, 300);
+        byte[] imageByte = CompressorBitmapImage.getImage(context, file.getPath(), 500, 500);
         StorageReference storage = FirebaseStorage.getInstance().getReference().child(new Date() + ".jpg");
         mStorage = storage;
         UploadTask task = storage.putBytes(imageByte);
         return task;
     }
-    public StorageReference getStorage(){
+
+    public StorageReference getStorage() {
         return mStorage;
     }
 
