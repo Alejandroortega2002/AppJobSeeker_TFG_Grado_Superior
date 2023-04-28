@@ -1,4 +1,4 @@
-package com.example.testmenu.activities.fragmentMenu;
+package com.example.testmenu.fragmentMenu;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

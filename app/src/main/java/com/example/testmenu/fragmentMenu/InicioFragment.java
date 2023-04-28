@@ -1,4 +1,4 @@
-package com.example.testmenu.activities.fragmentMenu;
+package com.example.testmenu.fragmentMenu;
 
 import android.content.Intent;
 import android.os.Bundle;

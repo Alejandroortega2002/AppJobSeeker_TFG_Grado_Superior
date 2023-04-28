@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.testmenu.R;
 import com.example.testmenu.entidades.Publicacion;
 import com.example.testmenu.firebase.AutentificacioFirebase;
@@ -28,9 +30,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PostActivity extends AppCompatActivity {
@@ -63,6 +67,7 @@ public class PostActivity extends AppCompatActivity {
     String mDescripcion = "";
     AlertDialog.Builder mBuilderSelector;
     CharSequence options[];
+
 
     private final int GALLERY_REQUEST_CODE = 1;
     private final int GALLERY_REQUEST_CODE_2 = 2;
@@ -210,15 +215,16 @@ public class PostActivity extends AppCompatActivity {
                 saveImage(mImageFile, mPhotoFile2);
             }
             //TOMO FOTO EN UNA Y SELECCIONO IMAGEN DE LA GALERIA
-            else if(mPhotoFile !=null && mImageFile2!=null){
-                saveImage(mPhotoFile,mImageFile2);
-            }else {
+            else if (mPhotoFile != null && mImageFile2 != null) {
+                saveImage(mPhotoFile, mImageFile2);
+            } else {
                 Toast.makeText(this, "Debes seleccionar una imagen", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void saveImage(File imageFile1, final File imageFile2) {
 
         mImagenFirebase.save(PostActivity.this, imageFile1).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -252,18 +258,16 @@ public class PostActivity extends AppCompatActivity {
                                                     public void onComplete(@NonNull Task<Void> taskSave) {
 
                                                         if (taskSave.isSuccessful()) {
-
+                                                            clearForm();
                                                             Toast.makeText(PostActivity.this, "La informacion se almaceno correctamente", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                        else {
+                                                        } else {
                                                             Toast.makeText(PostActivity.this, "No se pudo almacenar la informacion", Toast.LENGTH_SHORT).show();
                                                         }
                                                     }
                                                 });
                                             }
                                         });
-                                    }
-                                    else {
+                                    } else {
 
                                         Toast.makeText(PostActivity.this, "La imagen numero 2 no se pudo guardar", Toast.LENGTH_SHORT).show();
                                     }
@@ -271,13 +275,27 @@ public class PostActivity extends AppCompatActivity {
                             });
                         }
                     });
-                }
-                else {
+                } else {
 
                     Toast.makeText(PostActivity.this, "Hubo error al almacenar la imagen", Toast.LENGTH_LONG).show();
                 }
             }
         });
+    }
+
+    private void clearForm() {
+        mTextInputTitulo.setText("");
+        mTextInputPrecio.setText("");
+        mTextViewCategoria.setText("");
+        mImageViewPost1.setImageResource(R.drawable.ic_subeimagen);
+        mImageViewPost2.setImageResource(R.drawable.ic_subeimagen);
+        mTitulo = "";
+        mPrecio = "";
+        mDescripcion = "";
+        mCategoria = "";
+        mImageFile = null;
+        mImageFile2 = null;
+
     }
 
     private void openGallery(int requestCode) {
