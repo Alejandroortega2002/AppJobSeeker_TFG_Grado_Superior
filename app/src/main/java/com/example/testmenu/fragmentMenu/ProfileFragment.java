@@ -60,8 +60,6 @@ public class ProfileFragment extends Fragment {
         /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
         binding = FragmentPerfilBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        
-
 
 
         autentificacioFirebase = new AutentificacioFirebase();
@@ -74,8 +72,6 @@ public class ProfileFragment extends Fragment {
         btnCerrarSesion = binding.btnCerrarSesion;
         btnBorrarCuenta = binding.btnBorrarCuenta;
         btnEditarPerfil = binding.btnEditarPerfil;
-
-
 
 
         final FirebaseUser user = autentificacioFirebase.getUsers();
@@ -121,18 +117,19 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public void cerrarSesion(){
+    public void cerrarSesion() {
 
     }
 
-    public void cerrarSesionGoogle(){
-
-    }
-    public void borrarCuenta(){
+    public void cerrarSesionGoogle() {
 
     }
 
-    public void editarPerfil(){
+    public void borrarCuenta() {
+
+    }
+
+    public void editarPerfil() {
 
     }
 

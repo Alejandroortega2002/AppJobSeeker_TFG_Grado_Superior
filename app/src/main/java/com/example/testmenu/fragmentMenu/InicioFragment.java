@@ -81,11 +81,13 @@ public class InicioFragment extends Fragment {
         mPostsAdapter.startListening();
     }
 
+
     @Override
     public void onStop() {
         super.onStop();
         mPostsAdapter.stopListening();
     }
+
 
     private void goToPost() {
         Intent intent = new Intent(getContext(), PostActivity.class);
