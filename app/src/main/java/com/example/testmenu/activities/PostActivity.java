@@ -221,61 +221,46 @@ public class PostActivity extends AppCompatActivity {
     }
     private void saveImage(File imageFile1, final File imageFile2) {
 
-        mImagenFirebase.save(PostActivity.this, imageFile1).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                if (task.isSuccessful()) {
-                    mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            final String url = uri.toString();
+        mImagenFirebase.save(PostActivity.this, imageFile1).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+                    final String url = uri.toString();
 
-                            mImagenFirebase.save(PostActivity.this, imageFile2).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> taskImage2) {
-                                    if (taskImage2.isSuccessful()) {
-                                        mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri2) {
-                                                String url2 = uri2.toString();
-                                                Publicacion publicacion = new Publicacion();
-                                                publicacion.setImage1(url);
-                                                publicacion.setImage2(url2);
-                                                publicacion.setTitulo(mTitulo);
-                                                publicacion.setPrecio(Integer.parseInt(mPrecio));
-                                                publicacion.setDescripcion(mDescripcion);
-                                                publicacion.setCategoria(mCategoria);
-                                                publicacion.setIdUser(mAutentificacionFirebase.getUid());
-                                                publicacion.setTimeStamp(new Date().getTime());
-                                                mPublicacionFribase.save(publicacion).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> taskSave) {
+                    mImagenFirebase.save(PostActivity.this, imageFile2).addOnCompleteListener(taskImage2 -> {
+                        if (taskImage2.isSuccessful()) {
+                            mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri2 -> {
+                                String url2 = uri2.toString();
+                                Publicacion publicacion = new Publicacion();
+                                publicacion.setImage1(url);
+                                publicacion.setImage2(url2);
+                                publicacion.setTitulo(mTitulo);
+                                publicacion.setPrecio(Integer.parseInt(mPrecio));
+                                publicacion.setDescripcion(mDescripcion);
+                                publicacion.setCategoria(mCategoria);
+                                publicacion.setIdUser(mAutentificacionFirebase.getUid());
+                                publicacion.setTimeStamp(new Date().getTime());
+                                mPublicacionFribase.save(publicacion).addOnCompleteListener(taskSave -> {
 
-                                                        if (taskSave.isSuccessful()) {
+                                    if (taskSave.isSuccessful()) {
 
-                                                            Toast.makeText(PostActivity.this, "La informacion se almaceno correctamente", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                        else {
-                                                            Toast.makeText(PostActivity.this, "No se pudo almacenar la informacion", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    }
-                                                });
-                                            }
-                                        });
+                                        Toast.makeText(PostActivity.this, "La informacion se almaceno correctamente", Toast.LENGTH_SHORT).show();
                                     }
                                     else {
-
-                                        Toast.makeText(PostActivity.this, "La imagen numero 2 no se pudo guardar", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(PostActivity.this, "No se pudo almacenar la informacion", Toast.LENGTH_SHORT).show();
                                     }
-                                }
+                                });
                             });
                         }
-                    });
-                }
-                else {
+                        else {
 
-                    Toast.makeText(PostActivity.this, "Hubo error al almacenar la imagen", Toast.LENGTH_LONG).show();
-                }
+                            Toast.makeText(PostActivity.this, "La imagen numero 2 no se pudo guardar", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                });
+            }
+            else {
+
+                Toast.makeText(PostActivity.this, "Hubo error al almacenar la imagen", Toast.LENGTH_LONG).show();
             }
         });
     }
