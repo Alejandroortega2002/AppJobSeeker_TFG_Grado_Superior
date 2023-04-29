@@ -1,6 +1,6 @@
 package com.example.testmenu.activities;
 
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -22,9 +22,6 @@ import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.ImagenFirebase;
 import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.utils.FileUtil;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
