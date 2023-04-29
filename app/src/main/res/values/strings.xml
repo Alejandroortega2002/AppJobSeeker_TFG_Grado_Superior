@@ -4,4 +4,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="nombre_de_la_publicaci_n">Nombre de la publicación</string>
+    <string name="english">English</string>
+    <string name="spanish">Español</string>
+
 </resources>

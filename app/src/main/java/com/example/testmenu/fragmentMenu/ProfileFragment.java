@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,9 +13,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 
 import com.example.testmenu.R;
+import com.example.testmenu.activities.AjustesActivity;
 import com.example.testmenu.activities.EditarPerfilActivity;
 import com.example.testmenu.databinding.FragmentPerfilBinding;
 
@@ -32,10 +35,9 @@ public class ProfileFragment extends Fragment {
     private FragmentPerfilBinding binding;
     private TextView telefono, nombreU, email;
 
-    private ImageButton btnEditarPerfil;
-    private ImageButton btnCerrarSesion;
-    private ImageButton btnBorrarCuenta;
-    LinearLayout mLinearLayoutEditProfile;
+    private ImageButton btnAjustesPerfil;
+
+    FrameLayout mLinearLayoutEditProfile;
 
     AutentificacioFirebase autentificacioFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
@@ -60,9 +62,7 @@ public class ProfileFragment extends Fragment {
         nombreU = (TextView) binding.nPerfil;
         email = (TextView) binding.pEmail;
 
-        btnCerrarSesion = binding.btnCerrarSesion;
-        btnBorrarCuenta = binding.btnBorrarCuenta;
-        btnEditarPerfil = binding.btnEditarPerfil;
+        btnAjustesPerfil = binding.btnAjustes;
 
 
         final FirebaseUser user = autentificacioFirebase.getUsers();
@@ -71,31 +71,22 @@ public class ProfileFragment extends Fragment {
 
         rellenarInformacionUsuario();
 
-//        btnBorrarCuenta.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-//
-//        btnEditarPerfil.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//            }
-//        });
-//
-//        btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(getActivity(), LoginActivity.class));
-//                cerrarSesion();
-//            }
-//        });
+        btnAjustesPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                irAjustes();
+            }
+        });
+
 
         return root;
 
     }
 
+    public void irAjustes() {
+        Intent i = new Intent(getActivity(), AjustesActivity.class);
+        startActivity(i);
+    }
 
 
     public void rellenarInformacionUsuario() {

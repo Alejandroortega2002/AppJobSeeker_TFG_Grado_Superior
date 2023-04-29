@@ -1,7 +1,7 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/perfil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -12,10 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/negroFondo">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@color/black"/>
+            android:background="@color/black" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -156,34 +157,15 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/btnEditarPerfil"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="40dp"
-                android:contentDescription="editar perfil"
-                android:src="@drawable/ic_editar_perfil" />
 
             <ImageButton
-                android:id="@+id/btnBorrarCuenta"
+                android:id="@+id/btnAjustes"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="320dp"
                 android:contentDescription="cerrar sesion"
-                android:src="@drawable/icono_persona" />
-
-
-            <ImageButton
-                android:id="@+id/btnCerrarSesion"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
-                android:contentDescription="cerrar sesion"
-                android:src="@drawable/ic_cerrar_sesion" />
+                android:src="@drawable/ic_ajustes" />
 
 
         </LinearLayout>
