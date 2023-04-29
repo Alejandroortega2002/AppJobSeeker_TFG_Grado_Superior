@@ -9,7 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class UsuariosBBDDFirebase {
 
-    private CollectionReference mColeccion;
+    private final CollectionReference mColeccion;
 
     public UsuariosBBDDFirebase(){
         mColeccion = FirebaseFirestore.getInstance().collection("Usuarios");
