@@ -12,11 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/negroFondo">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/black"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_gravity="top"
+            android:alpha="0.7"
+
             android:background="@drawable/foto_registro" />
 
         <de.hdodenhof.circleimageview.CircleImageView

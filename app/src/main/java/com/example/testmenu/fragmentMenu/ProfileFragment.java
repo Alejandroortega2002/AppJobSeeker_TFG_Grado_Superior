@@ -2,11 +2,9 @@ package com.example.testmenu.fragmentMenu;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,24 +14,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
-import com.example.testmenu.activities.LoginActivity;
-import com.example.testmenu.activities.Restablecer_Contrasena;
+import com.example.testmenu.R;
+import com.example.testmenu.activities.EditarPerfilActivity;
 import com.example.testmenu.databinding.FragmentPerfilBinding;
 
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-
-import org.checkerframework.common.subtyping.qual.Bottom;
 
 public class ProfileFragment extends Fragment {
 
@@ -44,7 +35,7 @@ public class ProfileFragment extends Fragment {
     private ImageButton btnEditarPerfil;
     private ImageButton btnCerrarSesion;
     private ImageButton btnBorrarCuenta;
-
+    LinearLayout mLinearLayoutEditProfile;
 
     AutentificacioFirebase autentificacioFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
@@ -78,7 +69,8 @@ public class ProfileFragment extends Fragment {
         idUser = autentificacioFirebase.getUid();
 
 
-        reyenarInformacionUsuario();
+        rellenarInformacionUsuario();
+
 //        btnBorrarCuenta.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -104,7 +96,9 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    public void reyenarInformacionUsuario() {
+
+
+    public void rellenarInformacionUsuario() {
         DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(idUser);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
