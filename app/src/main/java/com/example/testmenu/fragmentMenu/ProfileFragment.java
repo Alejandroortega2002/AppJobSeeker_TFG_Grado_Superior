@@ -1,4 +1,4 @@
-package com.example.testmenu.activities.fragmentMenu;
+package com.example.testmenu.fragmentMenu;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,8 @@ public class ProfileFragment extends Fragment {
     private ImageButton btnEditarPerfil;
     private ImageButton btnCerrarSesion;
     private ImageButton btnBorrarCuenta;
+
+
     AutentificacioFirebase autentificacioFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
 
@@ -57,6 +60,9 @@ public class ProfileFragment extends Fragment {
         /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
         binding = FragmentPerfilBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        
+
+
 
         autentificacioFirebase = new AutentificacioFirebase();
         usuariosBBDDFirebase = new UsuariosBBDDFirebase();

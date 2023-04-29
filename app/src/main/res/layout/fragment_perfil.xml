@@ -143,6 +143,7 @@
 
 
         <LinearLayout
+            android:id="@+id/linearLayoutEditPerfil"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_gravity="top"
