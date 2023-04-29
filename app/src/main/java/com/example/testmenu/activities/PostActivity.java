@@ -69,11 +69,9 @@ public class PostActivity extends AppCompatActivity {
     //FOTO1
     String mAbsolutePhotoPath;
     String mPhotoPath;
-    File mPhotoFile;
     //FOTO2
     String mAbsolutePhotoPath2;
     String mPhotoPath2;
-    File mPhotoFile2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,72 +191,58 @@ public class PostActivity extends AppCompatActivity {
         mPrecio = mTextInputPrecio.getText().toString().trim();
         mDescripcion = mTextInputDescripcion.getText().toString().trim();
 
-        if (!mTitulo.isEmpty() && !mPrecio.isEmpty() && !mDescripcion.isEmpty()) {
-            //SELECCIONO AMBAS IMAGENES DE LA GALERIA
-            if (mImageFile != null && mImageFile != null) {
-                saveImage(mImageFile, mImageFile2);
-            }
-            //TOMO AMBAS FOTOS DE LA CAMARA
-            else if (mPhotoFile != null && mPhotoFile2 != null) {
-                saveImage(mPhotoFile, mPhotoFile2);
-            }
-            //SELECIONO UNA DE LA GALERIA Y TOMO FOTO EN LA OTRA
-            else if (mImageFile != null && mPhotoFile2 != null) {
-                saveImage(mImageFile, mPhotoFile2);
-            }
-            //TOMO FOTO EN UNA Y SELECCIONO IMAGEN DE LA GALERIA
-            else if(mPhotoFile !=null && mImageFile2!=null){
-                saveImage(mPhotoFile,mImageFile2);
-            }else {
-                Toast.makeText(this, "Debes seleccionar una imagen", Toast.LENGTH_SHORT).show();
-            }
-        } else {
+        if (mTitulo.isEmpty() || mPrecio.isEmpty() || mDescripcion.isEmpty()) {
             Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        // Selección de imagen
+        if (mImageFile == null || mImageFile2 == null) {
+            Toast.makeText(this, "Debes seleccionar ambas imágenes", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+
+        saveImage(mImageFile, mImageFile2);
+
     }
+
     private void saveImage(File imageFile1, final File imageFile2) {
 
         mImagenFirebase.save(PostActivity.this, imageFile1).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
-                    final String url = uri.toString();
+            if (!task.isSuccessful()) {
+                Toast.makeText(PostActivity.this, "Hubo error al almacenar la imagen", Toast.LENGTH_LONG).show();
+                return;
+            }
 
-                    mImagenFirebase.save(PostActivity.this, imageFile2).addOnCompleteListener(taskImage2 -> {
-                        if (taskImage2.isSuccessful()) {
-                            mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri2 -> {
-                                String url2 = uri2.toString();
-                                Publicacion publicacion = new Publicacion();
-                                publicacion.setImage1(url);
-                                publicacion.setImage2(url2);
-                                publicacion.setTitulo(mTitulo);
-                                publicacion.setPrecio(Integer.parseInt(mPrecio));
-                                publicacion.setDescripcion(mDescripcion);
-                                publicacion.setCategoria(mCategoria);
-                                publicacion.setIdUser(mAutentificacionFirebase.getUid());
-                                publicacion.setTimeStamp(new Date().getTime());
-                                mPublicacionFribase.save(publicacion).addOnCompleteListener(taskSave -> {
+            mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+                final String url = uri.toString();
 
-                                    if (taskSave.isSuccessful()) {
+                mImagenFirebase.save(PostActivity.this, imageFile2).addOnCompleteListener(taskImage2 -> {
+                    if (!taskImage2.isSuccessful()) {
+                        Toast.makeText(PostActivity.this, "La imagen numero 2 no se pudo guardar", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri2 -> {
+                        final String url2 = uri2.toString();
+                        Publicacion publicacion = new Publicacion(null, mTitulo,
+                                Integer.parseInt(mPrecio), mDescripcion,
+                                url, url2, mAutentificacionFirebase.getUid(),
+                                mCategoria,  new Date().getTime());
 
-                                        Toast.makeText(PostActivity.this, "La informacion se almaceno correctamente", Toast.LENGTH_SHORT).show();
-                                    }
-                                    else {
-                                        Toast.makeText(PostActivity.this, "No se pudo almacenar la informacion", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            });
-                        }
-                        else {
+                        mPublicacionFribase.save(publicacion).addOnCompleteListener(taskSave -> {
 
-                            Toast.makeText(PostActivity.this, "La imagen numero 2 no se pudo guardar", Toast.LENGTH_SHORT).show();
-                        }
+                            if (taskSave.isSuccessful()) {
+                                Toast.makeText(PostActivity.this, "La información se almacenó correctamente", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                Toast.makeText(PostActivity.this, "No se pudo almacenar la información", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     });
                 });
-            }
-            else {
-
-                Toast.makeText(PostActivity.this, "Hubo error al almacenar la imagen", Toast.LENGTH_LONG).show();
-            }
+            });
         });
     }
 
@@ -277,7 +261,6 @@ public class PostActivity extends AppCompatActivity {
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
             try {
 
-                mPhotoFile = null;
                 mImageFile = FileUtil.from(this, data.getData());
                 mImageViewPost1.setImageBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()));
             } catch (Exception e) {
@@ -288,7 +271,6 @@ public class PostActivity extends AppCompatActivity {
 
         if (requestCode == GALLERY_REQUEST_CODE_2 && resultCode == RESULT_OK) {
             try {
-                mPhotoFile2 = null;
                 mImageFile2 = FileUtil.from(this, data.getData());
                 mImageViewPost2.setImageBitmap(BitmapFactory.decodeFile(mImageFile2.getAbsolutePath()));
             } catch (Exception e) {
@@ -301,8 +283,7 @@ public class PostActivity extends AppCompatActivity {
          * SELECCION DE FOTOGRAFIA
          */
         if (requestCode == PHOTO_REQUEST_CODE && resultCode == RESULT_OK) {
-            mImageFile = null;
-            mPhotoFile = new File(mAbsolutePhotoPath);
+            mImageFile = new File(mAbsolutePhotoPath);
             Picasso.get().load(mPhotoPath).into(mImageViewPost1);
         }
 
@@ -310,8 +291,7 @@ public class PostActivity extends AppCompatActivity {
          * SELECCION DE FOTOGRAFIA
          */
         if (requestCode == PHOTO_REQUEST_CODE_2 && resultCode == RESULT_OK) {
-            mImageFile2 = null;
-            mPhotoFile2 = new File(mAbsolutePhotoPath2);
+            mImageFile2 = new File(mAbsolutePhotoPath2);
             Picasso.get().load(mPhotoPath2).into(mImageViewPost2);
         }
     }
