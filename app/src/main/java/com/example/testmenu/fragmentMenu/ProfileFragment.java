@@ -1,7 +1,10 @@
 package com.example.testmenu.fragmentMenu;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,16 +91,42 @@ public class ProfileFragment extends Fragment {
         startActivity(i);
     }
 
-
     public void rellenarInformacionUsuario() {
         DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(idUser);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                nombreU.setText(value.getString("usuario"));
-                email.setText(value.getString("email"));
-                telefono.setText(value.getString("telefono"));
+                if (error != null) {
+                    // Manejar el error de Firebase Firestore
+                    Log.w(TAG, "Error al obtener el documento.", error);
+                    return;
+                }
+                if (value != null && value.exists()) {
+                    // Obtener los valores del objeto DocumentSnapshot
+                    String nombre = value.getString("usuario");
+                    String correo = value.getString("email");
+                    String ntelefono = value.getString("telefono");
 
+                    // Verificar si los valores obtenidos son nulos antes de establecer el texto en los TextViews
+                    if (nombre != null) {
+                        nombreU.setText(nombre);
+                    } else {
+                        nombreU.setText("Sin nombre");
+                    }
+                    if (correo != null) {
+                        email.setText(correo);
+                    } else {
+                        email.setText("Sin correo");
+                    }
+                    if (telefono != null) {
+                        telefono.setText(ntelefono);
+                    } else {
+                        telefono.setText("Sin teléfono");
+                    }
+                } else {
+                    // Manejar el caso en que el objeto DocumentSnapshot es nulo o no existe
+                    Log.d(TAG, "El objeto DocumentSnapshot no existe");
+                }
             }
         });
     }
@@ -117,8 +146,6 @@ public class ProfileFragment extends Fragment {
     public void editarPerfil() {
 
     }
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

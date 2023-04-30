@@ -27,21 +27,14 @@ public class AutentificacioFirebase {
     }
 
     public void logout() {
-        if(mAuth !=null){
-        mAuth.signOut();
+        if (mAuth != null) {
+            mAuth.signOut();
         }
     }
-
     public Task<AuthResult> loginGoogle(GoogleSignInAccount googleSignInAccount) {
         AuthCredential credenciales = GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null);
         return mAuth.signInWithCredential(credenciales);
     }
-
-    public Task<Void> logoutGoogle() {
-        return mGoogleSignInClient.signOut();
-    }
-
-
 
     public Task<Void> recuperarContrasena(String email) {
         return mAuth.sendPasswordResetEmail(email);
@@ -64,6 +57,7 @@ public class AutentificacioFirebase {
         }
 
     }
+
     public FirebaseUser getUserSession() {
         if (mAuth.getCurrentUser() != null) {
             return mAuth.getCurrentUser();
@@ -99,8 +93,6 @@ public class AutentificacioFirebase {
         }
 
     }
-
-
 
 
 }
