@@ -172,21 +172,31 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private File createPhotoFile(int requestCode) throws IOException {
+        // Crea un nombre de archivo único usando la fecha y hora actuales
+        String timeStamp = String.valueOf(new Date().getTime());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+
+        // Obtiene la carpeta de imágenes del directorio de la aplicación
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File photoFile = File.createTempFile(
-                new Date() + "_photo",
-                ".jpg",
-                storageDir
+
+        // Crea un archivo de imagen en la carpeta de imágenes
+        File imageFile = File.createTempFile(
+                imageFileName,  // prefijo del nombre del archivo
+                ".jpg",         // extensión del archivo
+                storageDir      // directorio donde se creará el archivo
         );
+
+        // Guarda la ruta absoluta del archivo
         if (requestCode == PHOTO_REQUEST_CODE) {
-            mPhotoPath = "file:" + photoFile.getAbsolutePath();
-            mAbsolutePhotoPath = photoFile.getAbsolutePath();
+            mAbsolutePhotoPath = imageFile.getAbsolutePath();
         } else if (requestCode == PHOTO_REQUEST_CODE_2) {
-            mPhotoPath2 = "file:" + photoFile.getAbsolutePath();
-            mAbsolutePhotoPath2 = photoFile.getAbsolutePath();
+            mAbsolutePhotoPath2 = imageFile.getAbsolutePath();
         }
-        return photoFile;
+
+        // Devuelve el archivo creado
+        return imageFile;
     }
+
 
     private void clickPost() {
         mTitulo = mTextInputTitulo.getText().toString().trim();
