@@ -21,4 +21,8 @@ public class PublicacionFirebase {
     public Query getAll(){
         return mCollection.orderBy("titulo", Query.Direction.DESCENDING);
     }
+
+    public Query getPublicacionDeUsuario(String id){
+        return mCollection.whereEqualTo("idUser",id);
+    }
 }

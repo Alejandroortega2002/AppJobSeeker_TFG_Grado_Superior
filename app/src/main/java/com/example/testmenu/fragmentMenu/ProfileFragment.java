@@ -10,33 +10,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-
-import com.example.testmenu.R;
 import com.example.testmenu.activities.AjustesActivity;
-import com.example.testmenu.activities.EditarPerfilActivity;
 import com.example.testmenu.databinding.FragmentPerfilBinding;
 
 import com.example.testmenu.firebase.AutentificacioFirebase;
+import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
 
     /*Declaramos su Xml correspondiente a traves del ViewBiding*/
     private FragmentPerfilBinding binding;
-    private TextView telefono, nombreU, email;
+    private TextView telefono, nombreU, email, descripcion, numeroDeOrfetas;
+
+    private ImageView fotoBanner;
+    private CircleImageView fotoPerfil;
+
 
     private ImageButton btnAjustesPerfil;
 
@@ -44,6 +50,7 @@ public class ProfileFragment extends Fragment {
 
     AutentificacioFirebase autentificacioFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
+    PublicacionFirebase publicacionFirebase;
 
     private String idUser;
 
@@ -60,10 +67,15 @@ public class ProfileFragment extends Fragment {
 
         autentificacioFirebase = new AutentificacioFirebase();
         usuariosBBDDFirebase = new UsuariosBBDDFirebase();
+        publicacionFirebase = new PublicacionFirebase();
 
         telefono = (TextView) binding.nTelefono;
         nombreU = (TextView) binding.nPerfil;
         email = (TextView) binding.pEmail;
+        descripcion = (TextView) binding.pDescripcion;
+        numeroDeOrfetas = (TextView) binding.nPublicaciones;
+        fotoBanner = (ImageView) binding.banner;
+        fotoPerfil = (CircleImageView) binding.fotoPerfil;
 
         btnAjustesPerfil = binding.btnAjustes;
 
@@ -73,6 +85,7 @@ public class ProfileFragment extends Fragment {
 
 
         rellenarInformacionUsuario();
+        getNumeroPublicaciones();
 
         btnAjustesPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,9 +94,19 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
         return root;
 
+    }
+
+    public void getNumeroPublicaciones() {
+        publicacionFirebase.getPublicacionDeUsuario(autentificacioFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                int numeroPublicaciones = queryDocumentSnapshots.size();
+                String numeroOfertas = String.valueOf(numeroPublicaciones);
+                numeroDeOrfetas.setText(numeroOfertas);
+            }
+        });
     }
 
     public void irAjustes() {
@@ -106,8 +129,26 @@ public class ProfileFragment extends Fragment {
                     String nombre = value.getString("usuario");
                     String correo = value.getString("email");
                     String ntelefono = value.getString("telefono");
+                    String descrip = value.getString("descripcion");
+
 
                     // Verificar si los valores obtenidos son nulos antes de establecer el texto en los TextViews
+                    if (value.contains("fotoPerfil")) {
+                        String perfil = value.getString("fotoPerfil");
+                        if (perfil != null) {
+                            if (!perfil.isEmpty()) {
+                                Picasso.get().load(perfil).into(fotoPerfil);
+                            }
+                        }
+                    }
+                    if (value.contains("banner")) {
+                        String banner = value.getString("banner");
+                        if (banner != null) {
+                            if (!banner.isEmpty()) {
+                                Picasso.get().load(banner).into(fotoBanner);
+                            }
+                        }
+                    }
                     if (nombre != null) {
                         nombreU.setText(nombre);
                     } else {
@@ -123,6 +164,11 @@ public class ProfileFragment extends Fragment {
                     } else {
                         telefono.setText("Sin teléfono");
                     }
+                    if (descripcion != null) {
+                        descripcion.setText(descrip);
+                    } else {
+                        descripcion.setText("Sin descripción");
+                    }
                 } else {
                     // Manejar el caso en que el objeto DocumentSnapshot es nulo o no existe
                     Log.d(TAG, "El objeto DocumentSnapshot no existe");
@@ -131,21 +177,6 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public void cerrarSesion() {
-
-    }
-
-    public void cerrarSesionGoogle() {
-
-    }
-
-    public void borrarCuenta() {
-
-    }
-
-    public void editarPerfil() {
-
-    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

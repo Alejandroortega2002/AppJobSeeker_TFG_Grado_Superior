@@ -19,14 +19,16 @@
             android:background="@color/black" />
 
         <ImageView
+            android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_gravity="top"
             android:alpha="0.7"
-
+            android:scaleType="centerCrop"
             android:background="@drawable/foto_registro" />
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/fotoPerfil"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_marginTop="80dp"

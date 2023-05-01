@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +50,7 @@ public class RegistroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Nusuario = findViewById(R.id.editUsername);
         Email = findViewById(R.id.editEmail);
@@ -123,6 +125,9 @@ public class RegistroActivity extends AppCompatActivity {
                     usuario.setUsuario(nUsuario);
                     usuario.setEmail(email);
                     usuario.setTelefono(numTelefono);
+                    usuario.setDescripcion(null);
+                    usuario.setBanner(null);
+                    usuario.setFotoPerfil(null);
                     usuario.setTimeStamp(new Date().getTime());
 
 
