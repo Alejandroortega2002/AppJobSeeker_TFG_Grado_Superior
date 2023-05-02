@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:theme="@style/NightTheme"
     tools:context=".fragmentMenu.ProfileFragment">
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/negroFondo">
+        >
 
         <ImageView
             android:id="@+id/banner"
@@ -59,7 +60,7 @@
                     android:id="@+id/editUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="#3f3f3f"
+                    android:background="@color/negroFondo"
                     android:hint="Nombre de Usuario"
                     android:inputType="text"
                     android:textColor="@color/white" />
@@ -96,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Teléfono"
                     android:inputType="phone"
-                    android:background="#3f3f3f"
+                    android:background="@color/negroFondo"
                     android:textColor="@color/white"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -129,7 +130,7 @@
                     android:id="@+id/editDescripcion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#3f3f3f"
+                    android:background="@color/negroFondo"
                     android:hint="Descripcion"
                     android:inputType="text|textMultiLine"
                     android:lines="4"
@@ -165,12 +166,12 @@
         <ImageButton
             android:id="@+id/btnSalir"
             style="?android:attr/borderlessButtonStyle"
-            android:background="@drawable/ic_step_back"
-            android:layout_width="67dp"
-            android:layout_height="wrap_content"
+            android:layout_width="39dp"
+            android:layout_height="34dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:contentDescription="salir"/>
+            android:background="@drawable/ic_step_back"
+            android:contentDescription="salir" />
 
     </FrameLayout>
 

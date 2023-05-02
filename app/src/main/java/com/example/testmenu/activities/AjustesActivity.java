@@ -8,7 +8,9 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.testmenu.R;
@@ -19,6 +21,11 @@ public class AjustesActivity extends AppCompatActivity {
 
     private ImageButton btnSalir;
     private TextView btnCerrarSesion, btnBorrarCuenta, btnEditarPerfil, btnRestablecerContrasena;
+
+    private Switch modoTema;
+
+    private boolean isDarkTheme = false;
+
     AutentificacioFirebase mAutentificacionFirebase;
 
     @SuppressLint("WrongViewCast")
@@ -28,6 +35,8 @@ public class AjustesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ajustes);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        modoTema = findViewById(R.id.switch2);
+
         btnSalir = findViewById(R.id.volver_perfil);
 
         btnCerrarSesion = findViewById(R.id.txtCloseSesion);
@@ -36,6 +45,13 @@ public class AjustesActivity extends AppCompatActivity {
         btnBorrarCuenta = findViewById(R.id.txtDeletePerfil);
 
         mAutentificacionFirebase = new AutentificacioFirebase();
+
+        if (isDarkTheme) {
+            setTheme(R.style.NightTheme);
+        } else {
+            setTheme(R.style.Theme_TestMenu);
+        }
+
 
         btnSalir.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +89,21 @@ public class AjustesActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        modoTema.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    setTheme(R.style.NightTheme);
+                    isDarkTheme = true;
+                } else {
+                    setTheme(R.style.Theme_TestMenu);
+                    isDarkTheme = false;
+                }
+                recreate();
+            }
+        });
+
 
 
     }
