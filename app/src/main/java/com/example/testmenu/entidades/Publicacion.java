@@ -1,6 +1,7 @@
 package com.example.testmenu.entidades;
 
 public class Publicacion {
+
     private String id;
     private String titulo;
     private int precio;
