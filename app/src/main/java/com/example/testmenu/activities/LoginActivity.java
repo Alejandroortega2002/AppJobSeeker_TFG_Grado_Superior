@@ -72,6 +72,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
+
         mDialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setMessage("espere un momento")
@@ -98,6 +100,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+
+     Este método se llama cuando la actividad se está iniciando y comprueba si hay una sesión de usuario activa.
+     Si hay una sesión de usuario activa, se inicia una nueva actividad MainActivity y se eliminan las actividades anteriores de la pila.
+     Si no hay una sesión de usuario activa, no se realiza ninguna acción adicional y se muestra la actividad LoginActivity.
+     */
     @Override
     protected void onStart() {
         super.onStart();

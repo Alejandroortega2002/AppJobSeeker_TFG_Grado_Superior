@@ -110,11 +110,11 @@ public class InicioFragment extends Fragment {
         return true;
     }*/
 
-    private void logout() {
+/*    private void logout() {
         mAutentificacionFirebase.logout();
         Intent intent = new Intent(getContext(), PagPrincipalAtivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
+    }*/
 
 }

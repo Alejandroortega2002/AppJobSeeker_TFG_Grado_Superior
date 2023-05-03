@@ -4,6 +4,7 @@ package com.example.testmenu.activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.testmenu.R;
 import com.example.testmenu.entidades.Publicacion;
 import com.example.testmenu.firebase.AutentificacioFirebase;
@@ -26,9 +28,11 @@ import com.example.testmenu.utils.FileUtil;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PostActivity extends AppCompatActivity {
@@ -215,7 +219,6 @@ public class PostActivity extends AppCompatActivity {
         }
 
 
-
         saveImage(mImageFile, mImageFile2);
 
     }
@@ -241,7 +244,7 @@ public class PostActivity extends AppCompatActivity {
                         Publicacion publicacion = new Publicacion(null, mTitulo,
                                 Integer.parseInt(mPrecio), mDescripcion,
                                 url, url2, mAutentificacionFirebase.getUid(),
-                                mCategoria,  new Date().getTime());
+                                mCategoria, new Date().getTime());
 
                         mPublicacionFribase.save(publicacion).addOnCompleteListener(taskSave -> {
 
@@ -307,7 +310,6 @@ public class PostActivity extends AppCompatActivity {
             Picasso.get().load(mPhotoPath2).into(mImageViewPost2);
         }
     }
-
 
 
 }
