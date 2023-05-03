@@ -165,12 +165,10 @@
         <ImageButton
             android:id="@+id/btnSalir"
             style="?android:attr/borderlessButtonStyle"
-            android:background="@drawable/ic_step_back"
             android:layout_width="67dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:contentDescription="salir"/>
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_step_back" />
 
     </FrameLayout>
 

@@ -62,7 +62,7 @@ public class AjustesActivity extends AppCompatActivity {
         btnRestablecerContrasena.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AjustesActivity.this, Restablecer_Contrasena.class);
+                Intent intent = new Intent(AjustesActivity.this, Recuperar_Contrasena_Usuario_Logueado.class);
                 startActivity(intent);
             }
         });
