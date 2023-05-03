@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import com.example.testmenu.R;
 import com.example.testmenu.activities.LoginActivity;
 import com.example.testmenu.activities.MainActivity;
+import com.example.testmenu.activities.PagPrincipalAtivity;
 import com.example.testmenu.activities.PostActivity;
 import com.example.testmenu.adapters.PostsAdapter;
 import com.example.testmenu.entidades.Publicacion;
@@ -100,18 +101,18 @@ public class InicioFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
+/*    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.itemLogout) {
             logout();
         }
 
         return true;
-    }
+    }*/
 
     private void logout() {
         mAutentificacionFirebase.logout();
-        Intent intent = new Intent(getContext(), LoginActivity.class);
+        Intent intent = new Intent(getContext(), PagPrincipalAtivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
