@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:theme="@style/Theme.TestMenu"
+    android:background="@color/negroFondo"
     tools:context=".activities.MainActivity">
 
     <FrameLayout
@@ -50,6 +50,7 @@
                 android:id="@+id/nTelefono"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="3132424243"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -57,6 +58,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="TELEFONO"
                 android:textSize="13sp"
                 android:textStyle="bold" />
@@ -77,12 +79,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="PUBLICACIONES"
                 android:textAllCaps="false"
                 android:textSize="13sp"
@@ -102,6 +106,7 @@
                 android:id="@+id/nPerfil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="NOMBRE DEL PERFIL"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -112,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:text="correo@algo.com"
-                android:textColor="#9A9A9A"
+                android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -130,13 +135,14 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="20dp"
                 android:text="Descripción"
-                android:textColor="#BCBCBC"
+                android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/pDescripcion"
                 android:layout_width="350dp"
+                android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
                 android:textAlignment="center"

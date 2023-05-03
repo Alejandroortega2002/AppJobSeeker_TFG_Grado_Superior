@@ -147,6 +147,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="15dp"
+                android:background="@drawable/ic_descripcion"
                 android:layout_marginRight="5dp" />
 
             <com.google.android.material.textfield.TextInputLayout

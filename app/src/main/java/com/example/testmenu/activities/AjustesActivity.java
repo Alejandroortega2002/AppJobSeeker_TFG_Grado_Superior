@@ -21,10 +21,6 @@ public class AjustesActivity extends AppCompatActivity {
     private ImageButton btnSalir;
     private TextView btnCerrarSesion, btnBorrarCuenta, btnEditarPerfil, btnRestablecerContrasena;
 
-    //BOTON SWITCH
-//    private Switch modoTema;
-//    private boolean isDarkTheme = false;
-
     AutentificacioFirebase mAutentificacionFirebase;
 
     @SuppressLint("WrongViewCast")
@@ -33,8 +29,6 @@ public class AjustesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ajustes);
 
-        //ID DEL SWITCH
-//        modoTema = findViewById(R.id.switch2);
 
         btnSalir = findViewById(R.id.volver_perfil);
 
@@ -44,13 +38,6 @@ public class AjustesActivity extends AppCompatActivity {
         btnBorrarCuenta = findViewById(R.id.txtDeletePerfil);
 
         mAutentificacionFirebase = new AutentificacioFirebase();
-
-        //COMPROBAR SI ESTA ACTIVADO EL MODO OSCURO
-//        if (isDarkTheme) {
-//            setTheme(R.style.NightTheme);
-//        } else {
-//            setTheme(R.style.Theme_TestMenu);
-//        }
 
 
         btnSalir.setOnClickListener(new View.OnClickListener() {
@@ -89,24 +76,6 @@ public class AjustesActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
-//      ACCION SWITCH CAMBIAR TEMA FONDO A TODA LA APP
-//        modoTema.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    setTheme(R.style.NightTheme);
-//                    isDarkTheme = true;
-//                } else {
-//                    setTheme(R.style.Theme_TestMenu);
-//                    isDarkTheme = false;
-//                }
-//                recreate();
-//            }
-//        });
-
-
 
     }
 

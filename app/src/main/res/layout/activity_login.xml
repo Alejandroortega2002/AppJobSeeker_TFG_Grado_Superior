@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:theme="@style/NightTheme"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.LoginActivity">
 
     <View
         android:layout_width="match_parent"
@@ -176,6 +175,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:text="¿No tienes cuenta?"
             android:textSize="17sp"/>
 
