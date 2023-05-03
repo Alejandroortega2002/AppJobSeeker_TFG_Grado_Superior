@@ -5,25 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:theme="@style/NightTheme"
     tools:context=".fragmentMenu.ProfileFragment">
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:background="@color/negroFondo">
 
         <ImageView
-            android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_gravity="top"
-            android:scaleType="centerCrop"
             android:background="@drawable/foto_registro" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/fotoPerfil"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_marginTop="80dp"
@@ -60,7 +56,7 @@
                     android:id="@+id/editUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/negroFondo"
+                    android:backgroundTint="#3f3f3f"
                     android:hint="Nombre de Usuario"
                     android:inputType="text"
                     android:textColor="@color/white" />
@@ -73,7 +69,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="350dp"
+            android:layout_marginTop="340dp"
+            android:layout_marginRight="30dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/icono_email" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/white"
+                app:boxStrokeColor="@color/white"
+                app:hintTextColor="@color/white">
+
+                <EditText
+                    android:id="@+id/editEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Correo Electrónico"
+                    android:inputType="textEmailAddress"
+                    android:background="#3f3f3f"
+                    android:textColor="@color/white"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="400dp"
             android:layout_marginRight="30dp"
             android:orientation="horizontal">
 
@@ -91,13 +122,13 @@
                 app:boxStrokeColor="@color/white"
                 app:hintTextColor="@color/white">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTelefono"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Teléfono"
                     android:inputType="phone"
-                    android:background="@color/negroFondo"
+                    android:background="#3f3f3f"
                     android:textColor="@color/white"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -108,14 +139,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="420dp"
+            android:layout_marginTop="460dp"
             android:layout_marginRight="30dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/ic_descripcion"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="5dp" />
 
@@ -127,10 +157,10 @@
                 app:hintTextColor="@color/white">
 
                 <EditText
-                    android:id="@+id/editDescripcion"
+                    android:id="@+id/editPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/negroFondo"
+                    android:background="#3f3f3f"
                     android:hint="Descripcion"
                     android:inputType="text|textMultiLine"
                     android:lines="4"
@@ -145,33 +175,23 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <Button
+            android:id="@+id/btnMisOfertas"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="620dp"
-            android:layout_marginRight="30dp"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/btnActualizar"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/btn_pag_principales"
-                android:text="Actualizar Perfil" />
-
-        </LinearLayout>
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/btn_pag_principales"
+            android:text="Actualizar Perfil" />
 
         <ImageButton
-            android:id="@+id/btnSalir"
+            android:id="@+id/btnEditarPerfil"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="39dp"
-            android:layout_height="34dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/ic_step_back"
-            android:contentDescription="salir" />
+            android:layout_width="67dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:contentDescription="salir"/>
 
     </FrameLayout>
 

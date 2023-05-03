@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -54,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         editEmail = findViewById(R.id.LeditMail);
         editContrasena = findViewById(R.id.LeditContrasena);
@@ -213,9 +211,6 @@ public class LoginActivity extends AppCompatActivity {
                     usuario.setUsuario(nUser);
                     usuario.setEmail(email);
                     usuario.setTelefono(telefono);
-                    usuario.setDescripcion(null);
-                    usuario.setBanner(null);
-                    usuario.setFotoPerfil(null);
 
                    usuariosBBDDFirebase.createUsuarios(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

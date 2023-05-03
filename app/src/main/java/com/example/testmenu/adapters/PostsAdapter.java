@@ -1,36 +1,31 @@
 package com.example.testmenu.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewAnimator;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testmenu.R;
-import com.example.testmenu.activities.PostDetailActivity;
 import com.example.testmenu.entidades.Publicacion;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
 public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAdapter.ViewHolder> {
 
-Context context;
+Context contexto;
 public PostsAdapter(FirestoreRecyclerOptions<Publicacion>options, Context contexto){
     super(options);
-    this.context = contexto;
+    this.contexto = contexto;
 }
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Publicacion publicacion) {
-
-        DocumentSnapshot document = getSnapshots().getSnapshot(position);
-        final String postId = document.getId();
         holder.textViewTitulo.setText(publicacion.getTitulo());
         holder.textViewDescripcion.setText(publicacion.getDescripcion());
         if(publicacion.getImage1()!=null){
@@ -39,14 +34,6 @@ public PostsAdapter(FirestoreRecyclerOptions<Publicacion>options, Context contex
 
             }
         }
-        holder.viewHolder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent  = new Intent(context, PostDetailActivity.class);
-                intent.putExtra("id",postId);
-                context.startActivity(intent);
-            }
-        });
     }
 
     @NonNull
@@ -62,14 +49,11 @@ public PostsAdapter(FirestoreRecyclerOptions<Publicacion>options, Context contex
         TextView textViewDescripcion;
         ImageView imageViewPost;
 
-        View viewHolder;
-
         public ViewHolder(View view){
             super(view);
             textViewTitulo = view.findViewById(R.id.textViewTituloPostCard);
             textViewDescripcion = view.findViewById(R.id.textViewDescripcionPostCard);
             imageViewPost = view.findViewById(R.id.imageViewPostCard);
-            viewHolder = view;
         }
 
     }
