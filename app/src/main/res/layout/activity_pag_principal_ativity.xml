@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/negroFondo"
+    android:theme="@style/NightTheme"
     android:fitsSystemWindows="true"
     tools:context=".activities.MainActivity">
 
@@ -27,7 +27,6 @@
             android:layout_height="37dp"
             android:text="Bienvenido a"
             android:textAlignment="center"
-            android:textColor="@color/colorWhite"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -47,28 +46,36 @@
             android:layout_height="wrap_content"
             android:text="Busca a quienes deseen trabajar, o crea ofertas para otros quienes necesiten de tus labores"
             android:textAlignment="center"
-            android:textColor="@color/colorWhite"
             android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="154dp"
             android:layout_marginTop="80dp"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/PbtnLogin"
                 android:layout_width="300dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginBottom="20dp"
-                android:text="Inicio de sesión" />
+                android:text="Inicio de sesión"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textColor="@color/colorWhite"
+
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/PbtnRegistro"
                 android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:text="Registrate" />
+                android:layout_height="48dp"
+                android:text="Registrate"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
