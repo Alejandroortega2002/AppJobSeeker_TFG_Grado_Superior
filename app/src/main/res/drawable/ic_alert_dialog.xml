@@ -5,14 +5,14 @@
     <solid android:color="@android:color/white" />
 
     <!-- curvatura de las esquinas -->
-    <corners android:radius="10dp" />
+    <corners android:radius="11dp" />
 
     <!-- padding para dejar una separacin prudencial entre los elementos conetenidos y el borde -->
     <padding android:left="8dp" android:top="4dp" android:right="8dp" android:bottom="8dp"/>
 
     <!-- borde -->
     <stroke
-        android:width="3dp"
+        android:width="0dp"
         android:color="@android:color/darker_gray" />
 
 </shape>

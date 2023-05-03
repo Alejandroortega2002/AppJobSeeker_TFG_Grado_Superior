@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/ic_alert_dialog"
@@ -42,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Estas seguro que quieres cerrar la sesión de esta cuenta"
+        android:text="¿Estas seguro que quieres cerrar la sesión de esta cuenta?"
         android:gravity="center"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -61,8 +62,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/btn_pag_principales"
             android:text="cancelar"
+            app:cornerRadius="40px"
             android:textColor="@android:color/white" />
 
         <Button
@@ -71,9 +72,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:background="@drawable/ic_btn_rojo"
+            android:backgroundTint="#FF0000"
             android:text="aceptar"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/colorWhite"
+            app:cornerRadius="40px" />
     </LinearLayout>
 
 </LinearLayout>

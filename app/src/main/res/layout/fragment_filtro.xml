@@ -5,4 +5,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/negroFondo"
-    tools:context=".fragmentMenu.FavoritoFragment"></FrameLayout>
+    tools:context=".fragmentMenu.FiltroFragment"></FrameLayout>

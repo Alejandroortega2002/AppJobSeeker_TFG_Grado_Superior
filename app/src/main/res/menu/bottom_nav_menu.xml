@@ -6,9 +6,9 @@
         android:title="Inicio" />
 
     <item
-        android:id="@+id/navigation_fav"
-        android:icon="@drawable/ic_fav"
-        android:title="Favoritos" />
+        android:id="@+id/navigation_filtro"
+        android:icon="@drawable/ic_filtro"
+        android:title="Filtros" />
     <item
         android:id="@+id/navigation_chat"
         android:icon="@drawable/ic_chats"

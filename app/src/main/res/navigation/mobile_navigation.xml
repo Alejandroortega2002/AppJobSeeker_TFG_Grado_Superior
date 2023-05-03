@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_fav">
+    app:startDestination="@+id/navigation_filtro">
 
     <fragment
-        android:id="@+id/navigation_fav"
-        android:name="com.example.testmenu.fragmentMenu.FavoritoFragment"
+        android:id="@+id/navigation_filtro"
+        android:name="com.example.testmenu.fragmentMenu.FiltroFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_fav" />
+        tools:layout="@layout/fragment_filtro" />
 
     <fragment
         android:id="@+id/navigation_perfil"
