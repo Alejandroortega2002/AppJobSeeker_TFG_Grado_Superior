@@ -245,7 +245,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
     private void saveImageCoverAndProfile(File imageFile1, final File imageFile2) {
         mDialog.show();
-        mImageProvider.save(EditarPerfilActivity.this, imageFile1).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+        mImageProvider.saveImgUser(EditarPerfilActivity.this, imageFile1).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -254,7 +254,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
                             final String urlProfile = uri.toString();
 
-                            mImageProvider.save(EditarPerfilActivity.this, imageFile2).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            mImageProvider.saveImgUser(EditarPerfilActivity.this, imageFile2).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> taskImage2) {
                                     if (taskImage2.isSuccessful()) {
@@ -290,7 +290,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
     private void saveImage(File image, final boolean isProfileImage) {
         mDialog.show();
-        mImageProvider.save(EditarPerfilActivity.this, image).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+        mImageProvider.saveImgUser(EditarPerfilActivity.this, image).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 if (task.isSuccessful()) {
