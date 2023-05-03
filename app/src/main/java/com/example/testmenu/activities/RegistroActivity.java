@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +50,7 @@ public class RegistroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Nusuario = findViewById(R.id.editUsername);
         Email = findViewById(R.id.editEmail);
@@ -111,7 +113,7 @@ public class RegistroActivity extends AppCompatActivity {
      */
 
     public void registrarUsuario(final String nUsuario, final String numTelefono, final String email, final String contrasena) {
-       mDialog.show();
+        mDialog.show();
         authFirebase.registro(email,contrasena).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -123,6 +125,9 @@ public class RegistroActivity extends AppCompatActivity {
                     usuario.setUsuario(nUsuario);
                     usuario.setEmail(email);
                     usuario.setTelefono(numTelefono);
+                    usuario.setDescripcion(null);
+                    usuario.setBanner(null);
+                    usuario.setFotoPerfil(null);
                     usuario.setTimeStamp(new Date().getTime());
 
 
@@ -167,12 +172,12 @@ public class RegistroActivity extends AppCompatActivity {
      * Luego, se desactiva la opción de cancelar la barra de progreso cuando se toca fuera de ella y se muestra en la pantalla llamando al método "show()"
      * de la variable "barraProgreso".
      */
- //   public void mostrarBarraProgreso() {
-        //Mostrar ProgressBar
-  //      barraProgreso.setTitle("Proceso de Registro");
+    //   public void mostrarBarraProgreso() {
+    //Mostrar ProgressBar
+    //      barraProgreso.setTitle("Proceso de Registro");
     //    barraProgreso.setMessage("Registrando usuario, espere un momento");
-      ////barraProgreso.show();
- //   }
+    ////barraProgreso.show();
+    //   }
 
     /**
      * Muestra un mensaje de error en el EditText especificado y coloca el foco en ese EditText.

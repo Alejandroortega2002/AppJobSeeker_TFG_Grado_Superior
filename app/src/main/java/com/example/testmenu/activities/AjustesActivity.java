@@ -4,12 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.testmenu.R;
@@ -20,7 +19,6 @@ public class AjustesActivity extends AppCompatActivity {
 
     private ImageButton btnSalir;
     private TextView btnCerrarSesion, btnBorrarCuenta, btnEditarPerfil, btnRestablecerContrasena;
-
     AutentificacioFirebase mAutentificacionFirebase;
 
     @SuppressLint("WrongViewCast")
@@ -28,7 +26,7 @@ public class AjustesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ajustes);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         btnSalir = findViewById(R.id.volver_perfil);
 
@@ -38,7 +36,6 @@ public class AjustesActivity extends AppCompatActivity {
         btnBorrarCuenta = findViewById(R.id.txtDeletePerfil);
 
         mAutentificacionFirebase = new AutentificacioFirebase();
-
 
         btnSalir.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +73,7 @@ public class AjustesActivity extends AppCompatActivity {
                 finish();
             }
         });
+
 
     }
 

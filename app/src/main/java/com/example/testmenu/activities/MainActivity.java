@@ -1,5 +1,6 @@
 package com.example.testmenu.activities;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.example.testmenu.R;
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

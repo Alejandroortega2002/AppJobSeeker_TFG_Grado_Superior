@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         editEmail = findViewById(R.id.LeditMail);
         editContrasena = findViewById(R.id.LeditContrasena);
@@ -211,8 +213,11 @@ public class LoginActivity extends AppCompatActivity {
                     usuario.setUsuario(nUser);
                     usuario.setEmail(email);
                     usuario.setTelefono(telefono);
+                    usuario.setDescripcion(null);
+                    usuario.setBanner(null);
+                    usuario.setFotoPerfil(null);
 
-                   usuariosBBDDFirebase.createUsuarios(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    usuariosBBDDFirebase.createUsuarios(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
@@ -287,13 +292,13 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Este método se encarga de mostrar la barra de progreso
      */
-   /** public void mostrarBarraProgreso() {
-        // Mostrar una barra de progreso mientras se procesa el inicio de sesión
-        barraProgreso.setTitle("Proceso de Registro");
-        barraProgreso.setMessage("Registrando usuario, espere un momento");
-        barraProgreso.setCanceledOnTouchOutside(false);
-        barraProgreso.show();
-    }*/
+    /** public void mostrarBarraProgreso() {
+     // Mostrar una barra de progreso mientras se procesa el inicio de sesión
+     barraProgreso.setTitle("Proceso de Registro");
+     barraProgreso.setMessage("Registrando usuario, espere un momento");
+     barraProgreso.setCanceledOnTouchOutside(false);
+     barraProgreso.show();
+     }*/
 
     /**
      * Este método se encarga de mostrar los errores si algo ha salido mal
