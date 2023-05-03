@@ -83,7 +83,6 @@ public class AjustesActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     private void logout() {
@@ -93,43 +92,33 @@ public class AjustesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Borra el usuario actualmente autenticado de la base de datos de usuarios y elimina su cuenta de autenticación.
+     * Si se realiza con éxito, se cierra la sesión y se redirige al usuario a la pantalla de inicio de sesión.
+     *
+     * @throws NullPointerException si el usuario actual no está autenticado
+     */
     private void BorrarUsuario() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         UsuariosBBDDFirebase usuariosBBDDFirebase = new UsuariosBBDDFirebase();
-        usuariosBBDDFirebase.deleteUsuarios(userID)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        AutentificacioFirebase autentificacioFirebase = new AutentificacioFirebase();
-                        autentificacioFirebase.deleteAccount().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                autentificacioFirebase.logout();
-                                Intent intent = new Intent(AjustesActivity.this, LoginActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Manejar el error aquí
-                                String errorMessage = "No se pudo eliminar la cuenta de autenticación. Inténtelo de nuevo más tarde.";
-                                Toast.makeText(AjustesActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Manejar el error aquí
-                        String errorMessage = "No se pudo eliminar la cuenta. Inténtelo de nuevo más tarde.";
-                        Toast.makeText(AjustesActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        usuariosBBDDFirebase.deleteUsuarios(userID).addOnSuccessListener(aVoid -> {
+            AutentificacioFirebase autentificacioFirebase = new AutentificacioFirebase();
+            autentificacioFirebase.deleteAccount().addOnSuccessListener(result -> {
+                autentificacioFirebase.logout();
+                Intent intent = new Intent(AjustesActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }).addOnFailureListener(e -> {
+                // Manejar el error aquí
+                String errorMessage = "No se pudo eliminar la cuenta de autenticación. Inténtelo de nuevo más tarde.";
+                Toast.makeText(AjustesActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            });
+        }).addOnFailureListener(e -> {
+            // Manejar el error aquí
+            String errorMessage = "No se pudo eliminar la cuenta. Inténtelo de nuevo más tarde.";
+            Toast.makeText(AjustesActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+        });
     }
-
-
 
 
 }
