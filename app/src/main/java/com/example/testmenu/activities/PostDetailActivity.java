@@ -2,10 +2,13 @@ package com.example.testmenu.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,7 +48,9 @@ public class PostDetailActivity extends AppCompatActivity {
     CircleImageView mCircleImageViewProfile;
     Button mButtonShowProfile;
 
+    private ImageButton btnSalir;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,12 +66,20 @@ public class PostDetailActivity extends AppCompatActivity {
         mImageViewCategoria = findViewById(R.id.imageViewCategoria);
         mCircleImageViewProfile = findViewById(R.id.circleImageProfile);
         mButtonShowProfile = findViewById(R.id.btnShowProfile);
+        btnSalir = findViewById(R.id.volver_inicio);
 
 
         mPublicacionFirebase = new PublicacionFirebase();
         mUsuariosFribase = new UsuariosBBDDFirebase();
 
         mExtraPostId = getIntent().getStringExtra("id");
+
+        btnSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         getPost();
     }

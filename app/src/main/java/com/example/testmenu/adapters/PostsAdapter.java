@@ -32,20 +32,17 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String postId = document.getId();
         holder.textViewTitulo.setText(publicacion.getTitulo());
-        holder.textViewDescripcion.setText(publicacion.getDescripcion());
+        holder.textViewTipoContrato.setText(publicacion.getCategoria());
         if(publicacion.getImage1()!=null){
             if(!publicacion.getImage1().isEmpty()){
                 Picasso.get().load(publicacion.getImage1()).into(holder.imageViewPost);
 
             }
         }
-        holder.viewHolder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent  = new Intent(context, PostDetailActivity.class);
-                intent.putExtra("id",postId);
-                context.startActivity(intent);
-            }
+        holder.viewHolder.setOnClickListener(view -> {
+            Intent intent  = new Intent(context, PostDetailActivity.class);
+            intent.putExtra("id",postId);
+            context.startActivity(intent);
         });
     }
 
@@ -59,7 +56,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView textViewTitulo;
-        TextView textViewDescripcion;
+        TextView textViewTipoContrato;
         ImageView imageViewPost;
 
         View viewHolder;
@@ -67,7 +64,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
         public ViewHolder(View view){
             super(view);
             textViewTitulo = view.findViewById(R.id.textViewTituloPostCard);
-            textViewDescripcion = view.findViewById(R.id.textViewDescripcionPostCard);
+            textViewTipoContrato = view.findViewById(R.id.textViewTipoContrato);
             imageViewPost = view.findViewById(R.id.imageViewPostCard);
             viewHolder = view;
         }
