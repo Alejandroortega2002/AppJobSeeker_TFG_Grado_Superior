@@ -26,7 +26,7 @@ public class ImagenFirebase {
         UploadTask task = storage.putBytes(imageByte);
         return task;
     }
-
+//gg
     public StorageReference getStorage() {
         return mStorage;
     }
