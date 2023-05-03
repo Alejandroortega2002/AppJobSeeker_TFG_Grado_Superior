@@ -93,6 +93,15 @@ public class AutentificacioFirebase {
         }
 
     }
+    public Task<Void> deleteAccount() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            return user.delete();
+        } else {
+            return null;
+        }
+    }
+
 
 
 }

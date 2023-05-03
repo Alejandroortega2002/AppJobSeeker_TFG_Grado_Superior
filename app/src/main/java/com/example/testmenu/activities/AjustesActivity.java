@@ -1,5 +1,6 @@
 package com.example.testmenu.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -10,10 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.testmenu.R;
 import com.example.testmenu.firebase.AutentificacioFirebase;
+import com.example.testmenu.firebase.UsuariosBBDDFirebase;
 import com.example.testmenu.fragmentMenu.ProfileFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class AjustesActivity extends AppCompatActivity {
 
@@ -70,9 +76,12 @@ public class AjustesActivity extends AppCompatActivity {
         btnBorrarCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                BorrarUsuario();
+
+
             }
         });
+
 
 
     }
@@ -83,4 +92,44 @@ public class AjustesActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+    private void BorrarUsuario() {
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        UsuariosBBDDFirebase usuariosBBDDFirebase = new UsuariosBBDDFirebase();
+        usuariosBBDDFirebase.deleteUsuarios(userID)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        AutentificacioFirebase autentificacioFirebase = new AutentificacioFirebase();
+                        autentificacioFirebase.deleteAccount().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                autentificacioFirebase.logout();
+                                Intent intent = new Intent(AjustesActivity.this, LoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Manejar el error aquí
+                                String errorMessage = "No se pudo eliminar la cuenta de autenticación. Inténtelo de nuevo más tarde.";
+                                Toast.makeText(AjustesActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Manejar el error aquí
+                        String errorMessage = "No se pudo eliminar la cuenta. Inténtelo de nuevo más tarde.";
+                        Toast.makeText(AjustesActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+
+
 }

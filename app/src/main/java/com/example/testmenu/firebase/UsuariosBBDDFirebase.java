@@ -42,6 +42,10 @@ public class UsuariosBBDDFirebase {
         return mColeccion.document(id);
     }
 
+    public Task<Void> deleteUsuarios(String id) {
+        return mColeccion.document(id).delete();
+    }
+
 
 
 
