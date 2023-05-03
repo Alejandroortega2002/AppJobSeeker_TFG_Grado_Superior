@@ -16,7 +16,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 
-
 public class FileUtil {
 
     private static final int EOF = -1;
@@ -26,6 +25,14 @@ public class FileUtil {
 
     }
 
+    /**
+     * Convierte una Uri en un archivo temporal en el dispositivo.
+     *
+     * @param context el contexto actual
+     * @param uri     la Uri del archivo a convertir
+     * @return el archivo temporal creado a partir de la Uri
+     * @throws IOException si hay algún error al crear o escribir el archivo temporal
+     */
     public static File from(Context context, Uri uri) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(uri);
         String fileName = getFileName(context, uri);
@@ -50,6 +57,14 @@ public class FileUtil {
         return tempFile;
     }
 
+    /**
+     * Este método divide el nombre de archivo en dos partes: el nombre del archivo y su extensión.
+     * <p>
+     * Si el nombre de archivo no contiene una extensión, la segunda parte del arreglo devuelto será una cadena vacía.
+     *
+     * @param fileName el nombre de archivo a dividir
+     * @return un arreglo de dos elementos que contiene el nombre del archivo y su extensión
+     */
     private static String[] splitFileName(String fileName) {
         String name = fileName;
         String extension = "";
@@ -62,6 +77,13 @@ public class FileUtil {
         return new String[]{name, extension};
     }
 
+    /**
+     * Método para obtener el nombre del archivo a partir de una Uri.
+     *
+     * @param context El contexto actual.
+     * @param uri     La Uri del archivo.
+     * @return El nombre del archivo.
+     */
     @SuppressLint("Range")
     private static String getFileName(Context context, Uri uri) {
         String result = null;
@@ -69,7 +91,7 @@ public class FileUtil {
             Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
             try {
                 if (cursor != null && cursor.moveToFirst()) {
-                    // SI TE MARCA ERROR ESTA LINEA NO TE PREOCUPES PUEDES DEJARLA ASI
+                    // Obtener el nombre del archivo a través de la columna DISPLAY_NAME del cursor.
                     result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 }
             } catch (Exception e) {
@@ -81,6 +103,7 @@ public class FileUtil {
             }
         }
         if (result == null) {
+            // Si no se puede obtener el nombre a través del cursor, se extrae del path de la Uri.
             result = uri.getPath();
             int cut = result.lastIndexOf(File.separator);
             if (cut != -1) {
@@ -90,6 +113,15 @@ public class FileUtil {
         return result;
     }
 
+
+    /**
+     * Renombra un archivo con un nuevo nombre y devuelve el nuevo archivo renombrado.
+     * Si ya existe un archivo con el mismo nombre que el nuevo nombre, elimina el archivo antiguo.
+     *
+     * @param file    archivo a renombrar.
+     * @param newName nuevo nombre para el archivo.
+     * @return el nuevo archivo renombrado.
+     */
     private static File rename(File file, String newName) {
         File newFile = new File(file.getParent(), newName);
         if (!newFile.equals(file)) {
@@ -103,6 +135,15 @@ public class FileUtil {
         return newFile;
     }
 
+    /**
+     * Copia los datos de entrada de un flujo de entrada a un flujo de salida, usando un búfer de tamaño por defecto.
+     * Devuelve el número total de bytes copiados y lanza una IOException en caso de error.
+     *
+     * @param input  flujo de entrada a copiar.
+     * @param output flujo de salida donde se copiarán los datos.
+     * @return el número total de bytes copiados.
+     * @throws IOException si ocurre un error al copiar los datos.
+     */
     private static long copy(InputStream input, OutputStream output) throws IOException {
         long count = 0;
         int n;

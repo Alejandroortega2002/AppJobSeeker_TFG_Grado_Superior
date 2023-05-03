@@ -138,8 +138,19 @@ public class PostActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Muestra un cuadro de diálogo que permite al usuario seleccionar una imagen de la galería o tomar una foto.
+     *
+     * @param numberImage el número de imagen que se seleccionará (1 o 2).
+     */
     private void selectOptionImagen(final int numberImage) {
 
+        // Configura un cuadro de diálogo que muestra las opciones para seleccionar o tomar una foto
+        AlertDialog.Builder mBuilderSelector = new AlertDialog.Builder(this);
+        mBuilderSelector.setTitle("Selecciona una opción:");
+        String[] options = {"Galería", "Tomar foto"};
+
+        // Maneja la selección del usuario en el cuadro de diálogo y llama a los métodos correspondientes para seleccionar o tomar una foto
         mBuilderSelector.setItems(options, (dialogInterface, i) -> {
             if (i == 0) {
                 if (numberImage == 1) {
@@ -155,26 +166,50 @@ public class PostActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Muestra el cuadro de diálogo
         mBuilderSelector.show();
     }
 
+    /**
+     * Inicia la aplicación de la cámara para tomar una foto y guarda la imagen en un archivo temporal.
+     *
+     * @param requestCode el código de solicitud que se utiliza para identificar la solicitud en el método onActivityResult.
+     */
     private void takePhoto(int requestCode) {
+
+        // Crea una intención para iniciar la aplicación de la cámara
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // Comprueba si hay una aplicación de cámara disponible en el dispositivo
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Crea un archivo temporal para guardar la imagen capturada por la cámara
             File photoFile = null;
             try {
                 photoFile = createPhotoFile(requestCode);
             } catch (Exception e) {
                 Toast.makeText(this, "Hubo un error con el archivo" + e.getMessage(), Toast.LENGTH_LONG).show();
             }
+
+            // Si se ha creado el archivo correctamente, obtiene una URI para él y añade la URI a la intención
             if (photoFile != null) {
                 Uri photoUri = FileProvider.getUriForFile(PostActivity.this, "com.example.testmenu", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+
+                // Inicia la aplicación de la cámara y espera a que el usuario capture una imagen
                 startActivityForResult(takePictureIntent, requestCode);
             }
         }
     }
 
+
+    /**
+     * Crea un archivo de foto temporal con un nombre de archivo único utilizando la fecha y hora actuales.
+     *
+     * @param requestCode el código de solicitud para la foto, para guardar la ruta absoluta del archivo
+     * @return el archivo de imagen creado
+     * @throws IOException si hay algún error al crear el archivo
+     */
     private File createPhotoFile(int requestCode) throws IOException {
         // Crea un nombre de archivo único usando la fecha y hora actuales
         String timeStamp = String.valueOf(new Date().getTime());
@@ -185,9 +220,9 @@ public class PostActivity extends AppCompatActivity {
 
         // Crea un archivo de imagen en la carpeta de imágenes
         File imageFile = File.createTempFile(
-                imageFileName,  // prefijo del nombre del archivo
-                ".jpg",         // extensión del archivo
-                storageDir      // directorio donde se creará el archivo
+                imageFileName, // prefijo del nombre del archivo
+                ".jpg", // extensión del archivo
+                storageDir // directorio donde se creará el archivo
         );
 
         // Guarda la ruta absoluta del archivo
@@ -202,6 +237,13 @@ public class PostActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Recupera los valores de los campos de título, precio y descripción, y verifica que no estén vacíos.
+     * <p>
+     * Luego verifica que se hayan seleccionado ambas imágenes y llama al método "saveImage" para guardar las imágenes
+     * <p>
+     * en la base de datos.
+     */
     private void clickPost() {
         mTitulo = mTextInputTitulo.getText().toString().trim();
         mPrecio = mTextInputPrecio.getText().toString().trim();
@@ -218,29 +260,42 @@ public class PostActivity extends AppCompatActivity {
             return;
         }
 
-
         saveImage(mImageFile, mImageFile2);
-
     }
 
+
+    /**
+     * Este método se encarga de guardar las imágenes en Firebase Storage y luego guardar la información
+     * <p>
+     * de la publicación en Firestore.
+     *
+     * @param imageFile1 archivo de imagen 1 a guardar
+     * @param imageFile2 archivo de imagen 2 a guardar
+     */
     private void saveImage(File imageFile1, final File imageFile2) {
 
+        // Guardar la primera imagen
         mImagenFirebase.save(PostActivity.this, imageFile1).addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Toast.makeText(PostActivity.this, "Hubo error al almacenar la imagen", Toast.LENGTH_LONG).show();
                 return;
             }
-
+            // Obtener la URL de la primera imagen guardada
             mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
                 final String url = uri.toString();
 
+                // Guardar la segunda imagen
                 mImagenFirebase.save(PostActivity.this, imageFile2).addOnCompleteListener(taskImage2 -> {
                     if (!taskImage2.isSuccessful()) {
                         Toast.makeText(PostActivity.this, "La imagen numero 2 no se pudo guardar", Toast.LENGTH_SHORT).show();
                         return;
                     }
+
+                    // Obtener la URL de la segunda imagen guardada
                     mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri2 -> {
                         final String url2 = uri2.toString();
+
+                        // Crear la publicación y guardarla en Firestore
                         Publicacion publicacion = new Publicacion(null, mTitulo,
                                 Integer.parseInt(mPrecio), mDescripcion,
                                 url, url2, mAutentificacionFirebase.getUid(),
