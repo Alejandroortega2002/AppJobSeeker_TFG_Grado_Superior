@@ -1,32 +1,27 @@
-package com.example.testmenu.fragmentMenu;
+package com.example.testmenu.activities;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import com.example.testmenu.activities.AjustesActivity;
-import com.example.testmenu.activities.MisOfertasActivity;
+import com.example.testmenu.R;
 import com.example.testmenu.databinding.FragmentPerfilBinding;
-
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -36,115 +31,74 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileFragment extends Fragment {
+public class VerPerfilActivity extends AppCompatActivity {
 
-    /*Declaramos su Xml correspondiente a traves del ViewBiding*/
-    private FragmentPerfilBinding binding;
+    private String VPidUser;
+
     private TextView telefono, nombreU, email, descripcion, numeroDeOrfetas;
 
     private ImageView fotoBanner;
     private CircleImageView fotoPerfil;
 
-    private Button btnMisOfertas, btnFavoritos;
+    private ImageButton btnAjustes, btnSalir;
 
-
-    private ImageButton btnAjustesPerfil;
-
-    FrameLayout mLinearLayoutEditProfile;
+    private Button btnverOfertas, btnverFavortitos;
 
     AutentificacioFirebase autentificacioFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
     PublicacionFirebase publicacionFirebase;
 
-    private String idUser;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-//        /*Instanciamos la clase ViewModel correspondiente*/
-//        ProfileViewModel profileViewModel =
-//                new ViewModelProvider(this).get(ProfileViewModel.class);
-
-        /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
-        binding = FragmentPerfilBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ver_perfil);
         autentificacioFirebase = new AutentificacioFirebase();
         usuariosBBDDFirebase = new UsuariosBBDDFirebase();
         publicacionFirebase = new PublicacionFirebase();
 
-        telefono = (TextView) binding.nTelefono;
-        nombreU = (TextView) binding.nPerfil;
-        email = (TextView) binding.pEmail;
-        descripcion = (TextView) binding.pDescripcion;
-        numeroDeOrfetas = (TextView) binding.nPublicaciones;
-        fotoBanner = (ImageView) binding.banner;
-        fotoPerfil = (CircleImageView) binding.fotoPerfil;
-        btnFavoritos = (Button) binding.btnFavoritos;
-        btnMisOfertas = (Button) binding.btnMisOfertas;
+        btnAjustes = findViewById(R.id.VPbtnAjustes);
+        btnSalir = findViewById(R.id.VPvolver_perfil);
+        btnverFavortitos = findViewById(R.id.VPbtnFavoritos);
+        btnverOfertas = findViewById(R.id.VPbtnMisOfertas);
 
-
-        btnAjustesPerfil = binding.btnAjustes;
-
-
-        final FirebaseUser user = autentificacioFirebase.getUsers();
-        idUser = autentificacioFirebase.getUid();
-
-
+        telefono = findViewById(R.id.VPnTelefono);
+        nombreU = findViewById(R.id.VPnPerfil);
+        email = findViewById(R.id.VPpEmail);
+        descripcion = findViewById(R.id.VPpDescripcion);
+        numeroDeOrfetas = findViewById(R.id.VPnPublicaciones);
+        fotoBanner = findViewById(R.id.VPbanner);
+        fotoPerfil = findViewById(R.id.VPfotoPerfil);
+        VPidUser = getIntent().getStringExtra("idUser");
+        checkUser();
         rellenarInformacionUsuario();
         getNumeroPublicaciones();
 
-        btnAjustesPerfil.setOnClickListener(new View.OnClickListener() {
+
+        btnAjustes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 irAjustes();
             }
         });
 
-        btnMisOfertas.setOnClickListener(new View.OnClickListener() {
+
+        btnSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                irOfertas();
-            }
-        });
-
-        btnFavoritos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        return root;
-
-    }
-
-    public void getNumeroPublicaciones() {
-        publicacionFirebase.getPublicacionDeUsuario(autentificacioFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                int numeroPublicaciones = queryDocumentSnapshots.size();
-                String numeroOfertas = String.valueOf(numeroPublicaciones);
-                numeroDeOrfetas.setText(numeroOfertas);
+                finish();
             }
         });
     }
 
     public void irAjustes() {
-        Intent i = new Intent(getActivity(), AjustesActivity.class);
+        Intent i = new Intent(this, AjustesActivity.class);
         startActivity(i);
     }
 
-//    public void irFavoritos() {
-//        Intent i = new Intent(getActivity(), Favoritos.class);
-//        startActivity(i);
-//    }
-    public void irOfertas() {
-        Intent i = new Intent(getActivity(), MisOfertasActivity.class);
-        startActivity(i);
-    }
+
     public void rellenarInformacionUsuario() {
-        DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(idUser);
+        DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(VPidUser);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -206,9 +160,25 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public void getNumeroPublicaciones() {
+        publicacionFirebase.getPublicacionDeUsuario(VPidUser).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                int numeroPublicaciones = queryDocumentSnapshots.size();
+                String numeroOfertas = String.valueOf(numeroPublicaciones);
+                numeroDeOrfetas.setText(numeroOfertas);
+            }
+        });
+    }
+
+    public void checkUser(){
+        if (!VPidUser.equals(autentificacioFirebase.getUid())){
+            btnAjustes.setClickable(false);
+            btnAjustes.setVisibility(View.INVISIBLE);
+            btnverFavortitos.setClickable(false);
+            btnverFavortitos.setVisibility(View.GONE);
+            btnverOfertas.setText("Ver Ofertas");
+            btnverOfertas.setX(30);
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.example.testmenu.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class PostDetailActivity extends AppCompatActivity {
     Button mButtonShowProfile;
 
     private ImageButton btnSalir;
+    private String idUser = "";
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -78,6 +80,16 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        mButtonShowProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(PostDetailActivity.this,VerPerfilActivity.class);
+                i.putExtra("idUser",idUser);
+                startActivity(i);
+
             }
         });
 
@@ -147,7 +159,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     mTextViewNameCategoria.setText(categoria);
                 }
                 if (documentSnapshot.contains("idUser")) {
-                    String idUser = documentSnapshot.getString("idUser");
+                     idUser = documentSnapshot.getString("idUser");
                     getUserInfo(idUser);
                 }    instanceSlider();
             }
@@ -178,4 +190,8 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+
 }
