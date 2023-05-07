@@ -18,8 +18,7 @@ import com.example.testmenu.adapters.SliderAdapter;
 import com.example.testmenu.entidades.SliderItem;
 import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
+
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
@@ -124,12 +123,11 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     /**
-
-     Obtiene la publicación correspondiente al ID de la publicación adicional proporcionado como extra en la actividad.
-
-     Si la publicación existe, se recuperan los detalles de la publicación, incluyendo las imágenes, el título, la descripción, la categoría y el ID del usuario que publicó la publicación.
-
-     Se crea una instancia del slider para mostrar las imágenes de la publicación.
+     * Obtiene la publicación correspondiente al ID de la publicación adicional proporcionado como extra en la actividad.
+     * <p>
+     * Si la publicación existe, se recuperan los detalles de la publicación, incluyendo las imágenes, el título, la descripción, la categoría y el ID del usuario que publicó la publicación.
+     * <p>
+     * Se crea una instancia del slider para mostrar las imágenes de la publicación.
      */
     private void getPost() {
         mPublicacionFirebase.getPostById(mExtraPostId).addOnSuccessListener(documentSnapshot -> {
@@ -161,15 +159,16 @@ public class PostDetailActivity extends AppCompatActivity {
                 if (documentSnapshot.contains("idUser")) {
                      idUser = documentSnapshot.getString("idUser");
                     getUserInfo(idUser);
-                }    instanceSlider();
+                }
+                instanceSlider();
             }
         });
     }
 
     /**
-
-     Obtiene la información de un usuario a partir de su identificador y la muestra en la interfaz de usuario.
-     @param idUser El identificador del usuario a consultar.
+     * Obtiene la información de un usuario a partir de su identificador y la muestra en la interfaz de usuario.
+     *
+     * @param idUser El identificador del usuario a consultar.
      */
     private void getUserInfo(String idUser) {
         mUsuariosFribase.getUsuarios(idUser).addOnSuccessListener(documentSnapshot -> {

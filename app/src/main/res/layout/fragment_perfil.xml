@@ -195,7 +195,6 @@
                 android:layout_height="wrap_content"
                 android:text="Favoritos" />
 
-
         </LinearLayout>
 
     </FrameLayout>

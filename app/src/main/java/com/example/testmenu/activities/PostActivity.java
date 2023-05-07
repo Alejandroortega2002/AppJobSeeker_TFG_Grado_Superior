@@ -297,6 +297,13 @@ public class PostActivity extends AppCompatActivity {
 
                         // Crear la publicación y guardarla en Firestore
                         Publicacion publicacion = new Publicacion(null, mTitulo,
+
+
+
+
+
+
+
                                 Integer.parseInt(mPrecio), mDescripcion,
                                 url, url2, mAutentificacionFirebase.getUid(),
                                 mCategoria, new Date().getTime());

@@ -166,7 +166,6 @@ public class EditarPerfilActivity extends AppCompatActivity {
                     String ntelefono = value.getString("telefono");
                     String descrip = value.getString("descripcion");
 
-
                     // Verificar si los valores obtenidos son nulos antes de establecer el texto en los TextViews
                     if(value.contains("fotoPerfil")){
                         String perfil = value.getString("fotoPerfil");
