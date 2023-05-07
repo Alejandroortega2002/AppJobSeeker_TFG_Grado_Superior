@@ -89,6 +89,15 @@ public class VerPerfilActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        btnverOfertas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(VerPerfilActivity.this,MisOfertasActivity.class);
+                i.putExtra("idCarta",VPidUser);
+                startActivity(i);
+            }
+        });
     }
 
     public void irAjustes() {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,8 @@ import com.squareup.picasso.Picasso;
 public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAdapter.ViewHolder> {
 
     Context context;
+
+
     public PostsAdapter(FirestoreRecyclerOptions<Publicacion>options, Context contexto){
         super(options);
         this.context = contexto;
@@ -54,20 +57,34 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
         return new ViewHolder(view);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         TextView textViewTitulo;
         TextView textViewTipoContrato;
         ImageView imageViewPost;
 
+
+
         View viewHolder;
+        ImageButton btnCerrar;
 
         public ViewHolder(View view){
             super(view);
             textViewTitulo = view.findViewById(R.id.textViewTituloPostCard);
             textViewTipoContrato = view.findViewById(R.id.textViewTipoContrato);
             imageViewPost = view.findViewById(R.id.imageViewPostCard);
+            btnCerrar = view.findViewById(R.id.btnBorrarNoticia);
             viewHolder = view;
         }
 
+//        public void setButtonVisibility(boolean isVisible) {
+//            if (btnCerrar != null) {
+//                btnCerrar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+//            }
+//        }
+
     }
+
+
+
+
 }

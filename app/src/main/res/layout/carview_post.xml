@@ -15,6 +15,17 @@
         android:orientation="vertical"
         android:padding="14dp">
 
+        <ImageButton
+            android:id="@+id/btnBorrarNoticia"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="41dp"
+            android:layout_height="21dp"
+            android:layout_marginLeft="330dp"
+            android:layout_marginBottom="-20dp"
+            android:clickable="false"
+            android:visibility="invisible"
+            android:src="@drawable/ic_cerrar" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,9 +108,9 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="0.5dp"
-        android:background="@color/black"
         android:layout_marginTop="160dp"
-        android:layout_marginBottom="25dp"/>
+        android:layout_marginBottom="25dp"
+        android:background="@color/colorGray" />
 
     <LinearLayout
         android:layout_width="match_parent"

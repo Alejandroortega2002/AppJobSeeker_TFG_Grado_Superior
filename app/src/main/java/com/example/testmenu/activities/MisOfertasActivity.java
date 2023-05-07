@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.testmenu.R;
 import com.example.testmenu.adapters.PostsAdapter;
@@ -25,11 +26,17 @@ public class MisOfertasActivity extends AppCompatActivity {
     PublicacionFirebase mPublicacionfirebase;
     PostsAdapter mPostsAdapter;
 
+    private String idCarta;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_ofertas);
+
+
+
+        idCarta = getIntent().getStringExtra("idCarta");
         mToolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerViewInicio);
 
@@ -41,7 +48,7 @@ public class MisOfertasActivity extends AppCompatActivity {
 
         ((AppCompatActivity) this).setSupportActionBar(mToolbar);
         ((AppCompatActivity) this).getSupportActionBar().setTitle("Mis ofertas");
-        //onCreateOptionsMenu(true);
+//        checkUser();
     }
 
     @Override
@@ -63,4 +70,15 @@ public class MisOfertasActivity extends AppCompatActivity {
         super.onStop();
         mPostsAdapter.stopListening();
     }
+
+//    public void checkUser(){
+//        if (idCarta.equals(mAutentificacionFirebase.getUid())){
+//            int position=1;
+//            View itemView = mPostsAdapter.getItem(position).viewHolder;
+//
+//// Crear una instancia del ViewHolder correspondiente a la vista del ítem
+//            PostsAdapter.ViewHolder viewHolder = new PostsAdapter.ViewHolder(itemView);
+//
+//        }
+//    }
 }
