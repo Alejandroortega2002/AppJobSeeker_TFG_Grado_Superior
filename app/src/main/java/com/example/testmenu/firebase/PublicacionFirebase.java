@@ -6,7 +6,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.List;
 
 public class PublicacionFirebase {
     CollectionReference mCollection;
@@ -28,8 +29,12 @@ public class PublicacionFirebase {
     }
 
 
-    public Task<DocumentSnapshot>getPostById(String id){
+    public Task<DocumentSnapshot> getPostById(String id){
         return mCollection.document(id).get();
+    }
+
+    public Query getPostByIdList(List<String> postIds) {
+        return mCollection.whereIn("id", postIds);
     }
 
     public Task<Void> borrarPublicacion(String id){

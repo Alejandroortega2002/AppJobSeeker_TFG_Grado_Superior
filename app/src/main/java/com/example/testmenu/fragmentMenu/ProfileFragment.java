@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.testmenu.activities.AjustesActivity;
+import com.example.testmenu.activities.MisFavoritosActivity;
 import com.example.testmenu.activities.MisOfertasActivity;
 import com.example.testmenu.databinding.FragmentPerfilBinding;
 
@@ -111,7 +112,8 @@ public class ProfileFragment extends Fragment {
         btnFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), MisFavoritosActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -135,7 +137,7 @@ public class ProfileFragment extends Fragment {
         startActivity(i);
     }
 
-//    public void irFavoritos() {
+    //    public void irFavoritos() {
 //        Intent i = new Intent(getActivity(), Favoritos.class);
 //        startActivity(i);
 //    }
@@ -143,6 +145,7 @@ public class ProfileFragment extends Fragment {
         Intent i = new Intent(getActivity(), MisOfertasActivity.class);
         startActivity(i);
     }
+
     public void rellenarInformacionUsuario() {
         DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(idUser);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {

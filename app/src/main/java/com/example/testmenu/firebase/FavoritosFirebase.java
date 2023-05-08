@@ -26,6 +26,10 @@ public class FavoritosFirebase {
         return mCollection.whereEqualTo("idPost", idPost);
     }
 
+    public Query getLikesByUser(String userId) {
+        return mCollection.whereEqualTo("idUser", userId);
+    }
+
     public Query getLikeByPostAndUser(String idPost, String idUser) {
         return mCollection.whereEqualTo("idPost", idPost).whereEqualTo("idUser", idUser);
     }

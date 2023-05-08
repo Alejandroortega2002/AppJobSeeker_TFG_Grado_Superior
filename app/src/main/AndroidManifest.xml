@@ -20,6 +20,9 @@
         android:theme="@style/Theme.TestMenu"
         tools:targetApi="31">
         <activity
+            android:name=".activities.MisFavoritosActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MisOfertasActivity2"
             android:exported="false" />
         <activity
