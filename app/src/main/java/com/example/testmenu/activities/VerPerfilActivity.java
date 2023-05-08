@@ -93,8 +93,8 @@ public class VerPerfilActivity extends AppCompatActivity {
         btnverOfertas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(VerPerfilActivity.this,MisOfertasActivity.class);
-                i.putExtra("idCarta",VPidUser);
+                Intent i = new Intent(VerPerfilActivity.this,MisOfertasActivity2.class);
+                i.putExtra("idUserCarta",VPidUser);
                 startActivity(i);
             }
         });

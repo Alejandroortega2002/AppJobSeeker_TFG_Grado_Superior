@@ -18,7 +18,7 @@ import com.example.testmenu.firebase.PublicacionFirebase;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
-public class MisOfertasActivity extends AppCompatActivity {
+public class MisOfertasActivity2 extends AppCompatActivity {
 
     private Toolbar mToolbar;
     RecyclerView recyclerView;
@@ -28,12 +28,15 @@ public class MisOfertasActivity extends AppCompatActivity {
     PostsAdapter2 mPostsAdapter2;
 
 
+    private String idUserCarta;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_ofertas);
 
+        idUserCarta = getIntent().getStringExtra("idUserCarta");
         mToolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerViewInicio);
 
@@ -50,17 +53,15 @@ public class MisOfertasActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-            Query query = mPublicacionfirebase.getPublicacionDeUsuario(mAutentificacionFirebase.getUid());
-            FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
-                    .setQuery(query, Publicacion.class)
-                    .build();
+        Query query = mPublicacionfirebase.getPublicacionDeUsuario(idUserCarta);
+        FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
+                .setQuery(query, Publicacion.class)
+                .build();
 
-            mPostsAdapter2 = new PostsAdapter2(options, this);
-            recyclerView.setAdapter(mPostsAdapter2);
-            mPostsAdapter2.startListening();
-        }
-
-
+        mPostsAdapter2 = new PostsAdapter2(options, this);
+        recyclerView.setAdapter(mPostsAdapter2);
+        mPostsAdapter2.startListening();
+    }
 
     @Override
     public void onStop() {

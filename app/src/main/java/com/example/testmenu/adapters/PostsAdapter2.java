@@ -1,13 +1,16 @@
 package com.example.testmenu.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,17 +37,19 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
-public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAdapter.ViewHolder> {
+public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAdapter2.ViewHolder> {
 
     Context context;
     AutentificacioFirebase autentificacioFirebase;
     PublicacionFirebase publicacionFirebase;
-    UsuariosBBDDFirebase usuariosBBDDFirebase;
 
+    UsuariosBBDDFirebase usuariosBBDDFirebase;
     FavoritosFirebase favoritosFirebase;
 
+    Dialog customDialog;
 
-    public PostsAdapter(FirestoreRecyclerOptions<Publicacion> options, Context contexto) {
+
+    public PostsAdapter2(FirestoreRecyclerOptions<Publicacion> options, Context contexto) {
         super(options);
         this.context = contexto;
         autentificacioFirebase = new AutentificacioFirebase();
@@ -58,10 +63,14 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
 
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String postId = document.getId();
-
         holder.textViewTitulo.setText(publicacion.getTitulo().toUpperCase());
         holder.textViewTipoContrato.setText("Tipo de Contrato: " + publicacion.getCategoria());
-        // holder.fechaPublicacion.setText((int) publicacion.getTimeStamp());
+
+        if (publicacion.getIdUser().equals(autentificacioFirebase.getUid())) {
+            holder.btnCerrar.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnCerrar.setVisibility(View.GONE);
+        }
 
         if (publicacion.getImage1() != null) {
             if (!publicacion.getImage1().isEmpty()) {
@@ -69,11 +78,14 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
 
             }
         }
-
         holder.viewHolder.setOnClickListener(view -> {
             Intent intent = new Intent(context, PostDetailActivity.class);
             intent.putExtra("id", postId);
             context.startActivity(intent);
+        });
+
+        holder.btnCerrar.setOnClickListener(view -> {
+            mostrarAlertBorrarPublicacion(postId);
         });
 
         holder.imgFavoritos.setOnClickListener(view -> {
@@ -89,9 +101,10 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
         getUsuarioInfo(publicacion.getIdUser(), holder);
         getNumeroDeLikes(postId, holder);
         checkComprobarFavoritos(postId, autentificacioFirebase.getUid(), holder);
+
     }
 
-    private void getNumeroDeLikes(String idPost, final ViewHolder holder) {
+    private void getNumeroDeLikes(String idPost, final PostsAdapter2.ViewHolder holder) {
         favoritosFirebase.getLikesByPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -104,7 +117,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
         });
     }
 
-    private void favoritos(final Favoritos favoritos, final ViewHolder holder) {
+    private void favoritos(final Favoritos favoritos, final PostsAdapter2.ViewHolder holder) {
         favoritosFirebase.getLikeByPostAndUser(favoritos.getIdPost(), autentificacioFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -123,7 +136,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
     }
 
 
-    private void checkComprobarFavoritos(String idPost, String idUser, final ViewHolder holder) {
+    private void checkComprobarFavoritos(String idPost, String idUser, final PostsAdapter2.ViewHolder holder) {
         favoritosFirebase.getLikeByPostAndUser(idPost, idUser).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -139,7 +152,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
     }
 
 
-    private void getUsuarioInfo(String idUser, final ViewHolder holder) {
+    private void getUsuarioInfo(String idUser, final PostsAdapter2.ViewHolder holder) {
         usuariosBBDDFirebase.getUsuarios(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -148,6 +161,19 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
                         String nUsuario = documentSnapshot.getString("usuario");
                         holder.nombreUsuario.setText("@" + nUsuario.toUpperCase());
                     }
+                }
+            }
+        });
+    }
+
+    private void borrarPublicacion(String id) {
+        publicacionFirebase.borrarPublicacion(id).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(context, "La publicación se eliminó correctamente", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "No se pudo eliminar la publicación", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -162,9 +188,11 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewTitulo, nombreUsuario, textViewTipoContrato, fechaPublicacion, txtFavoritos;
+        TextView textViewTitulo, nombreUsuario, textViewTipoContrato, txtFavoritos;
+
         ImageView imageViewPost, imgFavoritos;
         View viewHolder;
+        ImageButton btnCerrar;
 
         public ViewHolder(View view) {
             super(view);
@@ -172,11 +200,49 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
             textViewTipoContrato = view.findViewById(R.id.textViewTipoContrato);
             imageViewPost = view.findViewById(R.id.imageViewPostCard);
             nombreUsuario = view.findViewById(R.id.nombreUsuario);
-            // fechaPublicacion = view.findViewById(R.id.fechaPublicacion);
+            btnCerrar = view.findViewById(R.id.btnBorrarNoticia);
             txtFavoritos = view.findViewById(R.id.txtFavoritos);
             imgFavoritos = view.findViewById(R.id.imgFavoritos);
             viewHolder = view;
         }
+
+    }
+
+    public void mostrarAlertBorrarPublicacion(String idPublicacion) {
+        // con este tema personalizado evitamos los bordes por defecto
+        customDialog = new Dialog(context, R.style.Theme_Translucent);
+        //deshabilitamos el título por defecto
+        customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //obligamos al usuario a pulsar los botones para cerrarlo
+        customDialog.setCancelable(false);
+        //establecemos el contenido de nuestro dialog
+        customDialog.setContentView(R.layout.alert_dialog_cerrar_sesion);
+
+        TextView titulo = (TextView) customDialog.findViewById(R.id.titulo);
+        titulo.setText("Borrar Publicación");
+
+        TextView contenido = (TextView) customDialog.findViewById(R.id.contenido);
+        contenido.setText("Estas seguro que quieres borrar esta Publicación permanentemente");
+
+        (customDialog.findViewById(R.id.aceptar)).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                borrarPublicacion(idPublicacion);
+                customDialog.dismiss();
+
+            }
+        });
+
+        (customDialog.findViewById(R.id.cancelar)).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                customDialog.dismiss();
+            }
+        });
+
+        customDialog.show();
     }
 
 

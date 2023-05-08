@@ -20,14 +20,19 @@ public class PublicacionFirebase {
     }
 
     public Query getAll() {
-        return mCollection.orderBy("titulo", Query.Direction.DESCENDING);
+        return mCollection.orderBy("timeStamp", Query.Direction.DESCENDING);
     }
 
     public Query getPublicacionDeUsuario(String id) {
         return mCollection.whereEqualTo("idUser", id);
     }
 
+
     public Task<DocumentSnapshot>getPostById(String id){
         return mCollection.document(id).get();
+    }
+
+    public Task<Void> borrarPublicacion(String id){
+        return mCollection.document(id).delete();
     }
 }
