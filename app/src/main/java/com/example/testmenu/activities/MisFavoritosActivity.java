@@ -61,12 +61,6 @@ public class MisFavoritosActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-//        Query query = mPublicacionfirebase.getPublicacionDeUsuario(mAutentificacionFirebase.getUid());
-//        FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
-//                .setQuery(query, Publicacion.class)
-//                .build();
-
-
 
         // Obtener los IDs de los posts a los que el usuario ha dado like
         Query query = favoritosFirebase.getLikesByUser(mAutentificacionFirebase.getUid());
@@ -78,8 +72,9 @@ public class MisFavoritosActivity extends AppCompatActivity {
                 }
             }
                 // Obtener la información detallada de cada post
+                Query queryPublicaciones = mPublicacionfirebase.getPostByIdList(postIds);
                 FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
-                        .setQuery(mPublicacionfirebase.getPostByIdList(postIds), Publicacion.class)
+                        .setQuery(queryPublicaciones, Publicacion.class)
                         .build();
 
                 mPostsAdapter2 = new PostsAdapter2(options, this);

@@ -3,6 +3,7 @@ package com.example.testmenu.firebase;
 import com.example.testmenu.entidades.Publicacion;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -14,11 +15,19 @@ public class PublicacionFirebase {
 
     public PublicacionFirebase() {
         mCollection = FirebaseFirestore.getInstance().collection("Publicaciones");
+
     }
 
     public Task<Void> save(Publicacion publicacion) {
-        return mCollection.document().set(publicacion);
+        DocumentReference document = mCollection.document();
+        String id = document.getId();
+        publicacion.setId(id);
+        return document.set(publicacion);
     }
+
+//    public Task<DocumentReference> save(Publicacion publicacion) {
+//        return mCollection.add(publicacion);
+//    }
 
     public Query getAll() {
         return mCollection.orderBy("timeStamp", Query.Direction.DESCENDING);

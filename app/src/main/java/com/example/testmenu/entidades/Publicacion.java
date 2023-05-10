@@ -16,8 +16,7 @@ public class Publicacion {
 
     }
 
-    public Publicacion(String id, String titulo, int precio, String descripcion, String image1, String image2, String idUser, String categoria,long timeStamp ) {
-        this.id = id;
+    public Publicacion(String titulo, int precio, String descripcion, String image1, String image2, String idUser, String categoria,long timeStamp ) {
         this.titulo = titulo;
         this.precio = precio;
         this.descripcion = descripcion;

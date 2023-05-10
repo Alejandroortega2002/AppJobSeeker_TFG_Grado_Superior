@@ -26,6 +26,7 @@ import com.example.testmenu.firebase.ImagenFirebase;
 import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.utils.FileUtil;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -33,6 +34,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -296,13 +298,12 @@ public class PostActivity extends AppCompatActivity {
                     mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri2 -> {
                         final String url2 = uri2.toString();
 
-//                        DocumentReference documentReference = mPublicacionFribase.getDocumentReference();
+
                         // Crear la publicación y guardarla en Firestore
-                        Publicacion publicacion = new Publicacion(null, mTitulo,
+                        Publicacion publicacion = new Publicacion(mTitulo,
                                 Integer.parseInt(mPrecio), mDescripcion,
                                 url, url2, mAutentificacionFirebase.getUid(),
                                 mCategoria, new Date().getTime());
-
 
                         mPublicacionFribase.save(publicacion).addOnCompleteListener(taskSave -> {
 
