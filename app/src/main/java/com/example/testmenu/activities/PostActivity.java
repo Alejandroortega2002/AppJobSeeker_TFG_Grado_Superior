@@ -26,6 +26,7 @@ import com.example.testmenu.firebase.ImagenFirebase;
 import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.utils.FileUtil;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
@@ -295,18 +296,13 @@ public class PostActivity extends AppCompatActivity {
                     mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri2 -> {
                         final String url2 = uri2.toString();
 
+//                        DocumentReference documentReference = mPublicacionFribase.getDocumentReference();
                         // Crear la publicación y guardarla en Firestore
                         Publicacion publicacion = new Publicacion(null, mTitulo,
-
-
-
-
-
-
-
                                 Integer.parseInt(mPrecio), mDescripcion,
                                 url, url2, mAutentificacionFirebase.getUid(),
                                 mCategoria, new Date().getTime());
+
 
                         mPublicacionFribase.save(publicacion).addOnCompleteListener(taskSave -> {
 
@@ -317,6 +313,7 @@ public class PostActivity extends AppCompatActivity {
                                 Toast.makeText(PostActivity.this, "No se pudo almacenar la información", Toast.LENGTH_SHORT).show();
                             }
                         });
+
                     });
                 });
             });
