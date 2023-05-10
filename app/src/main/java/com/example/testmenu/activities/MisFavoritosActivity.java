@@ -33,6 +33,9 @@ public class MisFavoritosActivity extends AppCompatActivity {
     FavoritosFirebase favoritosFirebase;
     PostsAdapter2 mPostsAdapter2;
 
+    List<String> postIds;
+    Favoritos favoritos;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -43,6 +46,7 @@ public class MisFavoritosActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerViewInicioFavorito);
 
+        postIds = new ArrayList<>();
         mAutentificacionFirebase = new AutentificacioFirebase();
         mPublicacionfirebase = new PublicacionFirebase();
         favoritosFirebase = new FavoritosFirebase();
@@ -68,12 +72,11 @@ public class MisFavoritosActivity extends AppCompatActivity {
         Query query = favoritosFirebase.getLikesByUser(mAutentificacionFirebase.getUid());
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                List<String> postIds = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    Favoritos favoritos = document.toObject(Favoritos.class);
+                    favoritos = document.toObject(Favoritos.class);
                     postIds.add(favoritos.getIdPost());
                 }
-
+            }
                 // Obtener la información detallada de cada post
                 FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
                         .setQuery(mPublicacionfirebase.getPostByIdList(postIds), Publicacion.class)
@@ -82,7 +85,7 @@ public class MisFavoritosActivity extends AppCompatActivity {
                 mPostsAdapter2 = new PostsAdapter2(options, this);
                 recyclerView.setAdapter(mPostsAdapter2);
                 mPostsAdapter2.startListening();
-            }
+
         });
     }
 
