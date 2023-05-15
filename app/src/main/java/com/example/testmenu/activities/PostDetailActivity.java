@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.testmenu.R;
 import com.example.testmenu.adapters.SliderAdapter;
 import com.example.testmenu.entidades.SliderItem;
+import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
 
@@ -37,7 +38,10 @@ public class PostDetailActivity extends AppCompatActivity {
     PublicacionFirebase mPublicacionFirebase;
     UsuariosBBDDFirebase mUsuariosFribase;
 
+    AutentificacioFirebase mAutentificacioFirebase;
+
     String mExtraPostId;
+
 
     TextView mTextViewTitulo;
     TextView mTextViewDescripcion;
@@ -47,6 +51,8 @@ public class PostDetailActivity extends AppCompatActivity {
     ImageView mImageViewCategoria;
     CircleImageView mCircleImageViewProfile;
     Button mButtonShowProfile;
+
+    ImageButton btnChat;
 
     private ImageButton btnSalir;
     private String idUser = "";
@@ -68,12 +74,16 @@ public class PostDetailActivity extends AppCompatActivity {
         mCircleImageViewProfile = findViewById(R.id.circleImageProfile);
         mButtonShowProfile = findViewById(R.id.btnShowProfile);
         btnSalir = findViewById(R.id.volver_inicio);
+        btnChat = findViewById(R.id.btnChat);
 
 
         mPublicacionFirebase = new PublicacionFirebase();
         mUsuariosFribase = new UsuariosBBDDFirebase();
+        mAutentificacioFirebase = new AutentificacioFirebase();
 
         mExtraPostId = getIntent().getStringExtra("id");
+
+
 
         btnSalir.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +102,25 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
+        btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToChatActivity();
+            }
+        });
+
         getPost();
+
+
+
+    }
+
+    private void goToChatActivity() {
+    Intent i = new Intent(this, ChatActivity.class);
+    i.putExtra("idUser1",mAutentificacioFirebase.getUid());
+    i.putExtra("idUser2",idUser);
+    startActivity(i);
+
     }
 
     /**
@@ -158,6 +186,9 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
                 if (documentSnapshot.contains("idUser")) {
                      idUser = documentSnapshot.getString("idUser");
+                    if (mAutentificacioFirebase.getUid().equals(idUser)){
+                        btnChat.setVisibility(View.GONE);
+                    }
                     getUserInfo(idUser);
                 }
                 instanceSlider();
