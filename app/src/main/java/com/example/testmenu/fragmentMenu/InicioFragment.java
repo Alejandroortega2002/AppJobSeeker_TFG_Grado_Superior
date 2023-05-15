@@ -35,7 +35,7 @@ public class InicioFragment extends Fragment {
 
     View mView;
     FloatingActionButton mFab;
-    Toolbar mToolbar;
+    //Toolbar mToolbar;
     AutentificacioFirebase mAutentificacionFirebase;
     RecyclerView mRecyclerView;
     PublicacionFirebase mPublicacionfirebase;
@@ -52,16 +52,16 @@ public class InicioFragment extends Fragment {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_inicio, container, false);
         mFab = mView.findViewById(R.id.fab);
-        mToolbar = mView.findViewById(R.id.toolbar);
+       // mToolbar = mView.findViewById(R.id.toolbar);
         mRecyclerView = mView.findViewById(R.id.recyclerViewInicio);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Publicaciones");
-        setHasOptionsMenu(true);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Publicaciones");
+//        setHasOptionsMenu(true);
         mAutentificacionFirebase = new AutentificacioFirebase();
         mPublicacionfirebase = new PublicacionFirebase();
 

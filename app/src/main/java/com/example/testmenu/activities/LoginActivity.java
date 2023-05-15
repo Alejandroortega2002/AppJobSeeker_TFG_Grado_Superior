@@ -70,10 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         btnRegistrar.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegistroActivity.class)));
         btnloginGoogle.setOnClickListener(view -> singIn());
 
-
-
-
-
         mDialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setMessage("espere un momento")
@@ -177,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
      * de la autenticación. En el método onComplete de esta clase anónima, se verifica si la autenticación fue exitosa o no, y se realiza la acción correspondiente en cada caso.
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount googleSignInAccount) {
-        //mDialog.show();
+        mDialog.show();
         authFirebase.loginGoogle(googleSignInAccount).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

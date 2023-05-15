@@ -64,7 +64,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String postId = document.getId();
         holder.textViewTitulo.setText(publicacion.getTitulo().toUpperCase());
-        holder.textViewTipoContrato.setText("Tipo de Contrato: " + publicacion.getCategoria());
+        holder.textViewTipoContrato.setText("Contrato: " + publicacion.getCategoria());
 
         if (publicacion.getIdUser().equals(autentificacioFirebase.getUid())) {
             holder.btnCerrar.setVisibility(View.VISIBLE);

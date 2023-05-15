@@ -26,6 +26,12 @@
             android:name=".activities.ChatActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.CrearValoracionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ValoracionActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MisFavoritosActivity"
             android:exported="false" />
         <activity

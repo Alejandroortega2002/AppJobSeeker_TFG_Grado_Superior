@@ -24,8 +24,8 @@
             android:layout_height="200dp"
             android:layout_gravity="top"
             android:alpha="0.7"
-            android:scaleType="centerCrop"
-            android:background="@drawable/foto_registro" />
+            android:background="@drawable/foto_registro"
+            android:scaleType="centerCrop" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/fotoPerfil"
@@ -159,7 +159,6 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-
             <ImageButton
                 android:id="@+id/btnAjustes"
                 style="?android:attr/borderlessButtonStyle"
@@ -169,32 +168,131 @@
                 android:contentDescription="cerrar sesion"
                 android:src="@drawable/ic_ajustes" />
 
-
         </LinearLayout>
 
 
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="100dp"-->
+        <!--            android:layout_gravity="bottom"-->
+        <!--            android:layout_marginTop="380dp"-->
+        <!--            android:layout_marginBottom="40dp"-->
+        <!--            android:gravity="center"-->
+        <!--            android:orientation="horizontal">-->
+
+        <!--            <Button-->
+        <!--                android:id="@+id/btnMisOfertas"-->
+        <!--                android:layout_width="160dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginRight="20dp"-->
+        <!--                android:text="Mis Ofertas" />-->
+
+        <!--            <Button-->
+        <!--                android:id="@+id/btnFavoritos"-->
+        <!--                android:layout_width="160dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="Favoritos" />-->
+
+        <!--        </LinearLayout>-->
+
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="380dp"
-            android:layout_marginBottom="40dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="560dp"
+            android:background="@drawable/layout_redondeado2"
+            android:orientation="horizontal"
+            android:paddingBottom="20dp">
 
-            <Button
+            <LinearLayout
                 android:id="@+id/btnMisOfertas"
-                android:layout_width="160dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:text="Mis Ofertas" />
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/layout_redondeado"
+                android:clickable="true"
+                android:orientation="vertical">
 
-            <Button
+                <ImageView
+                    android:layout_width="51dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/mis_ofertas" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Mis Ofertas"
+                    android:textColor="#38b6ff"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnValoraciones"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/layout_redondeado"
+                android:clickable="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="51dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/ic_comentarios" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Comentarios"
+                    android:textColor="#38b6ff"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/btnFavoritos"
-                android:layout_width="160dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Favoritos" />
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/layout_redondeado"
+                android:clickable="true"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/favoritos" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Mis favoritos"
+                    android:textColor="#38b6ff"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </FrameLayout>

@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.testmenu.R;
@@ -35,14 +37,14 @@ public class VerPerfilActivity extends AppCompatActivity {
 
     private String VPidUser;
 
-    private TextView telefono, nombreU, email, descripcion, numeroDeOrfetas;
+    private TextView telefono, nombreU, email, descripcion, numeroDeOrfetas, txtOfertas;
 
     private ImageView fotoBanner;
     private CircleImageView fotoPerfil;
 
     private ImageButton btnAjustes, btnSalir;
 
-    private Button btnverOfertas, btnverFavortitos;
+    private LinearLayout btnverOfertas, btnverFavortitos,btnValoracion;
 
     AutentificacioFirebase autentificacioFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
@@ -61,6 +63,7 @@ public class VerPerfilActivity extends AppCompatActivity {
         btnSalir = findViewById(R.id.VPvolver_perfil);
         btnverFavortitos = findViewById(R.id.VPbtnFavoritos);
         btnverOfertas = findViewById(R.id.VPbtnMisOfertas);
+        btnValoracion = findViewById(R.id.VPbtnValoraciones);
 
         telefono = findViewById(R.id.VPnTelefono);
         nombreU = findViewById(R.id.VPnPerfil);
@@ -69,6 +72,7 @@ public class VerPerfilActivity extends AppCompatActivity {
         numeroDeOrfetas = findViewById(R.id.VPnPublicaciones);
         fotoBanner = findViewById(R.id.VPbanner);
         fotoPerfil = findViewById(R.id.VPfotoPerfil);
+        txtOfertas = findViewById(R.id.txtOfertas);
         VPidUser = getIntent().getStringExtra("idUser");
         checkUser();
         rellenarInformacionUsuario();
@@ -96,6 +100,23 @@ public class VerPerfilActivity extends AppCompatActivity {
                 Intent i = new Intent(VerPerfilActivity.this,MisOfertasActivity2.class);
                 i.putExtra("idUserCarta",VPidUser);
                 startActivity(i);
+            }
+        });
+
+        btnverFavortitos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(VerPerfilActivity.this,MisFavoritosActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btnValoracion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VerPerfilActivity.this, ValoracionActivity.class);
+                intent.putExtra("idUsuario", VPidUser);
+                startActivity(intent);
             }
         });
     }
@@ -186,8 +207,9 @@ public class VerPerfilActivity extends AppCompatActivity {
             btnAjustes.setVisibility(View.INVISIBLE);
             btnverFavortitos.setClickable(false);
             btnverFavortitos.setVisibility(View.GONE);
-            btnverOfertas.setText("Ver Ofertas");
-            btnverOfertas.setX(30);
+            txtOfertas.setText("Ver Ofertas");
+            btnValoracion.setX(-40);
+            btnverOfertas.setX(-20);
         }
     }
 }

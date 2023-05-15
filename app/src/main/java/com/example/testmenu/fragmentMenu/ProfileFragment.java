@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import com.example.testmenu.activities.AjustesActivity;
 import com.example.testmenu.activities.MisFavoritosActivity;
 import com.example.testmenu.activities.MisOfertasActivity;
+import com.example.testmenu.activities.ValoracionActivity;
 import com.example.testmenu.databinding.FragmentPerfilBinding;
 
 import com.example.testmenu.firebase.AutentificacioFirebase;
@@ -46,7 +48,7 @@ public class ProfileFragment extends Fragment {
     private ImageView fotoBanner;
     private CircleImageView fotoPerfil;
 
-    private Button btnMisOfertas, btnFavoritos;
+    private LinearLayout btnMisOfertas,btnFavoritos,btnValoracion;
 
 
     private ImageButton btnAjustesPerfil;
@@ -81,8 +83,10 @@ public class ProfileFragment extends Fragment {
         numeroDeOrfetas = (TextView) binding.nPublicaciones;
         fotoBanner = (ImageView) binding.banner;
         fotoPerfil = (CircleImageView) binding.fotoPerfil;
-        btnFavoritos = (Button) binding.btnFavoritos;
-        btnMisOfertas = (Button) binding.btnMisOfertas;
+        btnFavoritos = binding.btnFavoritos;
+        btnMisOfertas = binding.btnMisOfertas;
+
+        btnValoracion = binding.btnValoraciones;
 
 
         btnAjustesPerfil = binding.btnAjustes;
@@ -106,6 +110,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 irOfertas();
+            }
+        });
+
+        btnValoracion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ValoracionActivity.class);
+                intent.putExtra("idUsuario", autentificacioFirebase.getUid());
+                startActivity(intent);
             }
         });
 

@@ -35,7 +35,6 @@
             android:src="@drawable/foto_registro"
             app:civ_border_color="@color/white"
             app:civ_border_width="5dp"
-            app:civ_circle_background_color="@color/azulGeneral"
             tools:ignore="MissingClass" />
 
         <LinearLayout
@@ -180,29 +179,130 @@
         </LinearLayout>
 
 
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            android:layout_marginTop="380dp"-->
+<!--            android:layout_marginBottom="40dp"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <Button-->
+<!--                android:id="@+id/VPbtnMisOfertas"-->
+<!--                android:layout_width="160dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:text="Mis Ofertas" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/VPbtnFavoritos"-->
+<!--                android:layout_width="160dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Favoritos" />-->
+
+
+<!--        </LinearLayout>-->
+
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="380dp"
-            android:layout_marginBottom="40dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="560dp"
+            android:background="@drawable/layout_redondeado2"
+            android:orientation="horizontal"
+            android:paddingBottom="20dp">
 
-            <Button
+            <LinearLayout
                 android:id="@+id/VPbtnMisOfertas"
-                android:layout_width="160dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:text="Mis Ofertas" />
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/layout_redondeado"
+                android:clickable="true"
+                android:orientation="vertical">
 
-            <Button
+                <ImageView
+                    android:layout_width="51dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/mis_ofertas" />
+
+                <TextView
+                    android:id="@+id/txtOfertas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Mis Ofertas"
+                    android:textColor="#38b6ff"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/VPbtnValoraciones"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/layout_redondeado"
+                android:clickable="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="51dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/ic_comentarios" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Comentarios"
+                    android:textColor="#38b6ff"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/VPbtnFavoritos"
-                android:layout_width="160dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Favoritos" />
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/layout_redondeado"
+                android:clickable="true"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/favoritos" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Mis favoritos"
+                    android:textColor="#38b6ff"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </FrameLayout>

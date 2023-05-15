@@ -60,13 +60,12 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
         final String postId = document.getId();
 
         holder.textViewTitulo.setText(publicacion.getTitulo().toUpperCase());
-        holder.textViewTipoContrato.setText("Tipo de Contrato: " + publicacion.getCategoria());
+        holder.textViewTipoContrato.setText("Contrato: " + publicacion.getCategoria());
         // holder.fechaPublicacion.setText((int) publicacion.getTimeStamp());
 
         if (publicacion.getImage1() != null) {
             if (!publicacion.getImage1().isEmpty()) {
                 Picasso.get().load(publicacion.getImage1()).into(holder.imageViewPost);
-
             }
         }
 

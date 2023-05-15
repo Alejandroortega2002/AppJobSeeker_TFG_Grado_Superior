@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -81,6 +82,8 @@ public class PostActivity extends AppCompatActivity {
     String mAbsolutePhotoPath2;
     String mPhotoPath2;
 
+    AlertDialog dialogoEspera;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +99,10 @@ public class PostActivity extends AppCompatActivity {
         mBuilderSelector.setTitle("Selecciona una opción");
         options = new CharSequence[]{"Imagen de galeria", "Tomar foto"};
 
+        dialogoEspera = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("espere un momento")
+                .setCancelable(false).build();
 
         mImageViewPost1 = findViewById(R.id.imagePost1);
         mImageViewPost2 = findViewById(R.id.imagePost2);
@@ -262,7 +269,7 @@ public class PostActivity extends AppCompatActivity {
             Toast.makeText(this, "Debes seleccionar ambas imágenes", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        dialogoEspera.show();
         saveImage(mImageFile, mImageFile2);
     }
 
@@ -309,9 +316,11 @@ public class PostActivity extends AppCompatActivity {
 
                             if (taskSave.isSuccessful()) {
                                 Toast.makeText(PostActivity.this, "La información se almacenó correctamente", Toast.LENGTH_SHORT).show();
+                                dialogoEspera.dismiss();
                                 finish();
                             } else {
                                 Toast.makeText(PostActivity.this, "No se pudo almacenar la información", Toast.LENGTH_SHORT).show();
+                                dialogoEspera.dismiss();
                             }
                         });
 
