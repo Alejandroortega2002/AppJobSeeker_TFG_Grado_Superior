@@ -101,6 +101,7 @@ public class ValoracionActivity extends AppCompatActivity {
         cargarValoraciones();
     }
 
+
     private void cargarValoraciones() {
         valoracionFirebase.getCommentsByUser(userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -144,6 +145,11 @@ public class ValoracionActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         valoracionesAdapter.stopListening();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
 

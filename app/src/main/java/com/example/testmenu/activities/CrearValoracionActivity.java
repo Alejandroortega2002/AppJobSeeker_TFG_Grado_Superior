@@ -77,6 +77,7 @@ public class CrearValoracionActivity extends AppCompatActivity {
         v.setNota(ratings);
         v.setValoracion(valoracion);
         v.setUserId(idUser);
+        v.setUserPostId(autentificacioFirebase.getUid());
         v.setTimeStamp(timestamp);
 
         valoracionFirebase.create(v).addOnCompleteListener(new OnCompleteListener<Void>() {

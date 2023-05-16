@@ -1,18 +1,27 @@
 package com.example.testmenu.entidades;
 
 public class Valoraciones {
-    String id, userId, valoracion, nota, timeStamp;
+    String id, userId, userPostId,valoracion, nota, timeStamp;
 
     public Valoraciones() {
 
     }
 
-    public Valoraciones(String id,String userId,String valoracion, String nota, String timeStamp) {
+    public Valoraciones(String id, String userId, String userPostId, String valoracion, String nota, String timeStamp) {
         this.id = id;
         this.userId = userId;
+        this.userPostId = userPostId;
         this.valoracion = valoracion;
         this.nota = nota;
         this.timeStamp = timeStamp;
+    }
+
+    public String getUserPostId() {
+        return userPostId;
+    }
+
+    public void setUserPostId(String userPostId) {
+        this.userPostId = userPostId;
     }
 
     public String getId() {

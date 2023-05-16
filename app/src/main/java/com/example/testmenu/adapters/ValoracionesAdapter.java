@@ -52,13 +52,14 @@ public class ValoracionesAdapter extends FirestoreRecyclerAdapter<Valoraciones, 
     protected void onBindViewHolder(@NonNull HolderValoraciones holder, int position, @NonNull Valoraciones valoraciones) {
 
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
+        //String userId = valoraciones.getUserId();
 
         holder.contenido.setText(valoraciones.getValoracion());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(valoraciones.getTimeStamp()));
         String dateFormat = DateFormat.getDateInstance().format(calendar.getTime());
 
-        String userId = document.getString("userId");
+        String userId = document.getString("userPostId");
         holder.estrellas.setRating(Float.parseFloat(valoraciones.getNota()));
         holder.fecha.setText(dateFormat);
         cargarDetallesUsuario(userId, holder);
@@ -83,9 +84,9 @@ public class ValoracionesAdapter extends FirestoreRecyclerAdapter<Valoraciones, 
                     }
                 }
             });
-
         }
     }
+
 
     public static class HolderValoraciones extends RecyclerView.ViewHolder {
         private CircleImageView fotoUsuario;
