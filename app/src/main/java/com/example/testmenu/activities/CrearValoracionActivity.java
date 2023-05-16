@@ -45,6 +45,7 @@ public class CrearValoracionActivity extends AppCompatActivity {
     private Button enviar;
 
     String valoracion;
+    String nUsuarioActivity;
     AutentificacioFirebase autentificacioFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
 
@@ -122,7 +123,7 @@ public class CrearValoracionActivity extends AppCompatActivity {
                         String usr = autentificacioFirebase.getUid();
                         String token = documentSnapshot.getString("token");
                         Map<String,String> data = new HashMap<>();
-                        obtenerNombreUsrNotificacion(usr,data);
+                        data.put("title","NUEVO COMENTARIO DE " + nUsuarioActivity );
                         data.put("body",valoracion);
                         FCMBody body = new FCMBody(token, "high", "4500s", data);
                         mNotificationFirebase.sendNotification(body).enqueue(new Callback<FCMResponse>() {
@@ -161,7 +162,7 @@ public class CrearValoracionActivity extends AppCompatActivity {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
                         if (documentSnapshot.contains("usuario")) {
-                            String nUsuarioActivity = documentSnapshot.getString("usuario");
+                            nUsuarioActivity = documentSnapshot.getString("usuario");
                             nombreUser.setText("@" + nUsuarioActivity.toUpperCase());
                         }
                         if (documentSnapshot.contains("fotoPerfil")) {
@@ -180,23 +181,5 @@ public class CrearValoracionActivity extends AppCompatActivity {
 
 
 
-    private void obtenerNombreUsrNotificacion(String userId, Map<String,String> data) {
-        if (userId != null) {
 
-            usuariosBBDDFirebase.getUsuarios(userId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot.exists()) {
-                        if (documentSnapshot.contains("usuario")) {
-                            String nUsuarioActivity = documentSnapshot.getString("usuario");
-                            data.put("title","NUEVO COMENTARIO DE " + nUsuarioActivity );
-
-                        }
-
-                    }
-                }
-            });
-        }
-
-    }
 }
