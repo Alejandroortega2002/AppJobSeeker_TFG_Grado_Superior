@@ -3,4 +3,6 @@
 <external-path
     name="AppJobSeeker"
     path="Android/data/com.example.testmenu/files/pictures"/>
+    <external-path name="external_files" path="." />
 </paths>
+

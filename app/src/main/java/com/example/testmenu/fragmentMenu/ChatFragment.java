@@ -7,32 +7,60 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.testmenu.R;
+import com.example.testmenu.adapters.ChatsAdapter;
 import com.example.testmenu.databinding.FragmentChatBinding;
+import com.example.testmenu.entidades.Chat;
+import com.example.testmenu.firebase.AutentificacioFirebase;
+import com.example.testmenu.firebase.ChatsFirebase;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.Query;
 
 public class ChatFragment extends Fragment {
-    /*Declaramos su Xml correspondiente a traves del ViewBiding*/
 
-    private FragmentChatBinding binding;
+    ChatsAdapter mAdapter;
+    RecyclerView mRecyclerView;
+    AutentificacioFirebase mAuthFirebase;
+    View mView;
+    ChatsFirebase mChatsFirebase;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-//        /*Instanciamos la clase ViewModel correspondiente*/
-//        ChatViewModel chatViewModel =
-//                new ViewModelProvider(this).get(ChatViewModel.class);
+    public ChatFragment() {
 
-    /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
-        binding = FragmentChatBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-      //   TextView textView = binding.textNotifications;
-//        chatViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
+        mView = inflater.inflate(R.layout.fragment_chat, container, false);
+        mRecyclerView = mView.findViewById(R.id.recyclerViewChats);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        mChatsFirebase = new ChatsFirebase();
+        mAuthFirebase = new AutentificacioFirebase();
+        return mView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Query query = mChatsFirebase.getAll(mAuthFirebase.getUid());
+        FirestoreRecyclerOptions<Chat> options =
+                new FirestoreRecyclerOptions.Builder<Chat>()
+                        .setQuery(query, Chat.class)
+                        .build();
+        mAdapter = new ChatsAdapter(options, getContext());
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
     }
 }
