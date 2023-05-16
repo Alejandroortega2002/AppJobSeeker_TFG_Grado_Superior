@@ -64,6 +64,8 @@ public class CrearValoracionActivity extends AppCompatActivity {
         usuariosBBDDFirebase = new UsuariosBBDDFirebase();
         mNotificationFirebase = new NotificationFirebase();
         mTokenFirebase = new TokenFirebase();
+        valoracionFirebase = new ValoracionFirebase();
+
 
         fotoPerfil = findViewById(R.id.fotoUsuarioCrearValoracion);
         nombreUser = findViewById(R.id.nombreUsuarioCrearValoracion);
@@ -73,7 +75,6 @@ public class CrearValoracionActivity extends AppCompatActivity {
 
         String userId = autentificacioFirebase.getUid();
 
-        valoracionFirebase = new ValoracionFirebase();
 
         cargarDetallesUsuario(userId);
 
@@ -118,9 +119,10 @@ public class CrearValoracionActivity extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()){
                     if (documentSnapshot.contains("token")){
+                        String usr = autentificacioFirebase.getUid();
                         String token = documentSnapshot.getString("token");
                         Map<String,String> data = new HashMap<>();
-                        data.put("title","NUEVO COMENTARIO DE " + nombreUser );
+                        obtenerNombreUsrNotificacion(usr,data);
                         data.put("body",valoracion);
                         FCMBody body = new FCMBody(token, "high", "4500s", data);
                         mNotificationFirebase.sendNotification(body).enqueue(new Callback<FCMResponse>() {
@@ -169,6 +171,28 @@ public class CrearValoracionActivity extends AppCompatActivity {
                                 Picasso.get().load(fotoPerfilActivity).into(fotoPerfil);
                             }
                         }
+                    }
+                }
+            });
+        }
+
+    }
+
+
+
+    private void obtenerNombreUsrNotificacion(String userId, Map<String,String> data) {
+        if (userId != null) {
+
+            usuariosBBDDFirebase.getUsuarios(userId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        if (documentSnapshot.contains("usuario")) {
+                            String nUsuarioActivity = documentSnapshot.getString("usuario");
+                            data.put("title","NUEVO COMENTARIO DE " + nUsuarioActivity );
+
+                        }
+
                     }
                 }
             });
