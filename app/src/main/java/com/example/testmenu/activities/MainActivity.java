@@ -13,6 +13,8 @@ import com.example.testmenu.R;
 import com.example.testmenu.databinding.ActivityMainBinding;
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.TokenFirebase;
+import com.example.testmenu.firebase.UsuariosBBDDFirebase;
+import com.example.testmenu.utils.ViewedMensajeHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     TokenFirebase mTokenFirebase;
     AutentificacioFirebase mAutentificationFirebase;
+
+    UsuariosBBDDFirebase mUsuarioFirebase;
 
     // Declare the launcher at the top of your Activity/Fragment:
     private final ActivityResultLauncher<String> requestPermissionLauncher =
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
         mTokenFirebase = new TokenFirebase();
         mAutentificationFirebase = new AutentificacioFirebase();
+        mUsuarioFirebase = new UsuariosBBDDFirebase();
         createToken();
         askNotificationPermission();
 
@@ -77,6 +82,22 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ViewedMensajeHelper.updateOnline(true,MainActivity.this);
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ViewedMensajeHelper.updateOnline(false,MainActivity.this);
+    }
+
+
 
     private void createToken(){
         mTokenFirebase.create(mAutentificationFirebase.getUid());

@@ -8,26 +8,31 @@ public class Usuarios {
     private String telefono;
     private String descripcion;
     private String banner;
-
     private float media;
     private String fotoPerfil;
     private long timeStamp;
+
+    private boolean online;
+
+    private long lastConnection;
 
 
     public Usuarios() {
 
     }
 
-    public Usuarios(String id, String usuario, float media,String email, String telefono, String descripcion, String banner, String fotoPerfil, long timeStamp) {
+    public Usuarios(String id, String usuario, String email, String telefono, String descripcion, String banner, float media, String fotoPerfil, long timeStamp, boolean online, long lastConnection) {
         this.id = id;
         this.usuario = usuario;
         this.email = email;
-        this.media = media;
         this.telefono = telefono;
         this.descripcion = descripcion;
         this.banner = banner;
+        this.media = media;
         this.fotoPerfil = fotoPerfil;
         this.timeStamp = timeStamp;
+        this.online = online;
+        this.lastConnection = lastConnection;
     }
 
     public float getMedia() {
@@ -103,4 +108,12 @@ public class Usuarios {
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }
+
+    public boolean isOnline() {return online;}
+
+    public void setOnline(boolean online) {this.online = online;}
+
+    public long getLastConnection() {return lastConnection;}
+
+    public void setLastConnection(long lastConnection) {this.lastConnection = lastConnection;}
 }

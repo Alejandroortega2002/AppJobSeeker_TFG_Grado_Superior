@@ -1,6 +1,7 @@
 package com.example.testmenu.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,11 +27,15 @@ import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.ChatsFirebase;
 import com.example.testmenu.firebase.MensajeFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
+import com.example.testmenu.utils.RelativeTime;
+import com.example.testmenu.utils.ViewedMensajeHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
@@ -103,12 +108,14 @@ public class ChatActivity extends AppCompatActivity {
         if(mAdapter !=null){
             mAdapter.startListening();
         }
+        ViewedMensajeHelper.updateOnline(true, ChatActivity.this);
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         mAdapter.stopListening();
+        ViewedMensajeHelper.updateOnline(false, ChatActivity.this);
     }
 
     private void getMensajeChat() {
@@ -195,20 +202,34 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             idUserInfo = mExtraIdUser1;
         }
-        mUsuarioFirebase.getUsuarios(idUserInfo).addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                if (documentSnapshot.contains("usuario")) {
-                    String username = documentSnapshot.getString("usuario");
-                    mTextViewUsername.setText(username);
-                }
-                if (documentSnapshot.contains("fotoPerfil")) {
-                    String imageProfile = documentSnapshot.getString("fotoPerfil");
-                    if (imageProfile != null) {
-                        if (!imageProfile.equals("")) {
-                            Picasso.get().load(imageProfile).into(mCircleImageProfile);
-
+        mUsuarioFirebase.getUsuariosRealTime(idUserInfo).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (documentSnapshot.exists()) {
+                    if (documentSnapshot.contains("usuario")) {
+                        String username = documentSnapshot.getString("usuario");
+                        mTextViewUsername.setText(username);
+                    }
+                    if (documentSnapshot.contains("online")) {
+                        boolean online = documentSnapshot.getBoolean("online");
+                        if (online) {
+                            mTextViewRelativeTime.setText("En linea");
+                        } else if (documentSnapshot.contains("lastConnect")) {
+                            long lastConnect = documentSnapshot.getLong("lastConnect");
+                            String relativeTime = RelativeTime.getTimeAgo(lastConnect, ChatActivity.this);
+                            mTextViewRelativeTime.setText(relativeTime);
                         }
                     }
+                    if (documentSnapshot.contains("fotoPerfil")) {
+                        String imageProfile = documentSnapshot.getString("fotoPerfil");
+                        if (imageProfile != null) {
+                            if (!imageProfile.equals("")) {
+                                Picasso.get().load(imageProfile).into(mCircleImageProfile);
+
+                            }
+                        }
+                    }
+
                 }
             }
         });
@@ -216,16 +237,19 @@ public class ChatActivity extends AppCompatActivity {
 
 
     private void checkIfChatExist() {
-        mChatsFirebase.getChatByUser1AndUser2(mExtraIdUser1, mExtraIdUser2).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            int size = queryDocumentSnapshots.size();
-            if (size == 0) {
-                createChat();
-            } else {
-                mExtraIdChat = queryDocumentSnapshots.getDocuments().get(0).getId();
-                getMensajeChat();
-                updateViewed();
+        mChatsFirebase.getChatByUser1AndUser2(mExtraIdUser1, mExtraIdUser2).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                int size = queryDocumentSnapshots.size();
+                if (size == 0) {
+                    createChat();
+                }
+                else {
+                    mExtraIdChat = queryDocumentSnapshots.getDocuments().get(0).getId();
+                    getMensajeChat();
+                    updateViewed();
+                }
             }
-
         });
     }
 

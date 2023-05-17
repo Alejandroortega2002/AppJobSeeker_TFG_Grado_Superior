@@ -15,7 +15,7 @@ public class UsuariosBBDDFirebase {
 
     private final CollectionReference mColeccion;
 
-    public UsuariosBBDDFirebase(){
+    public UsuariosBBDDFirebase() {
         mColeccion = FirebaseFirestore.getInstance().collection("Usuarios");
     }
 
@@ -23,19 +23,40 @@ public class UsuariosBBDDFirebase {
         return mColeccion.document(id).get();
     }
 
+    public DocumentReference getUsuariosRealTime(String id) {
+        return mColeccion.document(id);
+    }
+
     public Task<Void> createUsuarios(Usuarios usuario) {
-        return  mColeccion.document(usuario.getId()).set(usuario);
+        return mColeccion.document(usuario.getId()).set(usuario);
+    }
+
+    public DocumentReference refereciaColeccion(String id) {
+
+        return mColeccion.document(id);
+    }
+
+    public Task<Void> deleteUsuarios(String id) {
+
+        return mColeccion.document(id).delete();
     }
 
     public Task<Void> update(Usuarios usuario) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("usuario",usuario.getUsuario());
-        map.put("telefono",usuario.getTelefono());
-        map.put("timeStamp",new Date().getTime());
-        map.put("banner",usuario.getBanner());
-        map.put("fotoPerfil",usuario.getFotoPerfil());
-        map.put("descripcion",usuario.getDescripcion());
-        return  mColeccion.document(usuario.getId()).update(map);
+        Map<String, Object> map = new HashMap<>();
+        map.put("usuario", usuario.getUsuario());
+        map.put("telefono", usuario.getTelefono());
+        map.put("timeStamp", new Date().getTime());
+        map.put("banner", usuario.getBanner());
+        map.put("fotoPerfil", usuario.getFotoPerfil());
+        map.put("descripcion", usuario.getDescripcion());
+        return mColeccion.document(usuario.getId()).update(map);
+    }
+
+    public Task<Void> updateOnline(String idUser, boolean status) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("LastConnect", new Date().getTime());
+        map.put("online", status);
+        return mColeccion.document(idUser).update(map);
     }
 
     public Task<Void> updateMedia(String id, float media) {
@@ -43,18 +64,6 @@ public class UsuariosBBDDFirebase {
         map.put("media", media);
         return mColeccion.document(id).update(map);
     }
-
-    public DocumentReference refereciaColeccion(String id) {
-        return mColeccion.document(id);
-    }
-
-    public Task<Void> deleteUsuarios(String id) {
-        return mColeccion.document(id).delete();
-    }
-
-
-
-
 
 
 }

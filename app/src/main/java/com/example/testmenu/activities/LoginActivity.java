@@ -32,7 +32,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import dmax.dialog.SpotsDialog;
 
 
-
 public class LoginActivity extends AppCompatActivity {
 
 
@@ -42,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     AlertDialog mDialog;
     AutentificacioFirebase authFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
-
 
 
     //Google
@@ -76,7 +74,6 @@ public class LoginActivity extends AppCompatActivity {
                 .setCancelable(false).build();
 
 
-
         // Configuración de Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("456658469245-tgmqktro5u6ghg0uu8gr949i6l3rgvou.apps.googleusercontent.com") // Solicita el token de ID del cliente de la aplicación
@@ -97,15 +94,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-
-     Este método se llama cuando la actividad se está iniciando y comprueba si hay una sesión de usuario activa.
-     Si hay una sesión de usuario activa, se inicia una nueva actividad MainActivity y se eliminan las actividades anteriores de la pila.
-     Si no hay una sesión de usuario activa, no se realiza ninguna acción adicional y se muestra la actividad LoginActivity.
+     * Este método se llama cuando la actividad se está iniciando y comprueba si hay una sesión de usuario activa.
+     * Si hay una sesión de usuario activa, se inicia una nueva actividad MainActivity y se eliminan las actividades anteriores de la pila.
+     * Si no hay una sesión de usuario activa, no se realiza ninguna acción adicional y se muestra la actividad LoginActivity.
      */
     @Override
     protected void onStart() {
         super.onStart();
-        if(authFirebase.getUserSession()!=null){
+        if (authFirebase.getUserSession() != null) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
