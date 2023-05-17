@@ -38,6 +38,12 @@ public class UsuariosBBDDFirebase {
         return  mColeccion.document(usuario.getId()).update(map);
     }
 
+    public Task<Void> updateMedia(String id, float media) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("media", media);
+        return mColeccion.document(id).update(map);
+    }
+
     public DocumentReference refereciaColeccion(String id) {
         return mColeccion.document(id);
     }

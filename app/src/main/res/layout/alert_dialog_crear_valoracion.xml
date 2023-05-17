@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ic_alert_dialog"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:background="@color/azulGeneral" />
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/fotoUsuarioCrearValoracion"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/foto_login"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="130dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nombreUsuarioCrearValoracion"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:text="Nombre User"
+                android:textColor="@color/azulGeneral"
+                android:textSize="25dp" />
+
+
+            <TextView
+                android:id="@+id/titulo"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:text="Danos Tu Opinión"
+                android:textColor="@color/azulGeneral"
+                android:textSize="25dp" />
+
+            <EditText
+                android:id="@+id/editEscribirValoracion"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_border"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_gravity="center"
+                android:hint="Reseña"
+                android:textColorHint="@color/azulGeneral"
+                android:textSize="25dp" />
+
+            <RatingBar
+                android:id="@+id/crearEstrellas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:numStars="5" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp">
+
+                <Button
+                    android:id="@+id/btnCancelarValoracion"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:text="cancelar"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:background="@drawable/btn_pag_principales"
+                    android:layout_marginRight="40dp" />
+
+                <Button
+                    android:id="@+id/btnEnviarValoracion"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:text="enviar"
+                    android:background="@drawable/btn_pag_principales" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</LinearLayout>

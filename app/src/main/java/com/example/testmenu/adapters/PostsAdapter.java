@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -147,6 +148,14 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
                         String nUsuario = documentSnapshot.getString("usuario");
                         holder.nombreUsuario.setText("@" + nUsuario.toUpperCase());
                     }
+                    if (documentSnapshot.contains("media")) {
+                        Double mediaDouble = documentSnapshot.getDouble("media");
+                        if (mediaDouble != null) {
+                            float media = mediaDouble.floatValue();
+                            holder.mediaUsuario.setRating(media);
+                        }
+                    }
+
                 }
             }
         });
@@ -163,6 +172,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewTitulo, nombreUsuario, textViewTipoContrato, fechaPublicacion, txtFavoritos;
         ImageView imageViewPost, imgFavoritos;
+        RatingBar mediaUsuario;
         View viewHolder;
 
         public ViewHolder(View view) {
@@ -174,6 +184,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
             // fechaPublicacion = view.findViewById(R.id.fechaPublicacion);
             txtFavoritos = view.findViewById(R.id.txtFavoritos);
             imgFavoritos = view.findViewById(R.id.imgFavoritos);
+            mediaUsuario = view.findViewById(R.id.mediaUsuarios);
             viewHolder = view;
         }
     }

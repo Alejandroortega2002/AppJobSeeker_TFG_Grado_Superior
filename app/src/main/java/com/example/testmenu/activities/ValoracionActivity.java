@@ -9,32 +9,44 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.testmenu.R;
 import com.example.testmenu.adapters.ValoracionesAdapter;
+import com.example.testmenu.entidades.FCMBody;
+import com.example.testmenu.entidades.FCMResponse;
 import com.example.testmenu.entidades.Valoraciones;
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
 import com.example.testmenu.firebase.ValoracionFirebase;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ValoracionActivity extends AppCompatActivity {
 
@@ -44,8 +56,6 @@ public class ValoracionActivity extends AppCompatActivity {
 
     private RatingBar estrellas;
 
-    private Button btnCrearValoracion;
-
     private CircleImageView fotoPerfilValoracion;
 
     private RecyclerView reciclerValoraciones;
@@ -54,13 +64,16 @@ public class ValoracionActivity extends AppCompatActivity {
     UsuariosBBDDFirebase usuariosBBDDFirebase;
 
     private ArrayList<Valoraciones> listaValoraciones;
+    private Dialog customDialog;
 
     private ValoracionesAdapter valoracionesAdapter;
 
-    private ImageButton btnSalir;
+    private ImageButton btnSalir, btnCrearValoracion;
 
     ValoracionFirebase valoracionFirebase;
     private float suma;
+
+    private float ratingSum = 0;
 
 
     @SuppressLint({"MissingInflatedId"})
@@ -68,6 +81,7 @@ public class ValoracionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_valoracion);
+
 
         autentificacioFirebase = new AutentificacioFirebase();
         usuariosBBDDFirebase = new UsuariosBBDDFirebase();
@@ -92,9 +106,11 @@ public class ValoracionActivity extends AppCompatActivity {
         });
 
         btnCrearValoracion.setOnClickListener(view -> {
-            Intent intent = new Intent(this, CrearValoracionActivity.class);
-            intent.putExtra("idUser", userId);
-            startActivity(intent);
+//            Intent intent = new Intent(this, CrearValoracionActivity.class);
+//            intent.putExtra("idUser", userId);
+//            startActivity(intent);
+            CrearValoracionDialog dialog = new CrearValoracionDialog(userId);
+            dialog.show(getSupportFragmentManager(), "CrearValoracionDialog");
         });
 
         cargarDetallesUsuario();
@@ -119,6 +135,12 @@ public class ValoracionActivity extends AppCompatActivity {
                 txtValoracion.setText(String.format("%.2f", media) + " [" + numeroValoraciones + "]");
                 estrellas.setRating(media);
 
+                usuariosBBDDFirebase.updateMedia(userId, media).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -151,9 +173,6 @@ public class ValoracionActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
     }
-
-
-    private float ratingSum = 0;
 
     private void cargarDetallesUsuario() {
         if (userId != null) {

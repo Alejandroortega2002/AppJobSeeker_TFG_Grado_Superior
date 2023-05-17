@@ -10,10 +10,18 @@
     <ImageButton
         android:id="@+id/volver_inicio"
         style="?android:attr/borderlessButtonStyle"
-        android:layout_width="61dp"
+        android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_gravity="top"
+        android:layout_gravity="top|left"
         android:src="@drawable/ic_step_back" />
+
+    <ImageButton
+        android:id="@+id/btnValorar"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="top|right"
+        android:src="@drawable/ic_crear_comentario" />
 
 
     <TextView
@@ -76,15 +84,6 @@
             android:text="4.3 [100]"
             android:textColor="@color/azulGeneral"
             android:textSize="12sp"/>
-
-        <Button
-            android:id="@+id/btnValorar"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:text="valorar"
-            android:textSize="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewValoraciones"

@@ -1,16 +1,20 @@
 package com.example.testmenu.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.testmenu.R;
 import com.example.testmenu.entidades.FCMBody;
@@ -35,57 +39,75 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CrearValoracionActivity extends AppCompatActivity {
-
+public class CrearValoracionDialog extends DialogFragment {
     private String idUser;
     private CircleImageView fotoPerfil;
     private TextView nombreUser;
     private RatingBar estrellasCrear;
     private EditText escribirValoracion;
-    private Button enviar;
+    private Button enviar,cancelar;
 
     String valoracion;
     String nUsuarioActivity;
     AutentificacioFirebase autentificacioFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
-
     ValoracionFirebase valoracionFirebase;
 
     NotificationFirebase mNotificationFirebase;
-
     TokenFirebase mTokenFirebase;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crear_valoracion);
+    // Constructor vacío requerido para DialogFragment
+    public CrearValoracionDialog() {
+    }
 
-        idUser = getIntent().getStringExtra("idUser");
+    public CrearValoracionDialog(String idUser) {
+        this.idUser = idUser;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         autentificacioFirebase = new AutentificacioFirebase();
         usuariosBBDDFirebase = new UsuariosBBDDFirebase();
         mNotificationFirebase = new NotificationFirebase();
         mTokenFirebase = new TokenFirebase();
         valoracionFirebase = new ValoracionFirebase();
+    }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        fotoPerfil = findViewById(R.id.fotoUsuarioCrearValoracion);
-        nombreUser = findViewById(R.id.nombreUsuarioCrearValoracion);
-        estrellasCrear = findViewById(R.id.crearEstrellas);
-        escribirValoracion = findViewById(R.id.editEscribirValoracion);
-        enviar = findViewById(R.id.btnEnviarValoracion);
+        Dialog customDialog = new Dialog(getActivity());
+        customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        customDialog.setCancelable(false);
+        customDialog.setContentView(R.layout.alert_dialog_crear_valoracion);
+
+        fotoPerfil = customDialog.findViewById(R.id.fotoUsuarioCrearValoracion);
+        nombreUser = customDialog.findViewById(R.id.nombreUsuarioCrearValoracion);
+        estrellasCrear = customDialog.findViewById(R.id.crearEstrellas);
+        escribirValoracion = customDialog.findViewById(R.id.editEscribirValoracion);
+        enviar = customDialog.findViewById(R.id.btnEnviarValoracion);
+        cancelar = customDialog.findViewById(R.id.btnCancelarValoracion);
 
         String userId = autentificacioFirebase.getUid();
-
-
         cargarDetallesUsuario(userId);
+
+        cancelar.setOnClickListener(v -> {
+            dismiss();
+        });
 
         enviar.setOnClickListener(v -> {
             meterDatos(idUser);
-            finish();
+            dismiss();
         });
+
+        return customDialog;
     }
 
-    private void meterDatos(String idUser) {
+
+    public void meterDatos(String idUser) {
         String ratings = String.valueOf(estrellasCrear.getRating());
         valoracion = escribirValoracion.getText().toString().trim();
 
@@ -101,11 +123,11 @@ public class CrearValoracionActivity extends AppCompatActivity {
         valoracionFirebase.create(v).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Toast.makeText(CrearValoracionActivity.this, "El comentario se creo correctamente", Toast.LENGTH_SHORT).show();
+                if (task.isSuccessful()) {
+                    Toast.makeText(getActivity(), "El comentario se creó correctamente", Toast.LENGTH_SHORT).show();
                     sendNotification(valoracion);
-                }else{
-                    Toast.makeText(CrearValoracionActivity.this, "No se pudo crear el comentario", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "No se pudo crear el comentario", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -118,27 +140,25 @@ public class CrearValoracionActivity extends AppCompatActivity {
         mTokenFirebase.getToken(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()){
-                    if (documentSnapshot.contains("token")){
+                if (documentSnapshot.exists()) {
+                    if (documentSnapshot.contains("token")) {
                         String usr = autentificacioFirebase.getUid();
                         String token = documentSnapshot.getString("token");
-                        Map<String,String> data = new HashMap<>();
-                        data.put("title","NUEVO COMENTARIO DE " + nUsuarioActivity );
-                        data.put("body",valoracion);
+                        Map<String, String> data = new HashMap<>();
+                        data.put("title", "NUEVO COMENTARIO DE " + nUsuarioActivity);
+                        data.put("body", valoracion);
                         FCMBody body = new FCMBody(token, "high", "4500s", data);
                         mNotificationFirebase.sendNotification(body).enqueue(new Callback<FCMResponse>() {
                             @Override
                             public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-                                if (response.body() != null){
-                                    if (response.body().getSuccess() == 1){
-                                        Toast.makeText(CrearValoracionActivity.this, "La notificacion se ha enviado",Toast.LENGTH_SHORT).show();
+                                if (response.body() != null) {
+                                    if (response.body().getSuccess() == 1) {
+                                        Toast.makeText(getActivity(), "La notificación se ha enviado", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Toast.makeText(CrearValoracionActivity.this, "ERROR no se envió",Toast.LENGTH_SHORT).show();
-
+                                        Toast.makeText(getActivity(), "ERROR no se envió", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
-                                    Toast.makeText(CrearValoracionActivity.this, "La notificacion NO se ha enviado",Toast.LENGTH_SHORT).show();
-
+                                    Toast.makeText(getActivity(), "La notificación NO se ha enviado", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -153,10 +173,8 @@ public class CrearValoracionActivity extends AppCompatActivity {
         });
     }
 
-
-    private void cargarDetallesUsuario(String userId) {
+    public void cargarDetallesUsuario(String userId) {
         if (userId != null) {
-
             usuariosBBDDFirebase.getUsuarios(userId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -168,7 +186,6 @@ public class CrearValoracionActivity extends AppCompatActivity {
                         if (documentSnapshot.contains("fotoPerfil")) {
                             String fotoPerfilActivity = documentSnapshot.getString("fotoPerfil");
                             if (fotoPerfilActivity != null) {
-                                // Carga la imagen de perfil del usuario usando la biblioteca Picasso.
                                 Picasso.get().load(fotoPerfilActivity).into(fotoPerfil);
                             }
                         }
@@ -176,10 +193,5 @@ public class CrearValoracionActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
-
-
-
-
 }
