@@ -127,6 +127,7 @@ public class RegistroActivity extends AppCompatActivity {
                     usuario.setTelefono(numTelefono);
                     usuario.setDescripcion(null);
                     usuario.setBanner(null);
+                    usuario.setMedia(0.0F);
                     usuario.setFotoPerfil(null);
                     usuario.setTimeStamp(new Date().getTime());
 

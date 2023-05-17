@@ -8,6 +8,8 @@ public class Usuarios {
     private String telefono;
     private String descripcion;
     private String banner;
+
+    private float media;
     private String fotoPerfil;
     private long timeStamp;
 
@@ -16,16 +18,26 @@ public class Usuarios {
 
     }
 
-    public Usuarios(String id, String usuario, String email, String telefono, String descripcion, String banner, String fotoPerfil, long timeStamp) {
+    public Usuarios(String id, String usuario, float media,String email, String telefono, String descripcion, String banner, String fotoPerfil, long timeStamp) {
         this.id = id;
         this.usuario = usuario;
         this.email = email;
+        this.media = media;
         this.telefono = telefono;
         this.descripcion = descripcion;
         this.banner = banner;
         this.fotoPerfil = fotoPerfil;
         this.timeStamp = timeStamp;
     }
+
+    public float getMedia() {
+        return media;
+    }
+
+    public void setMedia(float media) {
+        this.media = media;
+    }
+
 
     public String getId() {
         return id;
