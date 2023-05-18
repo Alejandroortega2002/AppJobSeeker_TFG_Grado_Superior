@@ -20,6 +20,7 @@ import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
 
+import com.example.testmenu.utils.ViewedMensajeHelper;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
@@ -219,6 +220,20 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ViewedMensajeHelper.updateOnline(true,PostDetailActivity.this);
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ViewedMensajeHelper.updateOnline(false,PostDetailActivity.this);
     }
 
 

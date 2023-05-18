@@ -44,7 +44,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
         if(mAuthProvider.getUid().equals(chat.getIdUser1())){
             getUserInfo(chat.getIdUser2(),holder);
         }else{
-            getUserInfo(chat.getIdUser2(),holder);
+            getUserInfo(chat.getIdUser1(),holder);
         }
 
         holder.viewHolder.setOnClickListener(new View.OnClickListener() {

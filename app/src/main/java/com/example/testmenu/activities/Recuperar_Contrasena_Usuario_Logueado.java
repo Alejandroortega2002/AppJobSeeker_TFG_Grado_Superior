@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.testmenu.R;
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
+import com.example.testmenu.utils.ViewedMensajeHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -132,5 +133,20 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ViewedMensajeHelper.updateOnline(true,Recuperar_Contrasena_Usuario_Logueado.this);
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ViewedMensajeHelper.updateOnline(false,Recuperar_Contrasena_Usuario_Logueado.this);
     }
 }

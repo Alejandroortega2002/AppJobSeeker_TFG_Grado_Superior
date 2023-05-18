@@ -25,6 +25,7 @@ import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.ImagenFirebase;
 import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.utils.FileUtil;
+import com.example.testmenu.utils.ViewedMensajeHelper;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -378,6 +379,20 @@ public class PostActivity extends AppCompatActivity {
             mImageFile2 = new File(mAbsolutePhotoPath2);
             Picasso.get().load(mPhotoPath2).into(mImageViewPost2);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ViewedMensajeHelper.updateOnline(true,PostActivity.this);
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ViewedMensajeHelper.updateOnline(false,PostActivity.this);
     }
 
 

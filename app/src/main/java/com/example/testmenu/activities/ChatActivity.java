@@ -36,6 +36,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
@@ -66,6 +67,7 @@ public class ChatActivity extends AppCompatActivity {
     View mActionBarView;
 
     LinearLayoutManager mLinearLayoutManager;
+    ListenerRegistration mListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,10 +114,25 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         mAdapter.stopListening();
         ViewedMensajeHelper.updateOnline(false, ChatActivity.this);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mListener !=null){
+            mListener.remove();
+        }
     }
 
     private void getMensajeChat() {
@@ -202,7 +219,7 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             idUserInfo = mExtraIdUser1;
         }
-        mUsuarioFirebase.getUsuariosRealTime(idUserInfo).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+       mListener = mUsuarioFirebase.getUsuariosRealTime(idUserInfo).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()) {

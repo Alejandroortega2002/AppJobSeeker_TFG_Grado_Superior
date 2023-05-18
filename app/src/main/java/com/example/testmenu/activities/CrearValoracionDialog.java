@@ -45,7 +45,7 @@ public class CrearValoracionDialog extends DialogFragment {
     private TextView nombreUser;
     private RatingBar estrellasCrear;
     private EditText escribirValoracion;
-    private Button enviar, cancelar;
+    private Button enviar,cancelar;
 
     String valoracion;
     String nUsuarioActivity;
@@ -55,8 +55,6 @@ public class CrearValoracionDialog extends DialogFragment {
 
     NotificationFirebase mNotificationFirebase;
     TokenFirebase mTokenFirebase;
-
-    private Context context;
 
     // Constructor vacío requerido para DialogFragment
     public CrearValoracionDialog() {
@@ -75,7 +73,6 @@ public class CrearValoracionDialog extends DialogFragment {
         mNotificationFirebase = new NotificationFirebase();
         mTokenFirebase = new TokenFirebase();
         valoracionFirebase = new ValoracionFirebase();
-        context = getContext();
     }
 
     @NonNull
@@ -102,7 +99,8 @@ public class CrearValoracionDialog extends DialogFragment {
         });
 
         enviar.setOnClickListener(v -> {
-            validarValoracion();
+            meterDatos(idUser);
+            dismiss();
         });
 
         return customDialog;
@@ -126,10 +124,50 @@ public class CrearValoracionDialog extends DialogFragment {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(context, "El comentario se creó correctamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "El comentario se creó correctamente", Toast.LENGTH_SHORT).show();
                     sendNotification(valoracion);
                 } else {
-                    Toast.makeText(context, "No se pudo crear el comentario", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "No se pudo crear el comentario", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void sendNotification(String comentario) {
+        if (idUser == null) {
+            return;
+        }
+        mTokenFirebase.getToken(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    if (documentSnapshot.contains("token")) {
+                        String usr = autentificacioFirebase.getUid();
+                        String token = documentSnapshot.getString("token");
+                        Map<String, String> data = new HashMap<>();
+                        data.put("title", "NUEVO COMENTARIO DE " + nUsuarioActivity);
+                        data.put("body", valoracion);
+                        FCMBody body = new FCMBody(token, "high", "4500s", data);
+                        mNotificationFirebase.sendNotification(body).enqueue(new Callback<FCMResponse>() {
+                            @Override
+                            public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                                if (response.body() != null) {
+                                    if (response.body().getSuccess() == 1) {
+                                        Toast.makeText(getActivity(), "La notificación se ha enviado", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getActivity(), "ERROR no se envió", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getActivity(), "La notificación NO se ha enviado", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<FCMResponse> call, Throwable t) {
+
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -156,64 +194,4 @@ public class CrearValoracionDialog extends DialogFragment {
             });
         }
     }
-
-    private void sendNotification(String comentario) {
-        if (idUser == null) {
-            return;
-        }
-        mTokenFirebase.getToken(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    if (documentSnapshot.contains("token")) {
-                        String usr = autentificacioFirebase.getUid();
-                        String token = documentSnapshot.getString("token");
-                        Map<String, String> data = new HashMap<>();
-                        data.put("title", "NUEVO COMENTARIO DE " + nUsuarioActivity);
-                        data.put("body", valoracion);
-                        FCMBody body = new FCMBody(token, "high", "4500s", data);
-                        mNotificationFirebase.sendNotification(body).enqueue(new Callback<FCMResponse>() {
-                            @Override
-                            public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-                                if (response.body() != null) {
-                                    if (response.body().getSuccess() == 1) {
-                                        Toast.makeText(context, "La notificación se ha enviado", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(context, "ERROR no se envió", Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    Toast.makeText(context, "La notificación NO se ha enviado", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<FCMResponse> call, Throwable t) {
-
-                            }
-                        });
-                    }
-                }
-            }
-        });
-    }
-
-    public void validarValoracion() {
-        String ratings = String.valueOf(estrellasCrear.getRating());
-        valoracion = escribirValoracion.getText().toString().trim();
-
-        // Verificar si los campos están vacíos
-        if (valoracion.isEmpty()) {
-            Toast.makeText(context, "Debe ingresar una valoración", Toast.LENGTH_SHORT).show();
-            return; // No hace nada si no se cumple el requisito
-        }
-
-        // Verificar si el rating es cero
-        if (ratings.equals("0.0")) {
-            Toast.makeText(context, "Debe seleccionar una calificación", Toast.LENGTH_SHORT).show();
-            return; // No hace nada si no se cumple el requisito
-        }
-        meterDatos(idUser);
-        dismiss();
-    }
-
 }

@@ -23,6 +23,7 @@ import com.example.testmenu.databinding.FragmentPerfilBinding;
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
+import com.example.testmenu.utils.ViewedMensajeHelper;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -211,5 +212,20 @@ public class VerPerfilActivity extends AppCompatActivity {
             btnValoracion.setX(-40);
             btnverOfertas.setX(-20);
         }
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ViewedMensajeHelper.updateOnline(true,VerPerfilActivity.this);
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ViewedMensajeHelper.updateOnline(false,VerPerfilActivity.this);
     }
 }

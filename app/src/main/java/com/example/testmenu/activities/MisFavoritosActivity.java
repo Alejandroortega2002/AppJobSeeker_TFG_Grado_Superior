@@ -71,7 +71,6 @@ public class MisFavoritosActivity extends AppCompatActivity {
                     postIds.add(favoritos.getIdPost());
                 }
             }
-            if (!postIds.isEmpty()) {
                 // Obtener la información detallada de cada post
                 Query queryPublicaciones = mPublicacionfirebase.getPostByIdList(postIds);
                 FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
@@ -81,7 +80,7 @@ public class MisFavoritosActivity extends AppCompatActivity {
                 mPostsAdapter2 = new PostsAdapter2(options, this);
                 recyclerView.setAdapter(mPostsAdapter2);
                 mPostsAdapter2.startListening();
-            }
+
         });
     }
 
@@ -89,9 +88,7 @@ public class MisFavoritosActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (mPostsAdapter2 != null) {
-            mPostsAdapter2.stopListening();
-        }
+        mPostsAdapter2.stopListening();
     }
 
 }

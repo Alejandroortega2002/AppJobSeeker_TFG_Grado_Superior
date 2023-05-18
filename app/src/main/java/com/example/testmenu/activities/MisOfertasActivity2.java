@@ -15,6 +15,7 @@ import com.example.testmenu.adapters.PostsAdapter2;
 import com.example.testmenu.entidades.Publicacion;
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.PublicacionFirebase;
+import com.example.testmenu.utils.ViewedMensajeHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
@@ -61,12 +62,18 @@ public class MisOfertasActivity2 extends AppCompatActivity {
         mPostsAdapter2 = new PostsAdapter2(options, this);
         recyclerView.setAdapter(mPostsAdapter2);
         mPostsAdapter2.startListening();
+        ViewedMensajeHelper.updateOnline(true,MisOfertasActivity2.this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mPostsAdapter2.stopListening();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ViewedMensajeHelper.updateOnline(false,MisOfertasActivity2.this);
     }
 
 }

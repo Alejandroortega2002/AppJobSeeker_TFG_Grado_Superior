@@ -31,6 +31,7 @@ import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.ImagenFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
 import com.example.testmenu.utils.FileUtil;
+import com.example.testmenu.utils.ViewedMensajeHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -440,5 +441,18 @@ public class EditarPerfilActivity extends AppCompatActivity {
             mImageFile2 = new File(mAbsolutePhotoPath2);
             Picasso.get().load(mPhotoPath2).into(fotoBanner);
         }
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ViewedMensajeHelper.updateOnline(true,EditarPerfilActivity.this);
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ViewedMensajeHelper.updateOnline(false,EditarPerfilActivity.this);
     }
 }
