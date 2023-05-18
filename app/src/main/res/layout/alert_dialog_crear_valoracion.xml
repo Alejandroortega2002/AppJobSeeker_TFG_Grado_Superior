@@ -20,9 +20,9 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/fotoUsuarioCrearValoracion"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:src="@drawable/foto_login"
             app:civ_border_color="@color/white"
             app:civ_border_width="20dp" />
@@ -30,7 +30,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="150dp"
             android:orientation="vertical">
 
             <TextView
@@ -65,6 +65,9 @@
                 android:fontFamily="@font/roboto_regular"
                 android:layout_gravity="center"
                 android:hint="Reseña"
+                android:inputType="textMultiLine"
+                android:maxLength="500"
+                android:maxLines="4"
                 android:textColorHint="@color/azulGeneral"
                 android:textSize="25dp" />
 
