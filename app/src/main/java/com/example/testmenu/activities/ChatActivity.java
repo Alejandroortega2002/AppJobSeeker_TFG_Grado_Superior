@@ -1,6 +1,5 @@
 package com.example.testmenu.activities;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,24 +14,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.testmenu.R;
 import com.example.testmenu.adapters.MensajeAdapter;
 import com.example.testmenu.entidades.Chat;
+import com.example.testmenu.entidades.FCMBody;
+import com.example.testmenu.entidades.FCMResponse;
 import com.example.testmenu.entidades.Mensaje;
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.ChatsFirebase;
 import com.example.testmenu.firebase.MensajeFirebase;
+import com.example.testmenu.firebase.NotificationFirebase;
+import com.example.testmenu.firebase.TokenFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
 import com.example.testmenu.utils.RelativeTime;
 import com.example.testmenu.utils.ViewedMensajeHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -43,8 +43,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
     String mExtraIdUser1;
@@ -54,6 +60,9 @@ public class ChatActivity extends AppCompatActivity {
     MensajeFirebase mMensajeFirebase;
     AutentificacioFirebase mAuthFirebase;
     UsuariosBBDDFirebase mUsuarioFirebase;
+    NotificationFirebase mNotificationFirebase;
+
+    TokenFirebase mTokenFirebase;
 
     EditText mEditTextMensaje;
     ImageView mImageViewSendMensaje;
@@ -68,6 +77,9 @@ public class ChatActivity extends AppCompatActivity {
 
     LinearLayoutManager mLinearLayoutManager;
     ListenerRegistration mListener;
+    String username;
+
+    long mIdNotificationChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +89,8 @@ public class ChatActivity extends AppCompatActivity {
         mMensajeFirebase = new MensajeFirebase();
         mAuthFirebase = new AutentificacioFirebase();
         mUsuarioFirebase = new UsuariosBBDDFirebase();
+        mNotificationFirebase = new NotificationFirebase();
+        mTokenFirebase = new TokenFirebase();
 
         mEditTextMensaje = findViewById(R.id.editTextMensaje);
         mImageViewSendMensaje = findViewById(R.id.imageViewSendMensaje);
@@ -148,6 +162,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
+                updateViewed();
                 int numMensajes = mAdapter.getItemCount();
                 int lastMensajePosicion = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
 
@@ -158,11 +173,11 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-
+    @SuppressLint("NotifyDataSetChanged")
     private void sendMensaje() {
         String textMensaje = mEditTextMensaje.getText().toString();
         if (!textMensaje.isEmpty()) {
-            Mensaje mensaje = new Mensaje();
+            final Mensaje mensaje = new Mensaje();
             mensaje.setIdChat(mExtraIdChat);
             if (mAuthFirebase.getUid().equals(mExtraIdUser1)) {
                 mensaje.setIdSender(mExtraIdUser1);
@@ -173,23 +188,21 @@ public class ChatActivity extends AppCompatActivity {
             }
             mensaje.setTimestamp(new Date().getTime());
             mensaje.setViewed(false);
+            mensaje.setIdChat(mExtraIdChat);
             mensaje.setMessage(textMensaje);
 
-            MensajeFirebase mensajeFirebase = new MensajeFirebase();
-            mensajeFirebase.create(mensaje)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            mEditTextMensaje.setText("");
-                            int position = mAdapter.getItemCount(); // Obtener la posición del nuevo elemento
-                            mAdapter.notifyDataSetChanged(); // Actualizar la lista de mensajes en la interfaz de usuario
-                        } else {
-                            Toast.makeText(ChatActivity.this, "El mensaje no se pudo crear", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            mMensajeFirebase.create(mensaje).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    mEditTextMensaje.setText("");
+                    mAdapter.notifyDataSetChanged();
+                    sendNotification(mensaje.getMessage());
+                } else {
+                    Toast.makeText(ChatActivity.this, "El mensaje no se pudo crear", Toast.LENGTH_SHORT).show();
+
+                }
+            });
         }
     }
-
-
 
     private void showCustomToolbar(int resource) {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -221,12 +234,12 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             idUserInfo = mExtraIdUser1;
         }
-       mListener = mUsuarioFirebase.getUsuariosRealTime(idUserInfo).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        mListener = mUsuarioFirebase.getUsuariosRealTime(idUserInfo).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()) {
                     if (documentSnapshot.contains("usuario")) {
-                        String username = documentSnapshot.getString("usuario");
+                         username = documentSnapshot.getString("usuario");
                         mTextViewUsername.setText(username);
                     }
                     if (documentSnapshot.contains("online")) {
@@ -265,6 +278,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
                 else {
                     mExtraIdChat = queryDocumentSnapshots.getDocuments().get(0).getId();
+                    mIdNotificationChat = queryDocumentSnapshots.getDocuments().get(0).getLong("idNotification");
                     getMensajeChat();
                     updateViewed();
                 }
@@ -296,6 +310,10 @@ public class ChatActivity extends AppCompatActivity {
         chat.setWriting(false);
         chat.setTimmestamp(new Date().getTime());
         chat.setId(mExtraIdUser1 + mExtraIdUser2);
+        Random random = new Random();
+        int n = random.nextInt(1000000);
+        chat.setIdNotification(n);
+        mIdNotificationChat = n;
 
         ArrayList<String> ids = new ArrayList<>();
         ids.add(mExtraIdUser1);
@@ -305,5 +323,50 @@ public class ChatActivity extends AppCompatActivity {
         mExtraIdChat = chat.getId();
         getMensajeChat();
 
+    }
+
+    private void sendNotification(String mensaje) {
+        String idUser= "";
+        if (mAuthFirebase.getUid().equals(mExtraIdUser1)){
+            idUser=mExtraIdUser2;
+        }else {
+            idUser=mExtraIdUser1;
+        }
+
+        mTokenFirebase.getToken(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    if (documentSnapshot.contains("token")) {
+                        String usr = mAuthFirebase.getUid();
+                        String token = documentSnapshot.getString("token");
+                        Map<String, String> data = new HashMap<>();
+                        data.put("title","MENSAJE");
+                        data.put("body", username+": " + mensaje);
+                        data.put("idNotification",String.valueOf(mIdNotificationChat));
+                        FCMBody body = new FCMBody(token, "high", "4500s", data);
+                        mNotificationFirebase.sendNotification(body).enqueue(new Callback<FCMResponse>() {
+                            @Override
+                            public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                                if (response.body() != null) {
+                                    if (response.body().getSuccess() == 1) {
+                                        Toast.makeText(ChatActivity.this, "El mensaje se ha enviado", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(ChatActivity.this, "ERROR no se envió", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(ChatActivity.this, "Mensaje NO enviado", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<FCMResponse> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 }

@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
@@ -48,6 +49,9 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
     FavoritosFirebase favoritosFirebase;
 
     Dialog customDialog;
+
+    ListenerRegistration mListener;
+
 
 
     public PostsAdapter2(FirestoreRecyclerOptions<Publicacion> options, Context contexto) {
@@ -106,7 +110,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
     }
 
     private void getNumeroDeLikes(String idPost, final PostsAdapter2.ViewHolder holder) {
-        favoritosFirebase.getLikesByPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        mListener= favoritosFirebase.getLikesByPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null) {

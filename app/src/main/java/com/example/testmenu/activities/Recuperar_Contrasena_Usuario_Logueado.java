@@ -28,6 +28,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 
 public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
 
@@ -39,6 +40,8 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
 
     AutentificacioFirebase autentificacioFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
+
+    ListenerRegistration mListener;
 
 
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
@@ -85,28 +88,31 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
 
     public void rellenarInformacionUsuario() {
         DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(autentificacioFirebase.getUid());
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        mListener= documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    // Manejar el error de Firebase Firestore
-                    Log.w(TAG, "Error al obtener el documento.", error);
-                    return;
-                }
-                if (value != null && value.exists()) {
-                    // Obtener los valores del objeto DocumentSnapshot
-                    String correo = value.getString("email");
-
-                    if (correo != null) {
-                        emailRecuperar.setText(correo);
-                    } else {
-                        emailRecuperar.setText("Sin correo");
+                if (value!=null){
+                    if (error != null) {
+                        // Manejar el error de Firebase Firestore
+                        Log.w(TAG, "Error al obtener el documento.", error);
+                        return;
                     }
+                    if (value != null && value.exists()) {
+                        // Obtener los valores del objeto DocumentSnapshot
+                        String correo = value.getString("email");
 
-                } else {
-                    // Manejar el caso en que el objeto DocumentSnapshot es nulo o no existe
-                    Log.d(TAG, "El objeto DocumentSnapshot no existe");
+                        if (correo != null) {
+                            emailRecuperar.setText(correo);
+                        } else {
+                            emailRecuperar.setText("Sin correo");
+                        }
+
+                    } else {
+                        // Manejar el caso en que el objeto DocumentSnapshot es nulo o no existe
+                        Log.d(TAG, "El objeto DocumentSnapshot no existe");
+                    }
                 }
+
             }
         });
     }
@@ -148,5 +154,12 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         ViewedMensajeHelper.updateOnline(false,Recuperar_Contrasena_Usuario_Logueado.this);
+    }
+
+    protected void onDestroy(){
+        super.onDestroy();
+        if (mListener!=null){
+            mListener.remove();
+        }
     }
 }

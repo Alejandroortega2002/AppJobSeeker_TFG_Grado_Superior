@@ -39,6 +39,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
@@ -91,6 +92,8 @@ public class EditarPerfilActivity extends AppCompatActivity {
     String mAbsolutePhotoPath2;
     String mPhotoPath2;
     File mPhotoFile2;
+
+    ListenerRegistration mListener;
 
 
     @SuppressLint("MissingInflatedId")
@@ -153,56 +156,59 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
     public void rellenarInformacionUsuario() {
         DocumentReference documentReference = mUsersProvider.refereciaColeccion(mAuthProvider.getUid());
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        mListener= documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    // Manejar el error de Firebase Firestore
-                    Log.w(TAG, "Error al obtener el documento.", error);
-                    return;
-                }
-                if (value != null && value.exists()) {
-                    // Obtener los valores del objeto DocumentSnapshot
-                    String nombre = value.getString("usuario");
-                    String ntelefono = value.getString("telefono");
-                    String descrip = value.getString("descripcion");
+                if (value !=null){
+                    if (error != null) {
+                        // Manejar el error de Firebase Firestore
+                        Log.w(TAG, "Error al obtener el documento.", error);
+                        return;
+                    }
+                    if (value != null && value.exists()) {
+                        // Obtener los valores del objeto DocumentSnapshot
+                        String nombre = value.getString("usuario");
+                        String ntelefono = value.getString("telefono");
+                        String descrip = value.getString("descripcion");
 
-                    // Verificar si los valores obtenidos son nulos antes de establecer el texto en los TextViews
-                    if(value.contains("fotoPerfil")){
-                        String perfil = value.getString("fotoPerfil");
-                        if(perfil != null){
-                            if(!perfil.isEmpty()){
-                                Picasso.get().load(perfil).into(fotoPerfil);
+                        // Verificar si los valores obtenidos son nulos antes de establecer el texto en los TextViews
+                        if(value.contains("fotoPerfil")){
+                            String perfil = value.getString("fotoPerfil");
+                            if(perfil != null){
+                                if(!perfil.isEmpty()){
+                                    Picasso.get().load(perfil).into(fotoPerfil);
+                                }
                             }
                         }
-                    }
-                    if(value.contains("banner")){
-                        String banner = value.getString("banner");
-                        if(banner != null){
-                            if(!banner.isEmpty()){
-                                Picasso.get().load(banner).into(fotoBanner);
+                        if(value.contains("banner")){
+                            String banner = value.getString("banner");
+                            if(banner != null){
+                                if(!banner.isEmpty()){
+                                    Picasso.get().load(banner).into(fotoBanner);
+                                }
                             }
                         }
-                    }
-                    if (nombre != null) {
-                        usuario.setText(nombre);
+                        if (nombre != null) {
+                            usuario.setText(nombre);
+                        } else {
+                            usuario.setText("Sin nombre");
+                        }
+                        if (telefono != null) {
+                            telefono.setText(ntelefono);
+                        } else {
+                            telefono.setText("Sin teléfono");
+                        }
+                        if (descripcion != null) {
+                            descripcion.setText(descrip);
+                        } else {
+                            descripcion.setText("Sin descripción");
+                        }
                     } else {
-                        usuario.setText("Sin nombre");
+                        // Manejar el caso en que el objeto DocumentSnapshot es nulo o no existe
+                        Log.d(TAG, "El objeto DocumentSnapshot no existe");
                     }
-                    if (telefono != null) {
-                        telefono.setText(ntelefono);
-                    } else {
-                        telefono.setText("Sin teléfono");
-                    }
-                    if (descripcion != null) {
-                        descripcion.setText(descrip);
-                    } else {
-                        descripcion.setText("Sin descripción");
-                    }
-                } else {
-                    // Manejar el caso en que el objeto DocumentSnapshot es nulo o no existe
-                    Log.d(TAG, "El objeto DocumentSnapshot no existe");
                 }
+
             }
         });
     }
@@ -454,5 +460,13 @@ public class EditarPerfilActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         ViewedMensajeHelper.updateOnline(false,EditarPerfilActivity.this);
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        if (mListener!=null){
+            mListener.remove();
+        }
     }
 }

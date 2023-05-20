@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment {
     private ImageView fotoBanner;
     private CircleImageView fotoPerfil;
 
-    private LinearLayout btnMisOfertas,btnFavoritos,btnValoracion;
+    private LinearLayout btnMisOfertas, btnFavoritos, btnValoracion;
 
 
     private ImageButton btnAjustesPerfil;
@@ -59,16 +59,15 @@ public class ProfileFragment extends Fragment {
     AutentificacioFirebase autentificacioFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
     PublicacionFirebase publicacionFirebase;
+    ListenerRegistration mListener;
+
 
     private String idUser;
 
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        /*Instanciamos la clase ViewModel correspondiente*/
-//        ProfileViewModel profileViewModel =
-//                new ViewModelProvider(this).get(ProfileViewModel.class);
+
 
         /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
         binding = FragmentPerfilBinding.inflate(inflater, container, false);
@@ -164,63 +163,66 @@ public class ProfileFragment extends Fragment {
 
     public void rellenarInformacionUsuario() {
         DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(idUser);
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+         mListener =documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    // Manejar el error de Firebase Firestore
-                    Log.w(TAG, "Error al obtener el documento.", error);
-                    return;
-                }
-                if (value != null && value.exists()) {
-                    // Obtener los valores del objeto DocumentSnapshot
-                    String nombre = value.getString("usuario");
-                    String correo = value.getString("email");
-                    String ntelefono = value.getString("telefono");
-                    String descrip = value.getString("descripcion");
+                if (value !=null){
+                    if (error != null) {
+                        // Manejar el error de Firebase Firestore
+                        Log.w(TAG, "Error al obtener el documento.", error);
+                        return;
+                    }
+                    if (value != null && value.exists()) {
+                        // Obtener los valores del objeto DocumentSnapshot
+                        String nombre = value.getString("usuario");
+                        String correo = value.getString("email");
+                        String ntelefono = value.getString("telefono");
+                        String descrip = value.getString("descripcion");
 
 
-                    // Verificar si los valores obtenidos son nulos antes de establecer el texto en los TextViews
-                    if (value.contains("fotoPerfil")) {
-                        String perfil = value.getString("fotoPerfil");
-                        if (perfil != null) {
-                            if (!perfil.isEmpty()) {
-                                Picasso.get().load(perfil).into(fotoPerfil);
+                        // Verificar si los valores obtenidos son nulos antes de establecer el texto en los TextViews
+                        if (value.contains("fotoPerfil")) {
+                            String perfil = value.getString("fotoPerfil");
+                            if (perfil != null) {
+                                if (!perfil.isEmpty()) {
+                                    Picasso.get().load(perfil).into(fotoPerfil);
+                                }
                             }
                         }
-                    }
-                    if (value.contains("banner")) {
-                        String banner = value.getString("banner");
-                        if (banner != null) {
-                            if (!banner.isEmpty()) {
-                                Picasso.get().load(banner).into(fotoBanner);
+                        if (value.contains("banner")) {
+                            String banner = value.getString("banner");
+                            if (banner != null) {
+                                if (!banner.isEmpty()) {
+                                    Picasso.get().load(banner).into(fotoBanner);
+                                }
                             }
                         }
-                    }
-                    if (nombre != null) {
-                        nombreU.setText(nombre);
+                        if (nombre != null) {
+                            nombreU.setText(nombre);
+                        } else {
+                            nombreU.setText("Sin nombre");
+                        }
+                        if (correo != null) {
+                            email.setText(correo);
+                        } else {
+                            email.setText("Sin correo");
+                        }
+                        if (telefono != null) {
+                            telefono.setText(ntelefono);
+                        } else {
+                            telefono.setText("Sin teléfono");
+                        }
+                        if (descripcion != null) {
+                            descripcion.setText(descrip);
+                        } else {
+                            descripcion.setText("Sin descripción");
+                        }
                     } else {
-                        nombreU.setText("Sin nombre");
+                        // Manejar el caso en que el objeto DocumentSnapshot es nulo o no existe
+                        Log.d(TAG, "El objeto DocumentSnapshot no existe");
                     }
-                    if (correo != null) {
-                        email.setText(correo);
-                    } else {
-                        email.setText("Sin correo");
-                    }
-                    if (telefono != null) {
-                        telefono.setText(ntelefono);
-                    } else {
-                        telefono.setText("Sin teléfono");
-                    }
-                    if (descripcion != null) {
-                        descripcion.setText(descrip);
-                    } else {
-                        descripcion.setText("Sin descripción");
-                    }
-                } else {
-                    // Manejar el caso en que el objeto DocumentSnapshot es nulo o no existe
-                    Log.d(TAG, "El objeto DocumentSnapshot no existe");
                 }
+
             }
         });
     }
@@ -228,6 +230,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mListener!=null){
+            mListener.remove();
+        }
         binding = null;
     }
 }
