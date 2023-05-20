@@ -148,7 +148,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
-                updateViewed();
                 int numMensajes = mAdapter.getItemCount();
                 int lastMensajePosicion = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
 
@@ -159,7 +158,7 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+
     private void sendMensaje() {
         String textMensaje = mEditTextMensaje.getText().toString();
         if (!textMensaje.isEmpty()) {
@@ -174,20 +173,23 @@ public class ChatActivity extends AppCompatActivity {
             }
             mensaje.setTimestamp(new Date().getTime());
             mensaje.setViewed(false);
-            mensaje.setIdChat(mExtraIdChat);
             mensaje.setMessage(textMensaje);
 
-            mMensajeFirebase.create(mensaje).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    mEditTextMensaje.setText("");
-                    mAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(ChatActivity.this, "El mensaje no se pudo crear", Toast.LENGTH_SHORT).show();
-
-                }
-            });
+            MensajeFirebase mensajeFirebase = new MensajeFirebase();
+            mensajeFirebase.create(mensaje)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            mEditTextMensaje.setText("");
+                            int position = mAdapter.getItemCount(); // Obtener la posición del nuevo elemento
+                            mAdapter.notifyDataSetChanged(); // Actualizar la lista de mensajes en la interfaz de usuario
+                        } else {
+                            Toast.makeText(ChatActivity.this, "El mensaje no se pudo crear", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
+
+
 
     private void showCustomToolbar(int resource) {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -228,7 +230,7 @@ public class ChatActivity extends AppCompatActivity {
                         mTextViewUsername.setText(username);
                     }
                     if (documentSnapshot.contains("online")) {
-                        boolean online = documentSnapshot.getBoolean("online");
+                        boolean online = Boolean.TRUE.equals(documentSnapshot.getBoolean("online"));
                         if (online) {
                             mTextViewRelativeTime.setText("En linea");
                         } else if (documentSnapshot.contains("lastConnect")) {
