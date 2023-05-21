@@ -57,18 +57,76 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
     }
 
     private void showNotificationMessage(Map<String,String> data){
-        String title =data.get("title");
-        String body =data.get("body");
-        String usernameSender =data.get("usernameSender");
-        String usernameReceiver =data.get("usernameReceiver");
-        String lastMessage =data.get("lastMessage");
+
+
+        final String imageSender =data.get("imageSender");
+        final String imageReceiver =data.get("imageReceiver");
+
+        getImageSender(data,imageSender,imageReceiver);
+
+
+
+    }
+
+    private void getImageSender(final Map<String,String> data, final String imageSender,final String imageReceiver) {
+        new Handler(Looper.getMainLooper())
+                .post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Picasso.get()
+                                .load(imageSender)
+                                .into(new Target() {
+                                    @Override
+                                    public void onBitmapLoaded(Bitmap bitmapSender, Picasso.LoadedFrom from) {
+                                        getImageReceiver(data,imageReceiver,bitmapSender);
+                                    }
+
+                                    @Override
+                                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                                        getImageReceiver(data,imageReceiver,null);
+                                    }
+
+                                    @Override
+                                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                                    }
+                                });
+                    }
+                });
+    }
+
+
+    private void getImageReceiver(final Map<String,String> data, String imageReceiver,Bitmap bitmapSender){
+        Picasso.get()
+                .load(imageReceiver)
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmapReceiver, Picasso.LoadedFrom from) {
+                        notifyMessage(data,bitmapSender,bitmapReceiver);
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                        notifyMessage(data,bitmapSender,null);
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });
+    }
+
+    private void notifyMessage(Map<String,String> data, Bitmap bitmapSender, Bitmap bitmapReceiver){
+        final String usernameSender =data.get("usernameSender");
+        final String usernameReceiver =data.get("usernameReceiver");
+        final String lastMessage =data.get("lastMessage");
         String messagesJson =data.get("messages");
-        String imageSender =data.get("imageSender");
-        String imageReceiver =data.get("imageReceiver");
-        String idSender =data.get("idSender");
-        String idReceiver =data.get("idReceiver");
-        String idChat =data.get("idChat");
-       final int idNotification = Integer.parseInt(data.get("idNotification"));
+
+        final String idSender =data.get("idSender");
+        final String idReceiver =data.get("idReceiver");
+        final String idChat =data.get("idChat");
+        final int idNotification = Integer.parseInt(data.get("idNotification"));
 
         Intent intent = new Intent(this, MessageReceiver.class);
         intent.putExtra("idSender",idSender);
@@ -88,59 +146,16 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
 
         Gson gson = new Gson();
         Mensaje[] mensajes = gson.fromJson(messagesJson, Mensaje[].class);
-
-        new Handler(Looper.getMainLooper())
-                .post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Picasso.get()
-                                .load(imageSender)
-                                .into(new Target() {
-                                    @Override
-                                    public void onBitmapLoaded(Bitmap bitmapSender, Picasso.LoadedFrom from) {
-                                        Picasso.get()
-                                                .load(imageReceiver)
-                                                .into(new Target() {
-                                                    @Override
-                                                    public void onBitmapLoaded(Bitmap bitmapReceiver, Picasso.LoadedFrom from) {
-                                                        NotificationHelper notificationHelper = new NotificationHelper(getBaseContext());
-                                                        NotificationCompat.Builder builder = notificationHelper.getNotificationMessage(
-                                                                mensajes,
-                                                                usernameSender,
-                                                                usernameReceiver,
-                                                                lastMessage,
-                                                                bitmapSender,
-                                                                bitmapReceiver,
-                                                                action
-                                                        );
-                                                        notificationHelper.getmManager().notify(idNotification,builder.build());
-                                                    }
-
-                                                    @Override
-                                                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                                                    }
-
-                                                    @Override
-                                                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                                                    }
-                                                });
-                                    }
-
-                                    @Override
-                                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                                    }
-
-                                    @Override
-                                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                                    }
-                                });
-                    }
-                });
-
-
+        NotificationHelper notificationHelper = new NotificationHelper(getBaseContext());
+        NotificationCompat.Builder builder = notificationHelper.getNotificationMessage(
+                mensajes,
+                usernameSender,
+                usernameReceiver,
+                lastMessage,
+                bitmapSender,
+                bitmapReceiver,
+                action
+        );
+        notificationHelper.getmManager().notify(idNotification,builder.build());
     }
 }
