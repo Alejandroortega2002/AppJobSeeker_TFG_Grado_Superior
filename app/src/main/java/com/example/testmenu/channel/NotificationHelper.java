@@ -72,7 +72,8 @@ public class NotificationHelper extends ContextWrapper {
             String usernameReceiver,
             String lastMessage,
             Bitmap bitmapSender,
-            Bitmap bitmapReceiver
+            Bitmap bitmapReceiver,
+            NotificationCompat.Action action
     ){
         Person person1 = new Person.Builder()
                 .setName(usernameReceiver)
@@ -105,7 +106,8 @@ public class NotificationHelper extends ContextWrapper {
         }
         return new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setStyle(messagingStyle);
+                .setStyle(messagingStyle)
+                .addAction(action);
 
     }
 }
