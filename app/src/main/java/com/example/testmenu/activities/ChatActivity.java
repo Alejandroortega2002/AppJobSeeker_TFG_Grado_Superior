@@ -39,9 +39,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,6 +83,9 @@ public class ChatActivity extends AppCompatActivity {
 
     long mIdNotificationChat;
 
+    String myUsername;
+    String mUsernameChat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +110,8 @@ public class ChatActivity extends AppCompatActivity {
         mExtraIdChat = getIntent().getStringExtra("idChat");
 
         showCustomToolbar(R.layout.custom_chat_toolbar);
+
+        getMyInfoUser();
 
 
         mImageViewSendMensaje.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +202,7 @@ public class ChatActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     mEditTextMensaje.setText("");
                     mAdapter.notifyDataSetChanged();
-                    sendNotification(mensaje.getMessage());
+                    getToken(mensaje);
                 } else {
                     Toast.makeText(ChatActivity.this, "El mensaje no se pudo crear", Toast.LENGTH_SHORT).show();
 
@@ -239,8 +246,8 @@ public class ChatActivity extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()) {
                     if (documentSnapshot.contains("usuario")) {
-                         username = documentSnapshot.getString("usuario");
-                        mTextViewUsername.setText(username);
+                         mUsernameChat = documentSnapshot.getString("usuario");
+                        mTextViewUsername.setText(mUsernameChat);
                     }
                     if (documentSnapshot.contains("online")) {
                         boolean online = Boolean.TRUE.equals(documentSnapshot.getBoolean("online"));
@@ -325,13 +332,14 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    private void sendNotification(String mensaje) {
+    private void getToken(final Mensaje mensaje) {
         String idUser= "";
         if (mAuthFirebase.getUid().equals(mExtraIdUser1)){
             idUser=mExtraIdUser2;
         }else {
             idUser=mExtraIdUser1;
         }
+
 
         mTokenFirebase.getToken(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -340,30 +348,98 @@ public class ChatActivity extends AppCompatActivity {
                     if (documentSnapshot.contains("token")) {
                         String usr = mAuthFirebase.getUid();
                         String token = documentSnapshot.getString("token");
-                        Map<String, String> data = new HashMap<>();
-                        data.put("title","MENSAJE");
-                        data.put("body", username+": " + mensaje);
-                        data.put("idNotification",String.valueOf(mIdNotificationChat));
-                        FCMBody body = new FCMBody(token, "high", "4500s", data);
-                        mNotificationFirebase.sendNotification(body).enqueue(new Callback<FCMResponse>() {
-                            @Override
-                            public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-                                if (response.body() != null) {
-                                    if (response.body().getSuccess() == 1) {
-                                        Toast.makeText(ChatActivity.this, "El mensaje se ha enviado", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(ChatActivity.this, "ERROR no se envió", Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    Toast.makeText(ChatActivity.this, "Mensaje NO enviado", Toast.LENGTH_SHORT).show();
-                                }
-                            }
+                        getLastThreeMessages(mensaje,token);
 
-                            @Override
-                            public void onFailure(Call<FCMResponse> call, Throwable t) {
+                    }
+                }
+            }
+        });
+    }
 
+    private void getLastThreeMessages(Mensaje message, final String token) {
+        mMensajeFirebase.getLastThreeMensajeByChatAndSender(mExtraIdChat,mAuthFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                ArrayList<Mensaje> mensajeArrayList = new ArrayList<>();
+
+                for (DocumentSnapshot d: queryDocumentSnapshots.getDocuments()) {
+                    if (d.exists()){
+                        Mensaje message = d.toObject(Mensaje.class);
+                        mensajeArrayList.add(message);
+
+                    }
+                }
+
+                if (mensajeArrayList.size()==0){
+                    mensajeArrayList.add(message);
+                }
+
+                Collections.reverse(mensajeArrayList);
+                Gson gson = new Gson();
+                String mensajes = gson.toJson(mensajeArrayList);
+                sendNotificaction(token,mensajes,message);
+
+            }
+        });
+    }
+
+    private void sendNotificaction(final String token, String messages, Mensaje message){
+        final Map<String, String> data = new HashMap<>();
+        data.put("title","MENSAJE");
+        data.put("body", message.getMessage());
+        data.put("idNotification",String.valueOf(mIdNotificationChat));
+        data.put("messages",messages);
+        data.put("usernameSender",myUsername.toUpperCase());
+        data.put("usernameReceiver",mUsernameChat.toUpperCase());
+
+        String idSender="";
+        if (mAuthFirebase.getUid().equals(mExtraIdUser1)){
+            idSender = mExtraIdUser2;
+        } else {
+            idSender= mExtraIdUser1;
+        }
+        mMensajeFirebase.getLastMessageSender(mExtraIdChat,idSender).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                int size = queryDocumentSnapshots.size();
+                String lastMessage= "";
+                if (size>0){
+                    lastMessage = queryDocumentSnapshots.getDocuments().get(0).getString("message");
+                    data.put("lastMessage",lastMessage);
+                }
+                FCMBody body = new FCMBody(token, "high", "4500s", data);
+                mNotificationFirebase.sendNotification(body).enqueue(new Callback<FCMResponse>() {
+                    @Override
+                    public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                        if (response.body() != null) {
+                            if (response.body().getSuccess() == 1) {
+
+                            } else {
+                                Toast.makeText(ChatActivity.this, "ERROR no se envió", Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        } else {
+                            Toast.makeText(ChatActivity.this, "Mensaje NO enviado", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<FCMResponse> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
+
+    }
+
+    private void getMyInfoUser(){
+        mUsuarioFirebase.getUsuarios(mAuthFirebase.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if (documentSnapshot.contains("usuario")){
+                        myUsername = documentSnapshot.getString("usuario");
                     }
                 }
             }

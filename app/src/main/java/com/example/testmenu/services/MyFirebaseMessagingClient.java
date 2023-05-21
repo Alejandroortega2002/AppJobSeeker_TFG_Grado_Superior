@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.example.testmenu.channel.NotificationHelper;
+import com.example.testmenu.entidades.Mensaje;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 
 import java.util.Map;
 import java.util.Random;
@@ -25,9 +27,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
         String title = data.get("title");
         String body = data.get(("body"));
         if (title.equals("MENSAJE")){
-            int idNotification = Integer.parseInt(data.get("idNotification"));
-
-            showNotificationMessage(title,body, idNotification);
+            showNotificationMessage(data);
         } else {
             showNotification(title,body);
 
@@ -42,9 +42,19 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
         notificationHelper.getmManager().notify(numero,builder.build());
     }
 
-    private void showNotificationMessage(String title,String body,int idNotificationChat){
+    private void showNotificationMessage(Map<String,String> data){
+        String title =data.get("title");
+        String body =data.get("body");
+        String usernameSender =data.get("usernameSender");
+        String usernameReceiver =data.get("usernameReceiver");
+        String lastMessage =data.get("lastMessage");
+        String messagesJson =data.get("messages");
+        int idNotification = Integer.parseInt(data.get("idNotification"));
+        Gson gson = new Gson();
+        Mensaje[] mensajes = gson.fromJson(messagesJson, Mensaje[].class);
+
         NotificationHelper notificationHelper = new NotificationHelper(getBaseContext());
-        NotificationCompat.Builder builder = notificationHelper.getNotification(title,body);
-        notificationHelper.getmManager().notify(idNotificationChat,builder.build());
+        NotificationCompat.Builder builder = notificationHelper.getNotificationMessage(mensajes,usernameSender,usernameReceiver,lastMessage);
+        notificationHelper.getmManager().notify(idNotification,builder.build());
     }
 }

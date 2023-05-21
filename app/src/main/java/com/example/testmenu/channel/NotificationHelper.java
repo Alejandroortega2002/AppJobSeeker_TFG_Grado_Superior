@@ -10,8 +10,13 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.Person;
+import androidx.core.graphics.drawable.IconCompat;
 
 import com.example.testmenu.R;
+import com.example.testmenu.entidades.Mensaje;
+
+import java.util.Date;
 
 public class NotificationHelper extends ContextWrapper {
     private static final String CHANNEL_ID = "com.example.testmenu";
@@ -58,5 +63,41 @@ public class NotificationHelper extends ContextWrapper {
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body)
                 .setBigContentTitle(title)
         );
+    }
+
+    public NotificationCompat.Builder getNotificationMessage(Mensaje[] mensajes, String usernameSender, String usernameReceiver, String lastMessage){
+        Person person1 = new Person.Builder()
+                .setName(usernameReceiver)
+                .setIcon(IconCompat.createWithResource(getApplicationContext(),R.mipmap.ic_launcher))
+                .build();
+
+        Person person2 = new Person.Builder()
+                .setName(usernameSender)
+                .setIcon(IconCompat.createWithResource(getApplicationContext(),R.mipmap.ic_launcher))
+                .build();
+
+        NotificationCompat.MessagingStyle messagingStyle = new NotificationCompat.MessagingStyle(person1);
+        NotificationCompat.MessagingStyle.Message message1 =
+                new NotificationCompat.MessagingStyle.Message(
+                        lastMessage,
+                        new Date().getTime(),
+                        person1
+                );
+
+        messagingStyle.addMessage(message1);
+        for (Mensaje m: mensajes){
+            NotificationCompat.MessagingStyle.Message message2 =
+                    new NotificationCompat.MessagingStyle.Message(
+                            m.getMessage(),
+                            m.getTimestamp(),
+                            person2
+                    );
+            messagingStyle.addMessage(message2);
+
+        }
+        return new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setStyle(messagingStyle);
+
     }
 }
