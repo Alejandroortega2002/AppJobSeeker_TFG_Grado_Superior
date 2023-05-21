@@ -57,15 +57,10 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
     }
 
     private void showNotificationMessage(Map<String,String> data){
-
-
         final String imageSender =data.get("imageSender");
         final String imageReceiver =data.get("imageReceiver");
 
         getImageSender(data,imageSender,imageReceiver);
-
-
-
     }
 
     private void getImageSender(final Map<String,String> data, final String imageSender,final String imageReceiver) {
@@ -123,6 +118,9 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
         final String lastMessage =data.get("lastMessage");
         String messagesJson =data.get("messages");
 
+        final String imageSender =data.get("imageSender");
+        final String imageReceiver =data.get("imageReceiver");
+
         final String idSender =data.get("idSender");
         final String idReceiver =data.get("idReceiver");
         final String idChat =data.get("idChat");
@@ -133,6 +131,10 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
         intent.putExtra("idReceiver",idReceiver);
         intent.putExtra("idChat",idChat);
         intent.putExtra("idNotification",idNotification);
+        intent.putExtra("usernameSender",usernameSender);
+        intent.putExtra("usernameReceiver",usernameReceiver);
+        intent.putExtra("imageSender",imageSender);
+        intent.putExtra("imageReceiver",imageReceiver);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1,intent, PendingIntent.FLAG_MUTABLE);
 
         RemoteInput remoteInput = new RemoteInput.Builder(NOTIFICATION_REPLY).setLabel("Tu mensaje...").build();
