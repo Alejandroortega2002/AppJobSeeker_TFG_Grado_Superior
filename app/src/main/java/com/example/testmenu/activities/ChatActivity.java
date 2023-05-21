@@ -86,6 +86,9 @@ public class ChatActivity extends AppCompatActivity {
     String myUsername;
     String mUsernameChat;
 
+    String mImageReceiver;
+    String mImageSender;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -260,10 +263,10 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     }
                     if (documentSnapshot.contains("fotoPerfil")) {
-                        String imageProfile = documentSnapshot.getString("fotoPerfil");
-                        if (imageProfile != null) {
-                            if (!imageProfile.equals("")) {
-                                Picasso.get().load(imageProfile).into(mCircleImageProfile);
+                        mImageReceiver = documentSnapshot.getString("fotoPerfil");
+                        if (mImageReceiver != null) {
+                            if (!mImageReceiver.equals("")) {
+                                Picasso.get().load(mImageReceiver).into(mCircleImageProfile);
 
                             }
                         }
@@ -391,6 +394,8 @@ public class ChatActivity extends AppCompatActivity {
         data.put("messages",messages);
         data.put("usernameSender",myUsername.toUpperCase());
         data.put("usernameReceiver",mUsernameChat.toUpperCase());
+        data.put("imageSender",mImageSender);
+        data.put("imageReceiver",mImageReceiver);
 
         String idSender="";
         if (mAuthFirebase.getUid().equals(mExtraIdUser1)){
@@ -440,6 +445,9 @@ public class ChatActivity extends AppCompatActivity {
                 if (documentSnapshot.exists()){
                     if (documentSnapshot.contains("usuario")){
                         myUsername = documentSnapshot.getString("usuario");
+                    }
+                    if (documentSnapshot.contains("fotoPerfil")){
+                        mImageSender = documentSnapshot.getString("fotoPerfil");
                     }
                 }
             }
