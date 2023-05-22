@@ -37,6 +37,9 @@ public class PublicacionFirebase {
         return mCollection.whereEqualTo("idUser", id);
     }
 
+    public Query getPostByTitulo(String s) {
+        return mCollection.orderBy("titulo").startAt(s).endAt(s+'\uf8ff');
+    }
 
     public Task<DocumentSnapshot> getPostById(String id){
         return mCollection.document(id).get();

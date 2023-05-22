@@ -27,11 +27,22 @@
         android:orientation="vertical"
         android:layout_marginTop="55dp">
 
+        <android.widget.SearchView
+            android:id="@+id/buscarInicio"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_border"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewInicio"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="50dp"
+            app:showAsAction="ifRoom|collapseActionView"
+            app:actionViewClass="androidx.appcompat.widget.SearchView"
             app:layout_behavior="com.google.android.material.appbar.AppBarLaout$ScrollingViewBehavior" />
     </LinearLayout>
 

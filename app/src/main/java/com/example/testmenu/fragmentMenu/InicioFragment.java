@@ -1,26 +1,20 @@
+
+
 package com.example.testmenu.fragmentMenu;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.testmenu.R;
-import com.example.testmenu.activities.LoginActivity;
-import com.example.testmenu.activities.MainActivity;
-import com.example.testmenu.activities.PagPrincipalAtivity;
 import com.example.testmenu.activities.PostActivity;
 import com.example.testmenu.adapters.PostsAdapter;
 import com.example.testmenu.entidades.Publicacion;
@@ -30,42 +24,39 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.Query;
 
-
 public class InicioFragment extends Fragment {
 
-    View mView;
-    FloatingActionButton mFab;
-    //Toolbar mToolbar;
-    AutentificacioFirebase mAutentificacionFirebase;
-    RecyclerView mRecyclerView;
-    PublicacionFirebase mPublicacionfirebase;
-    PostsAdapter mPostsAdapter;
+    private View mView;
+    private FloatingActionButton mFab;
+    private AutentificacioFirebase mAutentificacionFirebase;
+    private RecyclerView mRecyclerView;
+    private PublicacionFirebase mPublicacionfirebase;
+
+    private SearchView mSearchView;
+    private PostsAdapter mPostsAdapter;
+    private PostsAdapter mPostsAdapterBuscar;
 
     public InicioFragment() {
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_inicio, container, false);
         mFab = mView.findViewById(R.id.fab);
-       // mToolbar = mView.findViewById(R.id.toolbar);
         mRecyclerView = mView.findViewById(R.id.recyclerViewInicio);
+        mSearchView = mView.findViewById(R.id.buscarInicio);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Publicaciones");
-//        setHasOptionsMenu(true);
         mAutentificacionFirebase = new AutentificacioFirebase();
         mPublicacionfirebase = new PublicacionFirebase();
 
         mFab.setOnClickListener(view -> goToPost());
+
+        busquedasDiferentes();
+
         return mView;
     }
 
@@ -82,18 +73,12 @@ public class InicioFragment extends Fragment {
         mPostsAdapter.startListening();
     }
 
-
     @Override
     public void onStop() {
         super.onStop();
         mPostsAdapter.stopListening();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(mPostsAdapter.getListener()!=null){
-            mPostsAdapter.getListener().remove();
+        if (mPostsAdapterBuscar != null) {
+            mPostsAdapterBuscar.stopListening();
         }
     }
 
@@ -102,26 +87,30 @@ public class InicioFragment extends Fragment {
         startActivity(intent);
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.main_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+    private void busquedasDiferentes() {
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                buscar(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                buscar(newText);// Handle search text change if needed
+                return false;
+            }
+        });
     }
 
-/*    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.itemLogout) {
-            logout();
-        }
+    private void buscar(String query) {
+        Query searchQuery = mPublicacionfirebase.getPostByTitulo(query);
+        FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
+                .setQuery(searchQuery, Publicacion.class)
+                .build();
 
-        return true;
-    }*/
-
-/*    private void logout() {
-        mAutentificacionFirebase.logout();
-        Intent intent = new Intent(getContext(), PagPrincipalAtivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }*/
-
+        mPostsAdapterBuscar = new PostsAdapter(options, getContext());
+        mRecyclerView.setAdapter(mPostsAdapterBuscar);
+        mPostsAdapterBuscar.startListening();
+    }
 }
