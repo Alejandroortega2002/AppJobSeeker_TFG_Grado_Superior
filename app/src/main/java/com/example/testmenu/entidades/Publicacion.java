@@ -10,13 +10,15 @@ public class Publicacion {
     private String image2;
     private String idUser;
     private String categoria;
+
+    private String sector;
     private long timeStamp;
 
     public Publicacion(){
 
     }
 
-    public Publicacion(String titulo, int precio, String descripcion, String image1, String image2, String idUser, String categoria,long timeStamp ) {
+    public Publicacion(String titulo, int precio, String descripcion, String image1, String image2, String idUser, String categoria,String sector,long timeStamp ) {
         this.titulo = titulo;
         this.precio = precio;
         this.descripcion = descripcion;
@@ -24,7 +26,16 @@ public class Publicacion {
         this.image2 = image2;
         this.idUser = idUser;
         this.categoria = categoria;
+        this.sector = sector;
         this.timeStamp = timeStamp;
+    }
+
+    public String getSector() {
+        return sector;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
     }
 
     public String getId() {

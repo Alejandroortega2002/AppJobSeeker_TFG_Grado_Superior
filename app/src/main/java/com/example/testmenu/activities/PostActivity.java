@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -16,6 +17,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,10 +61,13 @@ public class PostActivity extends AppCompatActivity {
 
 
     TextView mTextViewCategoria;
+    Spinner mTextViewSector;
     File mImageFile;
     File mImageFile2;
 
     String mCategoria = "";
+
+    String mSector = "";
     String mTitulo = "";
     String mPrecio = "";
     String mDescripcion = "";
@@ -114,7 +119,9 @@ public class PostActivity extends AppCompatActivity {
         mImageviewContrato3 = findViewById(R.id.contrato3);
         mImageviewContrato4 = findViewById(R.id.contrato4);
         mTextViewCategoria = findViewById(R.id.textViewCategoria);
+        mTextViewSector = findViewById(R.id.spinnerSector);
         mCircleBack = findViewById(R.id.back);
+
 
         mCircleBack.setOnClickListener(view -> finish());
         mButtonPost.setOnClickListener(view -> clickPost());
@@ -257,8 +264,9 @@ public class PostActivity extends AppCompatActivity {
         mTitulo = mTextInputTitulo.getText().toString().trim();
         mPrecio = mTextInputPrecio.getText().toString().trim();
         mDescripcion = mTextInputDescripcion.getText().toString().trim();
+        mSector = mTextViewSector.getSelectedItem().toString().trim();
 
-        if (mTitulo.isEmpty() || mPrecio.isEmpty() || mDescripcion.isEmpty()) {
+        if (mTitulo.isEmpty() || mPrecio.isEmpty() || mDescripcion.isEmpty() || mSector.equals("Sector")) {
             Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -309,7 +317,7 @@ public class PostActivity extends AppCompatActivity {
                         Publicacion publicacion = new Publicacion(mTitulo.toLowerCase(),
                                 Integer.parseInt(mPrecio), mDescripcion,
                                 url, url2, mAutentificacionFirebase.getUid(),
-                                mCategoria, new Date().getTime());
+                                mCategoria,mSector, new Date().getTime());
 
                         mPublicacionFribase.save(publicacion).addOnCompleteListener(taskSave -> {
 

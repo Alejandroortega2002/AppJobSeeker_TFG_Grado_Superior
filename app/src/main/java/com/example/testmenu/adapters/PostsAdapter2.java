@@ -53,7 +53,6 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
     ListenerRegistration mListener;
 
 
-
     public PostsAdapter2(FirestoreRecyclerOptions<Publicacion> options, Context contexto) {
         super(options);
         this.context = contexto;
@@ -70,6 +69,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
         final String postId = document.getId();
         holder.textViewTitulo.setText(publicacion.getTitulo().toUpperCase());
         holder.textViewTipoContrato.setText("Contrato: " + publicacion.getCategoria());
+        holder.textViewSector.setText("Sector: " + publicacion.getSector());
 
         if (publicacion.getIdUser().equals(autentificacioFirebase.getUid())) {
             holder.btnCerrar.setVisibility(View.VISIBLE);
@@ -110,7 +110,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
     }
 
     private void getNumeroDeLikes(String idPost, final PostsAdapter2.ViewHolder holder) {
-        mListener= favoritosFirebase.getLikesByPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        mListener = favoritosFirebase.getLikesByPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null) {
@@ -201,7 +201,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewTitulo, nombreUsuario, textViewTipoContrato, txtFavoritos;
+        TextView textViewTitulo, nombreUsuario, textViewTipoContrato, txtFavoritos, textViewSector;
 
         ImageView imageViewPost, imgFavoritos;
         View viewHolder;
@@ -212,6 +212,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
             super(view);
             textViewTitulo = view.findViewById(R.id.textViewTituloPostCard);
             textViewTipoContrato = view.findViewById(R.id.textViewTipoContrato);
+            textViewSector = view.findViewById(R.id.textViewSector);
             imageViewPost = view.findViewById(R.id.imageViewPostCard);
             nombreUsuario = view.findViewById(R.id.nombreUsuario);
             btnCerrar = view.findViewById(R.id.btnBorrarNoticia);

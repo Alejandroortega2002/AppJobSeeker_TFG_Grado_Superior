@@ -65,6 +65,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
 
         holder.textViewTitulo.setText(publicacion.getTitulo().toUpperCase());
         holder.textViewTipoContrato.setText("Contrato: " + publicacion.getCategoria());
+        holder.textViewSector.setText("Sector: "+publicacion.getSector());
         // holder.fechaPublicacion.setText((int) publicacion.getTimeStamp());
 
         if (publicacion.getImage1() != null) {
@@ -178,7 +179,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewTitulo, nombreUsuario, textViewTipoContrato, fechaPublicacion, txtFavoritos;
+        TextView textViewTitulo, nombreUsuario, textViewTipoContrato,textViewSector, fechaPublicacion, txtFavoritos;
         ImageView imageViewPost, imgFavoritos;
         RatingBar mediaUsuario;
         View viewHolder;
@@ -187,6 +188,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
             super(view);
             textViewTitulo = view.findViewById(R.id.textViewTituloPostCard);
             textViewTipoContrato = view.findViewById(R.id.textViewTipoContrato);
+            textViewSector = view.findViewById(R.id.textViewSector);
             imageViewPost = view.findViewById(R.id.imageViewPostCard);
             nombreUsuario = view.findViewById(R.id.nombreUsuario);
             // fechaPublicacion = view.findViewById(R.id.fechaPublicacion);
