@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.ImageButton;
 
 import com.example.testmenu.R;
 import com.example.testmenu.adapters.PostsAdapter2;
@@ -27,6 +28,8 @@ public class MisFavoritosActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     RecyclerView recyclerView;
 
+    ImageButton btnSalir;
+
     AutentificacioFirebase mAutentificacionFirebase;
     PublicacionFirebase mPublicacionfirebase;
 
@@ -45,6 +48,9 @@ public class MisFavoritosActivity extends AppCompatActivity {
 
         mToolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerViewInicioFavorito);
+        btnSalir = findViewById(R.id.volverAtrasFavoritos);
+
+
 
         postIds = new ArrayList<>();
         mAutentificacionFirebase = new AutentificacioFirebase();
@@ -54,8 +60,9 @@ public class MisFavoritosActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        ((AppCompatActivity) this).setSupportActionBar(mToolbar);
-        ((AppCompatActivity) this).getSupportActionBar().setTitle("Mis Favoritos");
+        btnSalir.setOnClickListener(view -> {
+            finish();
+        });
     }
 
     @Override

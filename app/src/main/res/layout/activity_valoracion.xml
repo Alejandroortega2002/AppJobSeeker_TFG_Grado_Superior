@@ -8,7 +8,7 @@
     tools:context=".activities.ValoracionActivity" >
 
     <ImageButton
-        android:id="@+id/volver_inicio"
+        android:id="@+id/volverAtrasValoraciones"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="60dp"
         android:layout_height="60dp"

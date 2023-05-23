@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.example.testmenu.R;
 import com.example.testmenu.adapters.PostsAdapter;
@@ -24,6 +25,8 @@ public class MisOfertasActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     RecyclerView recyclerView;
 
+    ImageButton btnSalir;
+
     AutentificacioFirebase mAutentificacionFirebase;
     PublicacionFirebase mPublicacionfirebase;
     PostsAdapter2 mPostsAdapter2;
@@ -37,6 +40,7 @@ public class MisOfertasActivity extends AppCompatActivity {
 
         mToolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerViewInicio);
+        btnSalir = findViewById(R.id.volverAtrasMisOfertas);
 
         mAutentificacionFirebase = new AutentificacioFirebase();
         mPublicacionfirebase = new PublicacionFirebase();
@@ -44,8 +48,9 @@ public class MisOfertasActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        ((AppCompatActivity) this).setSupportActionBar(mToolbar);
-        ((AppCompatActivity) this).getSupportActionBar().setTitle("Mis ofertas");
+        btnSalir.setOnClickListener(view -> {
+            finish();
+        });
     }
 
     @Override

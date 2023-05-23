@@ -96,7 +96,7 @@ public class ValoracionActivity extends AppCompatActivity {
         txtValoracion = findViewById(R.id.txtValoracion);
         btnCrearValoracion = findViewById(R.id.btnValorar);
         reciclerValoraciones = findViewById(R.id.recyclerViewValoraciones);
-        btnSalir = findViewById(R.id.volver_inicio);
+        btnSalir = findViewById(R.id.volverAtrasValoraciones);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ValoracionActivity.this);
         reciclerValoraciones.setLayoutManager(linearLayoutManager);
