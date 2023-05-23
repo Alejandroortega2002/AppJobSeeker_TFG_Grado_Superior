@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Otros recursos existentes -->
+
+    <string-array name="sectores">
+        <item>Sector</item>
+        <item>Educación</item>
+        <item>Actividades Físico-Deportivas</item>
+        <item>Comercio</item>
+        <item>Alimentación y Hostelería</item>
+        <item>Administración y Gestión</item>
+        <item>Transporte</item>
+        <item>Industria y Construcción</item>
+        <item>Limpieza</item>
+        <item>Informática y Telecomunicaciones</item>
+        <item>Atención al Cliente / Servicios</item>
+        <!-- Agrega más elementos según tus necesidades -->
+    </string-array>
+</resources>

@@ -44,11 +44,9 @@ public class PostActivity extends AppCompatActivity {
 
     ImageView mImageViewPost1;
     ImageView mImageViewPost2;
-
     Button mButtonPost;
     ImagenFirebase mImagenFirebase;
     PublicacionFirebase mPublicacionFribase;
-
     AutentificacioFirebase mAutentificacionFirebase;
     TextInputEditText mTextInputTitulo;
     TextInputEditText mTextInputPrecio;
