@@ -15,17 +15,19 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 
-
     <application
         android:allowBackup="true"
-        android:enableOnBackInvokedCallback="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher_foreground"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.TestMenu"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.SectoresActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.PagPrincipalAtivity"
             android:exported="false" />
@@ -135,11 +137,10 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-        <receiver android:name=".receivers.MessageReceiver"
+        <receiver
+            android:name=".receivers.MessageReceiver"
             android:enabled="true"
-            android:exported="false"
-            >
-        </receiver>
+            android:exported="false"></receiver>
     </application>
 
 </manifest>
