@@ -1,14 +1,18 @@
 package com.example.testmenu.activities;
 
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -94,6 +98,13 @@ public class PostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        // Verificar y solicitar los permisos necesarios
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        }
+
         mImagenFirebase = new ImagenFirebase();
         mPublicacionFribase = new PublicacionFirebase();
         mAutentificacionFirebase = new AutentificacioFirebase();
@@ -153,6 +164,21 @@ public class PostActivity extends AppCompatActivity {
 
 
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                // Los permisos han sido concedidos
+                Toast.makeText(this, "Permisos concedidos", Toast.LENGTH_SHORT).show();
+            } else {
+                // Al menos uno de los permisos fue denegado
+                Toast.makeText(this, "Permisos denegados", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     /**
      * Muestra un cuadro de diálogo que permite al usuario seleccionar una imagen de la galería o tomar una foto.
@@ -192,6 +218,7 @@ public class PostActivity extends AppCompatActivity {
      *
      * @param requestCode el código de solicitud que se utiliza para identificar la solicitud en el método onActivityResult.
      */
+    @SuppressLint("QueryPermissionsNeeded")
     private void takePhoto(int requestCode) {
 
         // Crea una intención para iniciar la aplicación de la cámara
@@ -370,21 +397,24 @@ public class PostActivity extends AppCompatActivity {
             }
         }
 
-        /**
-         * SELECCION DE FOTOGRAFIA
-         */
         if (requestCode == PHOTO_REQUEST_CODE && resultCode == RESULT_OK) {
-            mImageFile = new File(mAbsolutePhotoPath);
-            Picasso.get().load(mPhotoPath).into(mImageViewPost1);
+            try {
+                // Asignar la imagen capturada al ImageView
+                mImageViewPost1.setImageBitmap(BitmapFactory.decodeFile(mAbsolutePhotoPath));
+            } catch (Exception e) {
+                Log.d("ERROR", "Se produjo un error " + e.getMessage());
+                Toast.makeText(this, "Se produjo un error " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == PHOTO_REQUEST_CODE_2 && resultCode == RESULT_OK) {
+            try {
+                // Asignar la imagen capturada al ImageView
+                mImageViewPost2.setImageBitmap(BitmapFactory.decodeFile(mAbsolutePhotoPath2));
+            } catch (Exception e) {
+                Log.d("ERROR", "Se produjo un error " + e.getMessage());
+                Toast.makeText(this, "Se produjo un error " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
 
-        /**
-         * SELECCION DE FOTOGRAFIA
-         */
-        if (requestCode == PHOTO_REQUEST_CODE_2 && resultCode == RESULT_OK) {
-            mImageFile2 = new File(mAbsolutePhotoPath2);
-            Picasso.get().load(mPhotoPath2).into(mImageViewPost2);
-        }
     }
 
     @Override
@@ -403,4 +433,3 @@ public class PostActivity extends AppCompatActivity {
 
 
 }
-

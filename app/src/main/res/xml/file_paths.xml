@@ -2,7 +2,7 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
 <external-path
     name="AppJobSeeker"
-    path="Android/data/com.example.testmenu/files/pictures"/>
+    path="Android/data/com.example.testmenu/files/Pictures"/>
     <external-path name="external_files" path="." />
 </paths>
 
