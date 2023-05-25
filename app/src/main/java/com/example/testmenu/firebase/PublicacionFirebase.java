@@ -25,9 +25,9 @@ public class PublicacionFirebase {
         return document.set(publicacion);
     }
 
-//    public Task<DocumentReference> save(Publicacion publicacion) {
-//        return mCollection.add(publicacion);
-//    }
+    public Query getPostBySectorAndTimestamp(String sector) {
+        return mCollection.whereEqualTo("sector", sector);
+    }
 
     public Query getAll() {
         return mCollection.orderBy("timeStamp", Query.Direction.DESCENDING);

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -20,13 +21,11 @@ public class FiltroFragment extends Fragment {
 
     private CardView educacion, deporte, comercio, alimentacion, ade, transporte, construccion, limpieza, informatica, servicios;
 
+    private TextView txtSEducacion,txtSActFD,txtSComercio,txtSAlimentacionYHost,txtSAdministracionYGestion,txtSTransporte,txtSIndustriaYConstruccion,txtSLimpieza,txtSInformatica,txtSServicios;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        /*Instanciamos la clase ViewModel correspondiente*/
-//        CreacionViewModel creacionViewModel =
-//                new ViewModelProvider(this).get(CreacionViewModel.class);
 
-        /*Una vez inflado, con el metodo getRoot() podemos concretar los identificadores de nuestro diseño biding*/
         binding = FragmentFiltroBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -40,61 +39,64 @@ public class FiltroFragment extends Fragment {
         limpieza = binding.cardViewSLimpieza;
         informatica = binding.cardViewSInformatica;
         servicios = binding.cardViewSServicios;
+        txtSEducacion = binding.txtSEducacion;
+        txtSActFD = binding.txtSActFD;
+        txtSComercio = binding.txtSComercio;
+        txtSAlimentacionYHost = binding.txtSAlimentacionYHost;
+        txtSAdministracionYGestion = binding.txtSAdministracionYGestion;
+        txtSTransporte = binding.txtSTransporte;
+        txtSIndustriaYConstruccion = binding.txtSIndustriaYConstruccion;
+        txtSLimpieza = binding.txtSLimpieza;
+        txtSInformatica = binding.txtSInformatica;
+        txtSServicios = binding.txtSServicios;
 
         educacion.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), SectoresActivity.class);
-            startActivity(intent);
+            pasarDeActivity(txtSEducacion.getText().toString());
         });
 
         deporte.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), SectoresActivity.class);
-            startActivity(intent);
+            pasarDeActivity(txtSActFD.getText().toString());
         });
 
         comercio.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), SectoresActivity.class);
-            startActivity(intent);
+            pasarDeActivity(txtSComercio.getText().toString());
         });
 
         alimentacion.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), SectoresActivity.class);
-            startActivity(intent);
+            pasarDeActivity(txtSAlimentacionYHost.getText().toString());
         });
 
         ade.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), SectoresActivity.class);
-            startActivity(intent);
+            pasarDeActivity(txtSAdministracionYGestion.getText().toString());
         });
 
         transporte.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), SectoresActivity.class);
-            startActivity(intent);
+            pasarDeActivity(txtSTransporte.getText().toString());
         });
 
         construccion.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), SectoresActivity.class);
-            startActivity(intent);
+            pasarDeActivity(txtSIndustriaYConstruccion.getText().toString());
         });
 
         limpieza.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), SectoresActivity.class);
-            startActivity(intent);
+            pasarDeActivity(txtSLimpieza.getText().toString());
         });
 
         informatica.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), SectoresActivity.class);
-            startActivity(intent);
+            pasarDeActivity(txtSInformatica.getText().toString());
         });
 
         servicios.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), SectoresActivity.class);
-            startActivity(intent);
+            pasarDeActivity(txtSServicios.getText().toString());
         });
 
-
-//        final TextView textView = binding.textHome;
-//        creacionViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
+    }
+
+    public void pasarDeActivity(String sector){
+        Intent intent = new Intent(getContext(), SectoresActivity.class);
+        intent.putExtra("sector", sector);
+        startActivity(intent);
     }
 
     @Override

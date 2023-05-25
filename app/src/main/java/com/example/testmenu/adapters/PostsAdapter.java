@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testmenu.R;
 import com.example.testmenu.activities.PostDetailActivity;
+import com.example.testmenu.activities.SectoresActivity;
 import com.example.testmenu.entidades.Favoritos;
 import com.example.testmenu.entidades.Publicacion;
 import com.example.testmenu.firebase.AutentificacioFirebase;
@@ -197,6 +198,13 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
             mediaUsuario = view.findViewById(R.id.mediaUsuarios);
             viewHolder = view;
         }
+    }
+
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
+
+        SectoresActivity.vacio(); // Llamar al método vacio() después de que los datos se hayan cargado en el adaptador
     }
 
 

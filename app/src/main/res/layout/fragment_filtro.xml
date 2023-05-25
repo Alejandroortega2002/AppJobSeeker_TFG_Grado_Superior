@@ -56,11 +56,12 @@
                     android:src="@drawable/ic_educacion" />
 
                 <TextView
+                    android:id="@+id/txtSEducacion"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
-                    android:text="Sector de la Educación"
+                    android:text="Educación"
                     android:textSize="20dp" />
 
             </LinearLayout>
@@ -95,11 +96,12 @@
                     android:src="@drawable/ic_deporte" />
 
                 <TextView
+                    android:id="@+id/txtSActFD"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
-                    android:text="Sector de Actividades Físico-Deportivas"
+                    android:text="Actividades Físico-Deportivas"
                     android:textSize="20dp" />
 
             </LinearLayout>
@@ -135,11 +137,12 @@
                     android:src="@drawable/ic_comercio" />
 
                 <TextView
+                    android:id="@+id/txtSComercio"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
-                    android:text="Sector del Comercio"
+                    android:text="Comercio"
                     android:textSize="20dp" />
 
             </LinearLayout>
@@ -174,11 +177,12 @@
                     android:src="@drawable/ic_alimentacion" />
 
                 <TextView
+                    android:id="@+id/txtSAlimentacionYHost"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
-                    android:text="Sector de la Alimentacion y Hostelería"
+                    android:text="Alimentación y Hostelería"
                     android:textSize="20dp" />
 
             </LinearLayout>
@@ -214,11 +218,12 @@
                     android:src="@drawable/ic_administracion" />
 
                 <TextView
+                    android:id="@+id/txtSAdministracionYGestion"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
-                    android:text="Sector de la Administración y Gestión"
+                    android:text="Administración y Gestión"
                     android:textSize="20dp" />
 
             </LinearLayout>
@@ -254,11 +259,12 @@
                     android:src="@drawable/ic_transporte" />
 
                 <TextView
+                    android:id="@+id/txtSTransporte"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
-                    android:text="Sector del Transporte"
+                    android:text="Transporte"
                     android:textSize="20dp" />
 
             </LinearLayout>
@@ -293,11 +299,12 @@
                     android:src="@drawable/ic_construccion" />
 
                 <TextView
+                    android:id="@+id/txtSIndustriaYConstruccion"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
-                    android:text="Sector de la Industria y de la Construcción"
+                    android:text="Industria y Construcción"
                     android:textSize="20dp" />
 
             </LinearLayout>
@@ -333,11 +340,12 @@
                     android:src="@drawable/ic_limpieza" />
 
                 <TextView
+                    android:id="@+id/txtSLimpieza"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
-                    android:text="Sector de la Limpieza y Mantenimiento del Hogar"
+                    android:text="Limpieza"
                     android:textSize="20dp" />
 
             </LinearLayout>
@@ -372,11 +380,12 @@
                     android:src="@drawable/ic_informatica" />
 
                 <TextView
+                    android:id="@+id/txtSInformatica"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
-                    android:text="Sector de la Informática y Telecomunicaciones"
+                    android:text="Informática y Telecomunicaciones"
                     android:textSize="20dp" />
 
             </LinearLayout>
@@ -412,11 +421,12 @@
                     android:src="@drawable/ic_atencionalcliente" />
 
                 <TextView
+                    android:id="@+id/txtSServicios"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
-                    android:text="Sector de la Atención al Cliente y de Realización de Servicios"
+                    android:text="Atención al Cliente / Servicios"
                     android:textSize="20dp" />
 
             </LinearLayout>

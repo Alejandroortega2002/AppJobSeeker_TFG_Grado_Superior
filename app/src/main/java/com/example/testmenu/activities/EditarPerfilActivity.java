@@ -5,13 +5,18 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -123,6 +128,13 @@ public class EditarPerfilActivity extends AppCompatActivity {
                 .setContext(this)
                 .setMessage("espere un momento")
                 .setCancelable(false).build();
+
+        // Verificar y solicitar los permisos necesarios
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        }
 
         rellenarInformacionUsuario();
         btnAtras.setOnClickListener(new View.OnClickListener() {
@@ -447,6 +459,56 @@ public class EditarPerfilActivity extends AppCompatActivity {
             mImageFile2 = new File(mAbsolutePhotoPath2);
             Picasso.get().load(mPhotoPath2).into(fotoBanner);
         }
+        /**
+         * FOTO CAMARA(DISPOSITIVO)
+         */
+        if (requestCode == PHOTO_REQUEST_CODE_PERFIL && resultCode == RESULT_OK) {
+            try {
+                // Asignar la imagen capturada al ImageView
+                fotoPerfil.setImageBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()));
+
+            } catch (Exception e) {
+                Log.d("ERROR", "Se produjo un error " + e.getMessage());
+                Toast.makeText(this, "Se produjo un error " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == PHOTO_REQUEST_CODE_BANNER && resultCode == RESULT_OK) {
+            try {
+                // Asignar la imagen capturada al ImageView
+                fotoBanner.setImageBitmap(BitmapFactory.decodeFile(mAbsolutePhotoPath2));
+
+            } catch (Exception e) {
+                Log.d("ERROR", "Se produjo un error " + e.getMessage());
+                Toast.makeText(this, "Se produjo un error " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+
+        // Aquí añade el código que te proporcioné anteriormente para manejar la selección de imágenes desde la galería
+        if (data != null && data.getData() != null) {
+            Uri imageUri = data.getData();
+            File imageFile = null;
+            try {
+                imageFile = FileUtil.from(this, imageUri);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (requestCode == GALLERY_REQUEST_CODE_PERFIL) {
+                mImageFile = imageFile;
+            } else if (requestCode == GALLERY_REQUEST_CODE_BANNER) {
+                mImageFile2 = imageFile;
+            }
+
+            try {
+                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                if (requestCode == GALLERY_REQUEST_CODE_PERFIL) {
+                    fotoPerfil.setImageBitmap(bitmap);
+                } else if (requestCode == GALLERY_REQUEST_CODE_BANNER) {
+                    fotoBanner.setImageBitmap(bitmap);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     @Override
     protected void onStart() {
@@ -469,4 +531,21 @@ public class EditarPerfilActivity extends AppCompatActivity {
             mListener.remove();
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                // Los permisos han sido concedidos
+                Toast.makeText(this, "Permisos concedidos", Toast.LENGTH_SHORT).show();
+            } else {
+                // Al menos uno de los permisos fue denegado
+                Toast.makeText(this, "Permisos denegados", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }
