@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -234,12 +235,17 @@ public class PostActivity extends AppCompatActivity {
                 Toast.makeText(this, "Hubo un error con el archivo" + e.getMessage(), Toast.LENGTH_LONG).show();
             }
 
-            // Si se ha creado el archivo correctamente, obtiene una URI para él y añade la URI a la intención
             if (photoFile != null) {
                 Uri photoUri = FileProvider.getUriForFile(PostActivity.this, "com.example.testmenu", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
 
-                // Inicia la aplicación de la cámara y espera a que el usuario capture una imagen
+                // Asigna el archivo de imagen a la variable correspondiente
+                if (requestCode == PHOTO_REQUEST_CODE) {
+                    mImageFile = photoFile;
+                } else if (requestCode == PHOTO_REQUEST_CODE_2) {
+                    mImageFile2 = photoFile;
+                }
+
                 startActivityForResult(takePictureIntent, requestCode);
             }
         }
@@ -370,15 +376,14 @@ public class PostActivity extends AppCompatActivity {
         startActivityForResult(galleryIntent, requestCode);
     }
 
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         /**
          * SELECCION DE IMAGEN DESDE LA GALERIA
          */
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
             try {
-
                 mImageFile = FileUtil.from(this, data.getData());
                 mImageViewPost1.setImageBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()));
             } catch (Exception e) {
@@ -397,10 +402,14 @@ public class PostActivity extends AppCompatActivity {
             }
         }
 
+        /**
+         * FOTO CAMARA(DISPOSITIVO)
+         */
         if (requestCode == PHOTO_REQUEST_CODE && resultCode == RESULT_OK) {
             try {
                 // Asignar la imagen capturada al ImageView
                 mImageViewPost1.setImageBitmap(BitmapFactory.decodeFile(mAbsolutePhotoPath));
+
             } catch (Exception e) {
                 Log.d("ERROR", "Se produjo un error " + e.getMessage());
                 Toast.makeText(this, "Se produjo un error " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -409,13 +418,42 @@ public class PostActivity extends AppCompatActivity {
             try {
                 // Asignar la imagen capturada al ImageView
                 mImageViewPost2.setImageBitmap(BitmapFactory.decodeFile(mAbsolutePhotoPath2));
+
             } catch (Exception e) {
                 Log.d("ERROR", "Se produjo un error " + e.getMessage());
                 Toast.makeText(this, "Se produjo un error " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
 
+        // Aquí añade el código que te proporcioné anteriormente para manejar la selección de imágenes desde la galería
+        if (data != null && data.getData() != null) {
+            Uri imageUri = data.getData();
+            File imageFile = null;
+            try {
+                imageFile = FileUtil.from(this, imageUri);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (requestCode == GALLERY_REQUEST_CODE) {
+                mImageFile = imageFile;
+            } else if (requestCode == GALLERY_REQUEST_CODE_2) {
+                mImageFile2 = imageFile;
+            }
+
+            try {
+                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                if (requestCode == GALLERY_REQUEST_CODE) {
+                    mImageViewPost1.setImageBitmap(bitmap);
+                } else if (requestCode == GALLERY_REQUEST_CODE_2) {
+                    mImageViewPost2.setImageBitmap(bitmap);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
+
 
     @Override
     protected void onStart() {
