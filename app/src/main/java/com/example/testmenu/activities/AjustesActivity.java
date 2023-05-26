@@ -1,5 +1,10 @@
-package com.example.testmenu.activities;
+/**
 
+ La clase AjustesActivity representa la actividad de configuración de la aplicación.
+ Permite al usuario realizar acciones como cerrar sesión, editar el perfil,
+ restablecer la contraseña y eliminar la cuenta.
+ */
+package com.example.testmenu.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -21,13 +26,18 @@ import com.example.testmenu.fragmentMenu.ProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class AjustesActivity extends AppCompatActivity {
-
     private ImageButton btnSalir;
     private TextView btnCerrarSesion, btnBorrarCuenta, btnEditarPerfil, btnRestablecerContrasena;
     AutentificacioFirebase mAutentificacionFirebase;
 
     Dialog customDialog;
 
+    /**
+     * Inicializa la actividad y configura los componentes de la interfaz de usuario y los
+     * escuchadores de eventos.
+     *
+     * @param savedInstanceState El paquete de estado guardado.
+     */
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +90,12 @@ public class AjustesActivity extends AppCompatActivity {
                 mostrarAlertBorrarCueta(v);
             }
         });
-
-
     }
 
+    /**
+     * Cierra la sesión del usuario actual.
+     * Se redirige al usuario a la pantalla de inicio de sesión.
+     */
     private void logout() {
         mAutentificacionFirebase.logout();
         Intent intent = new Intent(AjustesActivity.this, PagPrincipalAtivity.class);
@@ -91,21 +103,26 @@ public class AjustesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Muestra un diálogo de confirmación antes de cerrar la sesión del usuario.
+     *
+     * @param view La vista actual.
+     */
     public void mostrarAlertCerrarSesion(View view) {
-        // con este tema personalizado evitamos los bordes por defecto
+        // Con este tema personalizado evitamos los bordes por defecto.
         customDialog = new Dialog(this, R.style.Theme_Translucent);
-        //deshabilitamos el título por defecto
+        // Deshabilitamos el título por defecto.
         customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //obligamos al usuario a pulsar los botones para cerrarlo
+        // Obligamos al usuario a pulsar los botones para cerrarlo.
         customDialog.setCancelable(false);
-        //establecemos el contenido de nuestro dialog
+        // Establecemos el contenido de nuestro diálogo.
         customDialog.setContentView(R.layout.alert_dialog_cerrar_sesion);
 
         TextView titulo = (TextView) customDialog.findViewById(R.id.titulo);
         titulo.setText("Cerrar Sesión");
 
         TextView contenido = (TextView) customDialog.findViewById(R.id.contenido);
-        contenido.setText("Estas seguro que quieres cerrar la sesión de esta cuenta");
+        contenido.setText("¿Estás seguro de que quieres cerrar la sesión de esta cuenta?");
 
         (customDialog.findViewById(R.id.aceptar)).setOnClickListener(new View.OnClickListener() {
 
@@ -113,7 +130,6 @@ public class AjustesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 logout();
                 customDialog.dismiss();
-
             }
         });
 
@@ -122,29 +138,32 @@ public class AjustesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 customDialog.dismiss();
-
             }
         });
 
         customDialog.show();
     }
 
-
+    /**
+     * Muestra un diálogo de confirmación antes de eliminar la cuenta del usuario.
+     *
+     * @param view La vista actual.
+     */
     public void mostrarAlertBorrarCueta(View view) {
-        // con este tema personalizado evitamos los bordes por defecto
+        // Con este tema personalizado evitamos los bordes por defecto.
         customDialog = new Dialog(this, R.style.Theme_Translucent);
-        //deshabilitamos el título por defecto
+        // Deshabilitamos el título por defecto.
         customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //obligamos al usuario a pulsar los botones para cerrarlo
+        // Obligamos al usuario a pulsar los botones para cerrarlo.
         customDialog.setCancelable(false);
-        //establecemos el contenido de nuestro dialog
+        // Establecemos el contenido de nuestro diálogo.
         customDialog.setContentView(R.layout.alert_dialog_cerrar_sesion);
 
         TextView titulo = (TextView) customDialog.findViewById(R.id.titulo);
         titulo.setText("Borrar Cuenta");
 
         TextView contenido = (TextView) customDialog.findViewById(R.id.contenido);
-        contenido.setText("Estas seguro que quieres borrar esta cuenta");
+        contenido.setText("¿Estás seguro de que quieres borrar esta cuenta?");
 
         (customDialog.findViewById(R.id.aceptar)).setOnClickListener(new View.OnClickListener() {
 
@@ -152,7 +171,6 @@ public class AjustesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 BorrarUsuario();
                 customDialog.dismiss();
-
             }
         });
 
@@ -167,12 +185,13 @@ public class AjustesActivity extends AppCompatActivity {
         customDialog.show();
     }
 
-
     /**
-     * Borra el usuario actualmente autenticado de la base de datos de usuarios y elimina su cuenta de autenticación.
-     * Si se realiza con éxito, se cierra la sesión y se redirige al usuario a la pantalla de inicio de sesión.
+     * Elimina el usuario actualmente autenticado de la base de datos de usuarios
+     * y elimina su cuenta de autenticación.
+     * Si se realiza con éxito, se cierra la sesión y se redirige al usuario a la
+     * pantalla de inicio de sesión.
      *
-     * @throws NullPointerException si el usuario actual no está autenticado
+     * @throws NullPointerException Si el usuario actual no está autenticado.
      */
     private void BorrarUsuario() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -185,14 +204,15 @@ public class AjustesActivity extends AppCompatActivity {
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }).addOnFailureListener(e -> {
-// Manejar el error aquí
+                // Manejar el error aquí.
                 String errorMessage = "No se pudo eliminar la cuenta de autenticación. Inténtelo de nuevo más tarde.";
                 Toast.makeText(AjustesActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             });
         }).addOnFailureListener(e -> {
-// Manejar el error aquí
+            // Manejar el error aquí.
             String errorMessage = "No se pudo eliminar la cuenta. Inténtelo de nuevo más tarde.";
             Toast.makeText(AjustesActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
         });
     }
+
 }

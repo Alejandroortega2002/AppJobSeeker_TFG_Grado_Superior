@@ -86,8 +86,8 @@ public class ChatActivity extends AppCompatActivity {
     String myUsername;
     String mUsernameChat;
 
-    String mImageReceiver="";
-    String mImageSender="";
+    String mImageReceiver = "";
+    String mImageSender = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +131,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if(mAdapter !=null){
+        if (mAdapter != null) {
             mAdapter.startListening();
         }
         ViewedMensajeHelper.updateOnline(true, ChatActivity.this);
@@ -154,11 +154,14 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mListener !=null){
+        if (mListener != null) {
             mListener.remove();
         }
     }
 
+    /**
+     * Obtiene los mensajes del chat.
+     */
     private void getMensajeChat() {
         Query query = mMensajeFirebase.getMensajeByChat(mExtraIdChat);
         FirestoreRecyclerOptions<Mensaje> options =
@@ -169,6 +172,12 @@ public class ChatActivity extends AppCompatActivity {
         mRecyclerViewMensaje.setAdapter(mAdapter);
         mAdapter.startListening();
         mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            /**
+             * Se invoca cuando se inserta un rango de elementos en el adaptador.
+             *
+             * @param positionStart La posición de inicio del rango insertado.
+             * @param itemCount     El número de elementos insertados.
+             */
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
@@ -183,7 +192,12 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+
+    /**
+     * Envía un mensaje.
+     *
+     * @SuppressLint("NotifyDataSetChanged") Esta anotación suprime las advertencias relacionadas con el uso de notifyDataSetChanged().
+     */
     private void sendMensaje() {
         String textMensaje = mEditTextMensaje.getText().toString();
         if (!textMensaje.isEmpty()) {
@@ -201,6 +215,9 @@ public class ChatActivity extends AppCompatActivity {
             mensaje.setIdChat(mExtraIdChat);
             mensaje.setMessage(textMensaje);
 
+            /**
+             * Crea el mensaje en Firebase Firestore.
+             */
             mMensajeFirebase.create(mensaje).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     mEditTextMensaje.setText("");
@@ -208,54 +225,72 @@ public class ChatActivity extends AppCompatActivity {
                     getToken(mensaje);
                 } else {
                     Toast.makeText(ChatActivity.this, "El mensaje no se pudo crear", Toast.LENGTH_SHORT).show();
-
                 }
             });
         }
     }
 
+
+    /**
+     * Muestra una barra de herramientas personalizada con los elementos proporcionados.
+     *
+     * @param resource El recurso de diseño para la barra de herramientas personalizada.
+     */
     private void showCustomToolbar(int resource) {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
+
+        // Configuración de la barra de herramientas
         actionbar.setTitle("");
         actionbar.setDisplayShowHomeEnabled(true);
         actionbar.setDisplayShowCustomEnabled(true);
+
+        // Inflar el diseño personalizado de la barra de herramientas
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mActionBarView = inflater.inflate(resource, null);
         actionbar.setCustomView(mActionBarView);
 
+        // Obtener referencias a los elementos de la barra de herramientas personalizada
         mCircleImageProfile = mActionBarView.findViewById(R.id.circleImageProfile);
         mTextViewUsername = mActionBarView.findViewById(R.id.textViewUsername);
         mTextViewRelativeTime = mActionBarView.findViewById(R.id.textViewRelativeTime);
         mImageViewBack = mActionBarView.findViewById(R.id.imageViewBack);
 
+        // Configurar el evento click del botón de retroceso
         mImageViewBack.setOnClickListener(v -> finish());
 
+        // Obtener información del usuario
         getUserInfo();
-
-
     }
 
+
+    /**
+     * Obtiene la información del usuario relacionado al chat y actualiza la interfaz de usuario correspondiente.
+     */
     private void getUserInfo() {
         String idUserInfo = "";
+
+        // Determinar el ID del usuario relacionado al chat
         if (mAuthFirebase.getUid().equals(mExtraIdUser1)) {
             idUserInfo = mExtraIdUser2;
         } else {
             idUserInfo = mExtraIdUser1;
         }
+
+        // Obtener información del usuario en tiempo real
         mListener = mUsuarioFirebase.getUsuariosRealTime(idUserInfo).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()) {
                     if (documentSnapshot.contains("usuario")) {
-                         mUsernameChat = documentSnapshot.getString("usuario");
+                        mUsernameChat = documentSnapshot.getString("usuario");
                         mTextViewUsername.setText(mUsernameChat);
                     }
                     if (documentSnapshot.contains("online")) {
                         boolean online = Boolean.TRUE.equals(documentSnapshot.getBoolean("online"));
                         if (online) {
-                            mTextViewRelativeTime.setText("En linea");
+                            mTextViewRelativeTime.setText("En línea");
                         } else if (documentSnapshot.contains("lastConnect")) {
                             long lastConnect = documentSnapshot.getLong("lastConnect");
                             String relativeTime = RelativeTime.getTimeAgo(lastConnect, ChatActivity.this);
@@ -264,20 +299,19 @@ public class ChatActivity extends AppCompatActivity {
                     }
                     if (documentSnapshot.contains("fotoPerfil")) {
                         mImageReceiver = documentSnapshot.getString("fotoPerfil");
-                        if (mImageReceiver != null) {
-                            if (!mImageReceiver.equals("")) {
-                                Picasso.get().load(mImageReceiver).into(mCircleImageProfile);
-
-                            }
+                        if (mImageReceiver != null && !mImageReceiver.equals("")) {
+                            Picasso.get().load(mImageReceiver).into(mCircleImageProfile);
                         }
                     }
-
                 }
             }
         });
     }
 
 
+    /**
+     * Comprueba si existe un chat entre los usuarios especificados. Si no existe, crea un nuevo chat; de lo contrario, obtiene el chat existente y muestra los mensajes.
+     */
     private void checkIfChatExist() {
         mChatsFirebase.getChatByUser1AndUser2(mExtraIdUser1, mExtraIdUser2).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -285,8 +319,7 @@ public class ChatActivity extends AppCompatActivity {
                 int size = queryDocumentSnapshots.size();
                 if (size == 0) {
                     createChat();
-                }
-                else {
+                } else {
                     mExtraIdChat = queryDocumentSnapshots.getDocuments().get(0).getId();
                     mIdNotificationChat = queryDocumentSnapshots.getDocuments().get(0).getLong("idNotification");
                     getMensajeChat();
@@ -296,23 +329,29 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Actualiza el estado de visualización de los mensajes del chat actual.
+     */
     private void updateViewed() {
         String idSender = "";
-        if(mAuthFirebase.getUid().equals(mExtraIdUser1)){
+        if (mAuthFirebase.getUid().equals(mExtraIdUser1)) {
             idSender = mExtraIdUser2;
-        }else{
+        } else {
             idSender = mExtraIdUser1;
         }
-        mMensajeFirebase.getMensajeByChatAndSender(mExtraIdChat,idSender).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        mMensajeFirebase.getMensajeByChatAndSender(mExtraIdChat, idSender).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for(DocumentSnapshot document : queryDocumentSnapshots.getDocuments()){
+                for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
                     mMensajeFirebase.updateviewed(document.getId(), true);
                 }
             }
         });
     }
 
+    /**
+     * Crea un nuevo chat entre los usuarios especificados y establece los valores iniciales.
+     */
     private void createChat() {
         Chat chat = new Chat();
         chat.setIdUser1(mExtraIdUser1);
@@ -332,17 +371,21 @@ public class ChatActivity extends AppCompatActivity {
         mChatsFirebase.create(chat);
         mExtraIdChat = chat.getId();
         getMensajeChat();
-
     }
 
-    private void getToken(final Mensaje mensaje) {
-        String idUser= "";
-        if (mAuthFirebase.getUid().equals(mExtraIdUser1)){
-            idUser=mExtraIdUser2;
-        }else {
-            idUser=mExtraIdUser1;
-        }
 
+    /**
+     * Obtiene el token de notificación del receptor del mensaje especificado y realiza acciones adicionales.
+     *
+     * @param mensaje El mensaje para el cual se obtendrá el token y se enviará una notificación.
+     */
+    private void getToken(final Mensaje mensaje) {
+        String idUser = "";
+        if (mAuthFirebase.getUid().equals(mExtraIdUser1)) {
+            idUser = mExtraIdUser2;
+        } else {
+            idUser = mExtraIdUser1;
+        }
 
         mTokenFirebase.getToken(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -351,76 +394,87 @@ public class ChatActivity extends AppCompatActivity {
                     if (documentSnapshot.contains("token")) {
                         String usr = mAuthFirebase.getUid();
                         String token = documentSnapshot.getString("token");
-                        getLastThreeMessages(mensaje,token);
-
+                        getLastThreeMessages(mensaje, token);
                     }
                 }
             }
         });
     }
 
+    /**
+     * Obtiene los últimos tres mensajes del chat actual y envía una notificación con la información correspondiente al receptor.
+     *
+     * @param message El mensaje actual que se incluirá en la notificación.
+     * @param token   El token de notificación del receptor.
+     */
     private void getLastThreeMessages(Mensaje message, final String token) {
-        mMensajeFirebase.getLastThreeMensajeByChatAndSender(mExtraIdChat,mAuthFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        mMensajeFirebase.getLastThreeMensajeByChatAndSender(mExtraIdChat, mAuthFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 ArrayList<Mensaje> mensajeArrayList = new ArrayList<>();
 
-                for (DocumentSnapshot d: queryDocumentSnapshots.getDocuments()) {
-                    if (d.exists()){
+                for (DocumentSnapshot d : queryDocumentSnapshots.getDocuments()) {
+                    if (d.exists()) {
                         Mensaje message = d.toObject(Mensaje.class);
                         mensajeArrayList.add(message);
-
                     }
                 }
 
-                if (mensajeArrayList.size()==0){
+                if (mensajeArrayList.size() == 0) {
                     mensajeArrayList.add(message);
                 }
 
                 Collections.reverse(mensajeArrayList);
                 Gson gson = new Gson();
                 String mensajes = gson.toJson(mensajeArrayList);
-                sendNotificaction(token,mensajes,message);
-
+                sendNotificaction(token, mensajes, message);
             }
         });
     }
 
-    private void sendNotificaction(final String token, String messages, Mensaje message){
-        final Map<String, String> data = new HashMap<>();
-        data.put("title","MENSAJE");
-        data.put("body", message.getMessage());
-        data.put("idNotification",String.valueOf(mIdNotificationChat));
-        data.put("messages",messages);
-        data.put("usernameSender",myUsername.toUpperCase());
-        data.put("usernameReceiver",mUsernameChat.toUpperCase());
-        data.put("idSender",message.getIdSender());
-        data.put("idReceiver",message.getIdReceiver());
-        data.put("idChat",message.getIdChat());
 
-        if (mImageSender.equals("")){
-            mImageSender= "IMAGEN_NO_VALIDA";
+    /**
+     * Envía una notificación al receptor con los mensajes y detalles correspondientes.
+     *
+     * @param token    El token de notificación del receptor.
+     * @param messages Los mensajes del chat en formato JSON.
+     * @param message  El último mensaje enviado.
+     */
+    private void sendNotificaction(final String token, String messages, Mensaje message) {
+        final Map<String, String> data = new HashMap<>();
+        data.put("title", "MENSAJE");
+        data.put("body", message.getMessage());
+        data.put("idNotification", String.valueOf(mIdNotificationChat));
+        data.put("messages", messages);
+        data.put("usernameSender", myUsername.toUpperCase());
+        data.put("usernameReceiver", mUsernameChat.toUpperCase());
+        data.put("idSender", message.getIdSender());
+        data.put("idReceiver", message.getIdReceiver());
+        data.put("idChat", message.getIdChat());
+
+        if (mImageSender.equals("")) {
+            mImageSender = "IMAGEN_NO_VALIDA";
         }
-        if (mImageReceiver.equals("")){
+        if (mImageReceiver.equals("")) {
             mImageReceiver = "IMAGEN_NO_VALIDA";
         }
-        data.put("imageSender",mImageSender);
-        data.put("imageReceiver",mImageReceiver);
+        data.put("imageSender", mImageSender);
+        data.put("imageReceiver", mImageReceiver);
 
-        String idSender="";
-        if (mAuthFirebase.getUid().equals(mExtraIdUser1)){
+        String idSender = "";
+        if (mAuthFirebase.getUid().equals(mExtraIdUser1)) {
             idSender = mExtraIdUser2;
         } else {
-            idSender= mExtraIdUser1;
+            idSender = mExtraIdUser1;
         }
-        mMensajeFirebase.getLastMessageSender(mExtraIdChat,idSender).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        mMensajeFirebase.getLastMessageSender(mExtraIdChat, idSender).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 int size = queryDocumentSnapshots.size();
-                String lastMessage= "";
-                if (size>0){
+                String lastMessage = "";
+                if (size > 0) {
                     lastMessage = queryDocumentSnapshots.getDocuments().get(0).getString("message");
-                    data.put("lastMessage",lastMessage);
+                    data.put("lastMessage", lastMessage);
                 }
                 FCMBody body = new FCMBody(token, "high", "4500s", data);
                 mNotificationFirebase.sendNotification(body).enqueue(new Callback<FCMResponse>() {
@@ -428,9 +482,9 @@ public class ChatActivity extends AppCompatActivity {
                     public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
                         if (response.body() != null) {
                             if (response.body().getSuccess() == 1) {
-
+                                // Notificación enviada con éxito
                             } else {
-                                Toast.makeText(ChatActivity.this, "ERROR no se envió", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ChatActivity.this, "ERROR: No se pudo enviar la notificación", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             Toast.makeText(ChatActivity.this, "Mensaje NO enviado", Toast.LENGTH_SHORT).show();
@@ -439,28 +493,30 @@ public class ChatActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<FCMResponse> call, Throwable t) {
-
+                        // Error al enviar la notificación
                     }
                 });
             }
         });
-
-
     }
 
-    private void getMyInfoUser(){
+    /**
+     * Obtiene la información del usuario actual (emisor) y actualiza las variables correspondientes.
+     */
+    private void getMyInfoUser() {
         mUsuarioFirebase.getUsuarios(mAuthFirebase.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()){
-                    if (documentSnapshot.contains("usuario")){
+                if (documentSnapshot.exists()) {
+                    if (documentSnapshot.contains("usuario")) {
                         myUsername = documentSnapshot.getString("usuario");
                     }
-                    if (documentSnapshot.contains("fotoPerfil")){
+                    if (documentSnapshot.contains("fotoPerfil")) {
                         mImageSender = documentSnapshot.getString("fotoPerfil");
                     }
                 }
             }
         });
     }
+
 }

@@ -57,31 +57,32 @@ public class CrearValoracionDialog extends DialogFragment {
     TokenFirebase mTokenFirebase;
 
     private Context context;
-
-    // Constructor vacío requerido para DialogFragment
+    /**
+     * Constructor vacío requerido para DialogFragment.
+     */
     public CrearValoracionDialog() {
     }
 
+
+    /**
+     * Constructor de la clase CrearValoracionDialog.
+     *
+     * @param idUser El ID del usuario.
+     */
     public CrearValoracionDialog(String idUser) {
         this.idUser = idUser;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        autentificacioFirebase = new AutentificacioFirebase();
-        usuariosBBDDFirebase = new UsuariosBBDDFirebase();
-        mNotificationFirebase = new NotificationFirebase();
-        mTokenFirebase = new TokenFirebase();
-        valoracionFirebase = new ValoracionFirebase();
-        context = getContext();
-    }
-
+    /**
+     * Método llamado para crear el diálogo.
+     *
+     * @param savedInstanceState Los datos guardados del fragmento.
+     * @return El diálogo personalizado.
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         Dialog customDialog = new Dialog(getActivity());
         customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         customDialog.setCancelable(false);
@@ -109,6 +110,12 @@ public class CrearValoracionDialog extends DialogFragment {
     }
 
 
+
+    /**
+     * Agrega los datos de la valoración y crea una nueva valoración en la base de datos.
+     *
+     * @param idUser El ID del usuario a quien se está valorando.
+     */
     public void meterDatos(String idUser) {
         String ratings = String.valueOf(estrellasCrear.getRating());
         valoracion = escribirValoracion.getText().toString().trim();
@@ -135,6 +142,12 @@ public class CrearValoracionDialog extends DialogFragment {
         });
     }
 
+
+    /**
+     * Carga los detalles del usuario para mostrar en el diálogo de creación de valoración.
+     *
+     * @param userId El ID del usuario.
+     */
     public void cargarDetallesUsuario(String userId) {
         if (userId != null) {
             usuariosBBDDFirebase.getUsuarios(userId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -157,6 +170,12 @@ public class CrearValoracionDialog extends DialogFragment {
         }
     }
 
+
+    /**
+     * Envía una notificación al usuario que recibió la valoración.
+     *
+     * @param comentario El comentario de la valoración.
+     */
     private void sendNotification(String comentario) {
         if (idUser == null) {
             return;
@@ -197,6 +216,10 @@ public class CrearValoracionDialog extends DialogFragment {
         });
     }
 
+
+    /**
+     * Valida la valoración ingresada por el usuario.
+     */
     public void validarValoracion() {
         String ratings = String.valueOf(estrellasCrear.getRating());
         valoracion = escribirValoracion.getText().toString().trim();
@@ -215,5 +238,6 @@ public class CrearValoracionDialog extends DialogFragment {
         meterDatos(idUser);
         dismiss();
     }
+
 
 }
