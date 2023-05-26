@@ -21,7 +21,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
 public class SectoresActivity extends AppCompatActivity {
-
     ImageButton btnSalir;
     TextView textViewSectores;
     static TextView txtNoHayPublicacion;
@@ -58,6 +57,9 @@ public class SectoresActivity extends AppCompatActivity {
             finish();
         });
 
+        if (reciclerPorSectores != null) {
+            reciclerPorSectores.setAdapter(postsAdapter);
+        }
 
     }
 
@@ -70,24 +72,31 @@ public class SectoresActivity extends AppCompatActivity {
                         .setQuery(query, Publicacion.class)
                         .build();
         postsAdapter = new PostsAdapter(options, SectoresActivity.this);
-        reciclerPorSectores.setAdapter(postsAdapter);
-        postsAdapter.startListening();
+
+        if (reciclerPorSectores != null) {
+            reciclerPorSectores.setAdapter(postsAdapter);
+        }
+
+        if (postsAdapter != null) {
+            postsAdapter.startListening();
+        }
 
         vacio();
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        postsAdapter.stopListening();
+        if (postsAdapter != null) {
+            postsAdapter.stopListening();
+        }
     }
 
     public static void vacio() {
-        if (reciclerPorSectores.getAdapter() != null) {
+        if (reciclerPorSectores != null && reciclerPorSectores.getAdapter() != null) {
             // De esta manera sabes si tu RecyclerView está vacío
             if (reciclerPorSectores.getAdapter().getItemCount() == 0) {
-                txtNoHayPublicacion.setVisibility(View.VISIBLE); // Mostrar el TextView si el RecyclerView está vacío
+                txtNoHayPublicacion.setVisibility(View.VISIBLE); // HOLA QUE TAL Mostrar el TextView si el RecyclerView está vacío
             } else {
                 txtNoHayPublicacion.setVisibility(View.GONE); // Ocultar el TextView si el RecyclerView no está vacío
             }
