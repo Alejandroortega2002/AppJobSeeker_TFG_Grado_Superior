@@ -40,7 +40,7 @@ public class RegistroActivity extends AppCompatActivity {
     private ProgressDialog barraProgreso;
     AlertDialog mDialog;
 
-    //FireBase
+  //Firebase
 
     AutentificacioFirebase authFirebase;
     UsuariosBBDDFirebase usuariosBBDDFirebase;
