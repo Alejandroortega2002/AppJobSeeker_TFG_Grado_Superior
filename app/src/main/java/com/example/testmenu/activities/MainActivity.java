@@ -27,7 +27,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-
+/**
+ * La clase MainActivity es la actividad principal de la aplicación.
+ * Se encarga de mostrar la interfaz de usuario y gestionar la navegación entre los diferentes fragmentos.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -47,7 +50,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-
+    /**
+     * Método llamado al crear la actividad.
+     *
+     * @param savedInstanceState Los datos guardados del estado anterior de la actividad.
+     */
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,45 +70,48 @@ public class MainActivity extends AppCompatActivity {
         createToken();
         askNotificationPermission();
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             NotificationChannel channel = new NotificationChannel("channel_id", "channel_name", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
 
-
-
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_filtro, R.id.navigation_perfil, R.id.navigation_chat, R.id.navigation_inicio)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
     }
 
+    /**
+     * Método llamado al iniciar la actividad.
+     */
     @Override
     protected void onStart() {
         super.onStart();
-        ViewedMensajeHelper.updateOnline(true,MainActivity.this);
+        ViewedMensajeHelper.updateOnline(true, MainActivity.this);
     }
 
-
-
+    /**
+     * Método llamado al pausar la actividad.
+     */
     @Override
     protected void onPause() {
         super.onPause();
-        ViewedMensajeHelper.updateOnline(false,MainActivity.this);
+        ViewedMensajeHelper.updateOnline(false, MainActivity.this);
     }
 
-
-
-    private void createToken(){
+    /**
+     * Crea el token de Firebase para el usuario autenticado.
+     */
+    private void createToken() {
         mTokenFirebase.create(mAutentificationFirebase.getUid());
     }
+
+    /**
+     * Solicita permiso al usuario para recibir notificaciones.
+     */
     private void askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -119,6 +129,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
 }

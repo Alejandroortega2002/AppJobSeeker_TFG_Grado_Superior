@@ -54,6 +54,11 @@ public class VerPerfilActivity extends AppCompatActivity {
 
     ListenerRegistration mListener;
 
+    /**
+     * Método que se llama al crear la actividad.
+     *
+     * @param savedInstanceState Objeto Bundle que contiene el estado anteriormente guardado de la actividad.
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,14 +87,12 @@ public class VerPerfilActivity extends AppCompatActivity {
         rellenarInformacionUsuario();
         getNumeroPublicaciones();
 
-
         btnAjustes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 irAjustes();
             }
         });
-
 
         btnSalir.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,12 +128,17 @@ public class VerPerfilActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Método que navega a la actividad de ajustes.
+     */
     public void irAjustes() {
         Intent i = new Intent(this, AjustesActivity.class);
         startActivity(i);
     }
 
-
+    /**
+     * Método que rellena la información del usuario en la vista.
+     */
     public void rellenarInformacionUsuario() {
         DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(VPidUser);
         mListener = documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -149,22 +157,17 @@ public class VerPerfilActivity extends AppCompatActivity {
                         String ntelefono = value.getString("telefono");
                         String descrip = value.getString("descripcion");
 
-
                         // Verificar si los valores obtenidos son nulos antes de establecer el texto en los TextViews
                         if (value.contains("fotoPerfil")) {
                             String perfil = value.getString("fotoPerfil");
-                            if (perfil != null) {
-                                if (!perfil.isEmpty()) {
-                                    Picasso.get().load(perfil).into(fotoPerfil);
-                                }
+                            if (perfil != null && !perfil.isEmpty()) {
+                                Picasso.get().load(perfil).into(fotoPerfil);
                             }
                         }
                         if (value.contains("banner")) {
                             String banner = value.getString("banner");
-                            if (banner != null) {
-                                if (!banner.isEmpty()) {
-                                    Picasso.get().load(banner).into(fotoBanner);
-                                }
+                            if (banner != null && !banner.isEmpty()) {
+                                Picasso.get().load(banner).into(fotoBanner);
                             }
                         }
                         if (nombre != null) {
@@ -192,11 +195,13 @@ public class VerPerfilActivity extends AppCompatActivity {
                         Log.d(TAG, "El objeto DocumentSnapshot no existe");
                     }
                 }
-
             }
         });
     }
 
+    /**
+     * Método que obtiene el número de publicaciones del usuario y lo muestra en la vista.
+     */
     public void getNumeroPublicaciones() {
         publicacionFirebase.getPublicacionDeUsuario(VPidUser).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -208,6 +213,9 @@ public class VerPerfilActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Método que verifica si el usuario actual es diferente al usuario del perfil mostrado y oculta ciertos botones en caso afirmativo.
+     */
     public void checkUser() {
         if (!VPidUser.equals(autentificacioFirebase.getUid())) {
             btnAjustes.setClickable(false);
@@ -220,20 +228,27 @@ public class VerPerfilActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Método que se llama al iniciar la actividad y actualiza el estado del usuario a "en línea".
+     */
     @Override
     protected void onStart() {
         super.onStart();
         ViewedMensajeHelper.updateOnline(true, VerPerfilActivity.this);
     }
 
-
+    /**
+     * Método que se llama al pausar la actividad y actualiza el estado del usuario a "desconectado".
+     */
     @Override
     protected void onPause() {
         super.onPause();
         ViewedMensajeHelper.updateOnline(false, VerPerfilActivity.this);
     }
 
+    /**
+     * Método que se llama al destruir la actividad y elimina el listener de la base de datos si está activo.
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -23,6 +23,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La clase MisFavoritosActivity muestra las publicaciones marcadas como favoritas por el usuario.
+ * Permite al usuario ver y navegar por las publicaciones que ha marcado como favoritas.
+ */
 public class MisFavoritosActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
@@ -39,7 +43,11 @@ public class MisFavoritosActivity extends AppCompatActivity {
     List<String> postIds;
     Favoritos favoritos;
 
-
+    /**
+     * Método llamado al crear la actividad.
+     *
+     * @param savedInstanceState Los datos guardados del estado anterior de la actividad.
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +57,6 @@ public class MisFavoritosActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerViewInicioFavorito);
         btnSalir = findViewById(R.id.volverAtrasFavoritos);
-
-
 
         postIds = new ArrayList<>();
         mAutentificacionFirebase = new AutentificacioFirebase();
@@ -65,6 +71,9 @@ public class MisFavoritosActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Método llamado al iniciar la actividad.
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -92,7 +101,9 @@ public class MisFavoritosActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Método llamado al detener la actividad.
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -100,5 +111,4 @@ public class MisFavoritosActivity extends AppCompatActivity {
             mPostsAdapter2.stopListening();
         }
     }
-
 }

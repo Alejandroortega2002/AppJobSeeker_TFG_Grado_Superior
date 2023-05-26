@@ -1,6 +1,3 @@
-
-
-
 package com.example.testmenu.activities;
 
 import androidx.annotation.NonNull;
@@ -76,6 +73,11 @@ public class ValoracionActivity extends AppCompatActivity {
     private float ratingSum = 0;
 
 
+    /**
+     * Método que se llama al crear la actividad.
+     *
+     * @param savedInstanceState Objeto Bundle que contiene el estado anteriormente guardado de la actividad.
+     */
     @SuppressLint({"MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +108,6 @@ public class ValoracionActivity extends AppCompatActivity {
         });
 
         btnCrearValoracion.setOnClickListener(view -> {
-//            Intent intent = new Intent(this, CrearValoracionActivity.class);
-//            intent.putExtra("idUser", userId);
-//            startActivity(intent);
             CrearValoracionDialog dialog = new CrearValoracionDialog(userId);
             dialog.show(getSupportFragmentManager(), "CrearValoracionDialog");
         });
@@ -117,7 +116,9 @@ public class ValoracionActivity extends AppCompatActivity {
         cargarValoraciones();
     }
 
-
+    /**
+     * Método para cargar las valoraciones del usuario y calcular su media.
+     */
     private void cargarValoraciones() {
         valoracionFirebase.getCommentsByUser(userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -138,18 +139,21 @@ public class ValoracionActivity extends AppCompatActivity {
                 usuariosBBDDFirebase.updateMedia(userId, media).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-
+                        // Actualización de la media del usuario exitosa.
                     }
                 });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // Manejar la falla en la obtención de las valoraciones.
+                // Manejo de la falla en la obtención de las valoraciones.
             }
         });
     }
 
+    /**
+     * Método que se llama al iniciar la actividad.
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -163,17 +167,26 @@ public class ValoracionActivity extends AppCompatActivity {
         valoracionesAdapter.startListening();
     }
 
+    /**
+     * Método que se llama al detener la actividad.
+     */
     @Override
     protected void onStop() {
         super.onStop();
         valoracionesAdapter.stopListening();
     }
 
+    /**
+     * Método que se llama al reanudar la actividad.
+     */
     @Override
     protected void onResume() {
         super.onResume();
     }
 
+    /**
+     * Método para cargar los detalles del usuario (nombre de usuario y foto de perfil) en la vista.
+     */
     private void cargarDetallesUsuario() {
         if (userId != null) {
             usuariosBBDDFirebase.getUsuarios(userId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -187,7 +200,6 @@ public class ValoracionActivity extends AppCompatActivity {
                         if (documentSnapshot.contains("fotoPerfil")) {
                             String fotoPerfilActivity = documentSnapshot.getString("fotoPerfil");
                             if (fotoPerfilActivity != null) {
-                                // Carga la imagen de perfil del usuario usando la biblioteca Picasso.
                                 Picasso.get().load(fotoPerfilActivity).into(fotoPerfilValoracion);
                             }
                         }
@@ -195,6 +207,5 @@ public class ValoracionActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
 }

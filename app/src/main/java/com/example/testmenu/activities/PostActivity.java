@@ -165,6 +165,13 @@ public class PostActivity extends AppCompatActivity {
 
 
     }
+    /**
+     * Método llamado cuando se obtienen los resultados de la solicitud de permisos.
+     *
+     * @param requestCode  El código de solicitud de permisos.
+     * @param permissions  Los permisos solicitados.
+     * @param grantResults Los resultados de la solicitud de permisos.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -181,13 +188,13 @@ public class PostActivity extends AppCompatActivity {
         }
     }
 
+
     /**
-     * Muestra un cuadro de diálogo que permite al usuario seleccionar una imagen de la galería o tomar una foto.
+     * Método privado que muestra un cuadro de diálogo para seleccionar una opción de imagen.
      *
-     * @param numberImage el número de imagen que se seleccionará (1 o 2).
+     * @param numberImage El número de imagen para el que se seleccionará la opción.
      */
     private void selectOptionImagen(final int numberImage) {
-
         // Configura un cuadro de diálogo que muestra las opciones para seleccionar o tomar una foto
         AlertDialog.Builder mBuilderSelector = new AlertDialog.Builder(this);
         mBuilderSelector.setTitle("Selecciona una opción:");
@@ -215,13 +222,12 @@ public class PostActivity extends AppCompatActivity {
     }
 
     /**
-     * Inicia la aplicación de la cámara para tomar una foto y guarda la imagen en un archivo temporal.
+     * Método privado que inicia la aplicación de la cámara para tomar una foto.
      *
-     * @param requestCode el código de solicitud que se utiliza para identificar la solicitud en el método onActivityResult.
+     * @param requestCode El código de solicitud para identificar la solicitud específica.
      */
     @SuppressLint("QueryPermissionsNeeded")
     private void takePhoto(int requestCode) {
-
         // Crea una intención para iniciar la aplicación de la cámara
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -252,12 +258,13 @@ public class PostActivity extends AppCompatActivity {
     }
 
 
+
     /**
-     * Crea un archivo de foto temporal con un nombre de archivo único utilizando la fecha y hora actuales.
+     * Método privado que crea un archivo temporal para guardar la imagen capturada por la cámara.
      *
-     * @param requestCode el código de solicitud para la foto, para guardar la ruta absoluta del archivo
-     * @return el archivo de imagen creado
-     * @throws IOException si hay algún error al crear el archivo
+     * @param requestCode El código de solicitud para identificar la solicitud específica.
+     * @return El archivo creado para la imagen.
+     * @throws IOException Si ocurre un error al crear el archivo.
      */
     private File createPhotoFile(int requestCode) throws IOException {
         // Crea un nombre de archivo único usando la fecha y hora actuales
@@ -287,11 +294,8 @@ public class PostActivity extends AppCompatActivity {
 
 
     /**
-     * Recupera los valores de los campos de título, precio y descripción, y verifica que no estén vacíos.
-     * <p>
-     * Luego verifica que se hayan seleccionado ambas imágenes y llama al método "saveImage" para guardar las imágenes
-     * <p>
-     * en la base de datos.
+     * Método que se ejecuta al hacer clic en el botón de publicar.
+     * Realiza validaciones de los campos de entrada y realiza la acción de guardar la imagen.
      */
     private void clickPost() {
         mTitulo = mTextInputTitulo.getText().toString().trim();
@@ -314,20 +318,18 @@ public class PostActivity extends AppCompatActivity {
     }
 
 
+
     /**
-     * Este método se encarga de guardar las imágenes en Firebase Storage y luego guardar la información
-     * <p>
-     * de la publicación en Firestore.
+     * Método que guarda las imágenes en Firebase Storage y crea una publicación en Firestore.
      *
-     * @param imageFile1 archivo de imagen 1 a guardar
-     * @param imageFile2 archivo de imagen 2 a guardar
+     * @param imageFile1 El archivo de la primera imagen.
+     * @param imageFile2 El archivo de la segunda imagen.
      */
     private void saveImage(File imageFile1, final File imageFile2) {
-
         // Guardar la primera imagen
         mImagenFirebase.save(PostActivity.this, imageFile1).addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
-                Toast.makeText(PostActivity.this, "Hubo error al almacenar la imagen", Toast.LENGTH_LONG).show();
+                Toast.makeText(PostActivity.this, "Hubo un error al almacenar la imagen", Toast.LENGTH_LONG).show();
                 return;
             }
             // Obtener la URL de la primera imagen guardada
@@ -337,7 +339,7 @@ public class PostActivity extends AppCompatActivity {
                 // Guardar la segunda imagen
                 mImagenFirebase.save(PostActivity.this, imageFile2).addOnCompleteListener(taskImage2 -> {
                     if (!taskImage2.isSuccessful()) {
-                        Toast.makeText(PostActivity.this, "La imagen numero 2 no se pudo guardar", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PostActivity.this, "La segunda imagen no se pudo guardar", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -345,15 +347,13 @@ public class PostActivity extends AppCompatActivity {
                     mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri2 -> {
                         final String url2 = uri2.toString();
 
-
                         // Crear la publicación y guardarla en Firestore
                         Publicacion publicacion = new Publicacion(mTitulo.toLowerCase(),
                                 Integer.parseInt(mPrecio), mDescripcion,
                                 url, url2, mAutentificacionFirebase.getUid(),
-                                mCategoria,mSector, new Date().getTime());
+                                mCategoria, mSector, new Date().getTime());
 
                         mPublicacionFribase.save(publicacion).addOnCompleteListener(taskSave -> {
-
                             if (taskSave.isSuccessful()) {
                                 Toast.makeText(PostActivity.this, "La información se almacenó correctamente", Toast.LENGTH_SHORT).show();
                                 dialogoEspera.dismiss();
@@ -363,19 +363,30 @@ public class PostActivity extends AppCompatActivity {
                                 dialogoEspera.dismiss();
                             }
                         });
-
                     });
                 });
             });
         });
     }
 
+    /**
+     * Método que abre la galería de imágenes para seleccionar una imagen.
+     *
+     * @param requestCode El código de solicitud para identificar la respuesta de la selección de imagen.
+     */
     private void openGallery(int requestCode) {
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, requestCode);
     }
 
+    /**
+     * Método que se llama cuando se recibe un resultado de una actividad iniciada por un intent.
+     *
+     * @param requestCode El código de solicitud utilizado para iniciar la actividad.
+     * @param resultCode  El código de resultado devuelto por la actividad.
+     * @param data        El intent que contiene el resultado de la actividad.
+     */
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -453,6 +464,7 @@ public class PostActivity extends AppCompatActivity {
             }
         }
     }
+
 
 
     @Override

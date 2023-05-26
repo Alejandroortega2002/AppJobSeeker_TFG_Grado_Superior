@@ -32,6 +32,11 @@ public class SectoresActivity extends AppCompatActivity {
     PublicacionFirebase publicacionFirebase;
     PostsAdapter postsAdapter;
 
+    /**
+     * Método que se llama al crear la actividad.
+     *
+     * @param savedInstanceState Objeto Bundle que contiene el estado anteriormente guardado de la actividad.
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,9 @@ public class SectoresActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Método que se llama cuando la actividad está a punto de hacerse visible para el usuario.
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -77,24 +85,34 @@ public class SectoresActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Método que se llama cuando la actividad ya no es visible para el usuario.
+     */
     @Override
     public void onStop() {
         super.onStop();
         postsAdapter.stopListening();
     }
 
+    /**
+     * Método para verificar si el RecyclerView está vacío y mostrar u ocultar un TextView en consecuencia.
+     */
     public static void vacio() {
         if (reciclerPorSectores.getAdapter() != null) {
-            // De esta manera sabes si tu RecyclerView está vacío
             if (reciclerPorSectores.getAdapter().getItemCount() == 0) {
-                txtNoHayPublicacion.setVisibility(View.VISIBLE); // Mostrar el TextView si el RecyclerView está vacío
+                txtNoHayPublicacion.setVisibility(View.VISIBLE);
             } else {
-                txtNoHayPublicacion.setVisibility(View.GONE); // Ocultar el TextView si el RecyclerView no está vacío
+                txtNoHayPublicacion.setVisibility(View.GONE);
             }
         }
     }
 
-
+    /**
+     * Método para manejar las acciones del elemento seleccionado en la barra de acciones.
+     *
+     * @param item El elemento de la barra de acciones seleccionado.
+     * @return `true` si el evento se ha consumido, `false` de lo contrario.
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

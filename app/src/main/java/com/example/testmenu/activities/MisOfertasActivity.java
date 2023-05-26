@@ -20,6 +20,10 @@ import com.example.testmenu.utils.ViewedMensajeHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
+/**
+ * La clase MisOfertasActivity muestra las publicaciones creadas por el usuario.
+ * Permite al usuario ver y gestionar sus propias publicaciones.
+ */
 public class MisOfertasActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
@@ -31,7 +35,11 @@ public class MisOfertasActivity extends AppCompatActivity {
     PublicacionFirebase mPublicacionfirebase;
     PostsAdapter2 mPostsAdapter2;
 
-
+    /**
+     * Método llamado al crear la actividad.
+     *
+     * @param savedInstanceState Los datos guardados del estado anterior de la actividad.
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,32 +61,40 @@ public class MisOfertasActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Método llamado al iniciar la actividad.
+     */
     @Override
     public void onStart() {
         super.onStart();
-            Query query = mPublicacionfirebase.getPublicacionDeUsuario(mAutentificacionFirebase.getUid());
-            FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
-                    .setQuery(query, Publicacion.class)
-                    .build();
 
-            mPostsAdapter2 = new PostsAdapter2(options, this);
-            recyclerView.setAdapter(mPostsAdapter2);
-            mPostsAdapter2.startListening();
-            ViewedMensajeHelper.updateOnline(true,MisOfertasActivity.this);
-        }
+        // Obtener las publicaciones del usuario actual
+        Query query = mPublicacionfirebase.getPublicacionDeUsuario(mAutentificacionFirebase.getUid());
+        FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
+                .setQuery(query, Publicacion.class)
+                .build();
 
+        mPostsAdapter2 = new PostsAdapter2(options, this);
+        recyclerView.setAdapter(mPostsAdapter2);
+        mPostsAdapter2.startListening();
+        ViewedMensajeHelper.updateOnline(true, MisOfertasActivity.this);
+    }
 
-
+    /**
+     * Método llamado al detener la actividad.
+     */
     @Override
     public void onStop() {
         super.onStop();
         mPostsAdapter2.stopListening();
     }
 
+    /**
+     * Método llamado al pausar la actividad.
+     */
     @Override
     protected void onPause() {
         super.onPause();
-        ViewedMensajeHelper.updateOnline(false,MisOfertasActivity.this);
+        ViewedMensajeHelper.updateOnline(false, MisOfertasActivity.this);
     }
-
 }

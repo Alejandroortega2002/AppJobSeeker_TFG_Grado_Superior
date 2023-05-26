@@ -17,7 +17,6 @@ import com.example.testmenu.R;
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class Restablecer_Contrasena extends AppCompatActivity {
 
@@ -26,7 +25,11 @@ public class Restablecer_Contrasena extends AppCompatActivity {
 
     AutentificacioFirebase authFirebase;
 
-
+    /**
+     * Método que se llama al crear la actividad.
+     *
+     * @param savedInstanceState Objeto Bundle que contiene el estado anteriormente guardado de la actividad.
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,37 +50,39 @@ public class Restablecer_Contrasena extends AppCompatActivity {
         authFirebase = new AutentificacioFirebase();
     }
 
-    public void validarEmail(){
+    /**
+     * Método para validar la dirección de correo electrónico ingresada.
+     */
+    public void validarEmail() {
         String email = emailRecuperar.getText().toString();
 
-        if(email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            emailRecuperar.setError("Correo Invalido");
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailRecuperar.setError("Correo inválido");
             return;
         }
         enviarEmail(email);
     }
 
-    public void enviarEmail(String email){
-
-
+    /**
+     * Método para enviar un correo electrónico de recuperación de contraseña.
+     *
+     * @param email La dirección de correo electrónico a la cual se enviará el correo de recuperación.
+     */
+    public void enviarEmail(String email) {
         authFirebase.recuperarContrasena(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-
-                if(task.isSuccessful()){
-                    // Mostrar un mensaje de inicio de sesión exitoso
-                    Toast.makeText(getApplicationContext(), "Se ha Enviado un mensaje a tu correo electrónico.",
-                            Toast.LENGTH_SHORT).show();
+                if (task.isSuccessful()) {
+                    // Mostrar un mensaje de éxito
+                    Toast.makeText(getApplicationContext(), "Se ha enviado un mensaje a tu correo electrónico.", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(Restablecer_Contrasena.this, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                }else{
-                    Toast.makeText(getApplicationContext(), "El correo no es correcto, intentelo de nuevo.",
-                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "El correo no es correcto, inténtelo de nuevo.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 }

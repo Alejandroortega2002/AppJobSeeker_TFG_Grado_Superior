@@ -20,6 +20,10 @@ import com.example.testmenu.utils.ViewedMensajeHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
+/**
+ * La clase MisOfertasActivity2 muestra las publicaciones creadas por un usuario específico.
+ * Permite al usuario ver y gestionar las publicaciones de otro usuario.
+ */
 public class MisOfertasActivity2 extends AppCompatActivity {
 
     private Toolbar mToolbar;
@@ -30,9 +34,13 @@ public class MisOfertasActivity2 extends AppCompatActivity {
     PublicacionFirebase mPublicacionfirebase;
     PostsAdapter2 mPostsAdapter2;
 
-
     private String idUserCarta;
 
+    /**
+     * Método llamado al crear la actividad.
+     *
+     * @param savedInstanceState Los datos guardados del estado anterior de la actividad.
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +63,14 @@ public class MisOfertasActivity2 extends AppCompatActivity {
         });
     }
 
+    /**
+     * Método llamado al iniciar la actividad.
+     */
     @Override
     public void onStart() {
         super.onStart();
+
+        // Obtener las publicaciones del usuario especificado
         Query query = mPublicacionfirebase.getPublicacionDeUsuario(idUserCarta);
         FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
                 .setQuery(query, Publicacion.class)
@@ -66,18 +79,24 @@ public class MisOfertasActivity2 extends AppCompatActivity {
         mPostsAdapter2 = new PostsAdapter2(options, this);
         recyclerView.setAdapter(mPostsAdapter2);
         mPostsAdapter2.startListening();
-        ViewedMensajeHelper.updateOnline(true,MisOfertasActivity2.this);
+        ViewedMensajeHelper.updateOnline(true, MisOfertasActivity2.this);
     }
 
+    /**
+     * Método llamado al detener la actividad.
+     */
     @Override
     public void onStop() {
         super.onStop();
         mPostsAdapter2.stopListening();
     }
+
+    /**
+     * Método llamado al pausar la actividad.
+     */
     @Override
     protected void onPause() {
         super.onPause();
-        ViewedMensajeHelper.updateOnline(false,MisOfertasActivity2.this);
+        ViewedMensajeHelper.updateOnline(false, MisOfertasActivity2.this);
     }
-
 }
