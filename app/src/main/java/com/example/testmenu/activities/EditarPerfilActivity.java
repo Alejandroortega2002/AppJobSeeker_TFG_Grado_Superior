@@ -5,18 +5,12 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,7 +30,6 @@ import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.ImagenFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
 import com.example.testmenu.utils.FileUtil;
-import com.example.testmenu.utils.ViewedMensajeHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -44,7 +37,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
@@ -98,10 +90,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
     String mPhotoPath2;
     File mPhotoFile2;
 
-    ListenerRegistration mListener;
 
-
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,13 +117,6 @@ public class EditarPerfilActivity extends AppCompatActivity {
                 .setContext(this)
                 .setMessage("espere un momento")
                 .setCancelable(false).build();
-
-        // Verificar y solicitar los permisos necesarios
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-        }
 
         rellenarInformacionUsuario();
         btnAtras.setOnClickListener(new View.OnClickListener() {
@@ -168,59 +150,57 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
     public void rellenarInformacionUsuario() {
         DocumentReference documentReference = mUsersProvider.refereciaColeccion(mAuthProvider.getUid());
-        mListener= documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value !=null){
-                    if (error != null) {
-                        // Manejar el error de Firebase Firestore
-                        Log.w(TAG, "Error al obtener el documento.", error);
-                        return;
-                    }
-                    if (value != null && value.exists()) {
-                        // Obtener los valores del objeto DocumentSnapshot
-                        String nombre = value.getString("usuario");
-                        String ntelefono = value.getString("telefono");
-                        String descrip = value.getString("descripcion");
-
-                        // Verificar si los valores obtenidos son nulos antes de establecer el texto en los TextViews
-                        if(value.contains("fotoPerfil")){
-                            String perfil = value.getString("fotoPerfil");
-                            if(perfil != null){
-                                if(!perfil.isEmpty()){
-                                    Picasso.get().load(perfil).into(fotoPerfil);
-                                }
-                            }
-                        }
-                        if(value.contains("banner")){
-                            String banner = value.getString("banner");
-                            if(banner != null){
-                                if(!banner.isEmpty()){
-                                    Picasso.get().load(banner).into(fotoBanner);
-                                }
-                            }
-                        }
-                        if (nombre != null) {
-                            usuario.setText(nombre);
-                        } else {
-                            usuario.setText("Sin nombre");
-                        }
-                        if (telefono != null) {
-                            telefono.setText(ntelefono);
-                        } else {
-                            telefono.setText("Sin teléfono");
-                        }
-                        if (descripcion != null) {
-                            descripcion.setText(descrip);
-                        } else {
-                            descripcion.setText("Sin descripción");
-                        }
-                    } else {
-                        // Manejar el caso en que el objeto DocumentSnapshot es nulo o no existe
-                        Log.d(TAG, "El objeto DocumentSnapshot no existe");
-                    }
+                if (error != null) {
+                    // Manejar el error de Firebase Firestore
+                    Log.w(TAG, "Error al obtener el documento.", error);
+                    return;
                 }
+                if (value != null && value.exists()) {
+                    // Obtener los valores del objeto DocumentSnapshot
+                    String nombre = value.getString("usuario");
+                    String ntelefono = value.getString("telefono");
+                    String descrip = value.getString("descripcion");
 
+
+                    // Verificar si los valores obtenidos son nulos antes de establecer el texto en los TextViews
+                    if(value.contains("fotoPerfil")){
+                        String perfil = value.getString("fotoPerfil");
+                        if(perfil != null){
+                            if(!perfil.isEmpty()){
+                                Picasso.get().load(perfil).into(fotoPerfil);
+                            }
+                        }
+                    }
+                    if(value.contains("banner")){
+                        String banner = value.getString("banner");
+                        if(banner != null){
+                            if(!banner.isEmpty()){
+                                Picasso.get().load(banner).into(fotoBanner);
+                            }
+                        }
+                    }
+                    if (nombre != null) {
+                        usuario.setText(nombre);
+                    } else {
+                        usuario.setText("Sin nombre");
+                    }
+                    if (telefono != null) {
+                        telefono.setText(ntelefono);
+                    } else {
+                        telefono.setText("Sin teléfono");
+                    }
+                    if (descripcion != null) {
+                        descripcion.setText(descrip);
+                    } else {
+                        descripcion.setText("Sin descripción");
+                    }
+                } else {
+                    // Manejar el caso en que el objeto DocumentSnapshot es nulo o no existe
+                    Log.d(TAG, "El objeto DocumentSnapshot no existe");
+                }
             }
         });
     }
@@ -263,7 +243,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
     private void saveImageCoverAndProfile(File imageFile1, final File imageFile2) {
         mDialog.show();
-        mImageProvider.saveImgUser(EditarPerfilActivity.this, imageFile1).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+        mImageProvider.save(EditarPerfilActivity.this, imageFile1).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -272,7 +252,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
                             final String urlProfile = uri.toString();
 
-                            mImageProvider.saveImgUser(EditarPerfilActivity.this, imageFile2).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            mImageProvider.save(EditarPerfilActivity.this, imageFile2).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> taskImage2) {
                                     if (taskImage2.isSuccessful()) {
@@ -308,7 +288,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
     private void saveImage(File image, final boolean isProfileImage) {
         mDialog.show();
-        mImageProvider.saveImgUser(EditarPerfilActivity.this, image).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+        mImageProvider.save(EditarPerfilActivity.this, image).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -420,14 +400,17 @@ public class EditarPerfilActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        /**
+         * SELECCION DE IMAGEN DESDE LA GALERIA
+         */
         if (requestCode == GALLERY_REQUEST_CODE_PERFIL && resultCode == RESULT_OK) {
             try {
+
                 mImageFile = FileUtil.from(this, data.getData());
                 fotoPerfil.setImageBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()));
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Se produjo un error al seleccionar la imagen", Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Log.d("ERROR", "Se produjo un error " + e.getMessage());
+                Toast.makeText(this, "Se produjo un error " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
 
@@ -435,66 +418,26 @@ public class EditarPerfilActivity extends AppCompatActivity {
             try {
                 mImageFile2 = FileUtil.from(this, data.getData());
                 fotoBanner.setImageBitmap(BitmapFactory.decodeFile(mImageFile2.getAbsolutePath()));
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Se produjo un error al seleccionar la imagen", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        if ((requestCode == PHOTO_REQUEST_CODE_PERFIL || requestCode == PHOTO_REQUEST_CODE_BANNER) && resultCode == RESULT_OK) {
-            File imageFile;
-            if (requestCode == PHOTO_REQUEST_CODE_PERFIL) {
-                imageFile = new File(mAbsolutePhotoPath);
-                fotoPerfil.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
-            } else {
-                imageFile = new File(mAbsolutePhotoPath2);
-                fotoBanner.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
-            }
-            try {
-                mImageFile = imageFile;
             } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Se produjo un error al capturar la foto", Toast.LENGTH_LONG).show();
+                Log.d("ERROR", "Se produjo un error " + e.getMessage());
+                Toast.makeText(this, "Se produjo un error " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        ViewedMensajeHelper.updateOnline(true,EditarPerfilActivity.this);
-    }
+        /**
+         * SELECCION DE FOTOGRAFIA
+         */
+        if (requestCode == PHOTO_REQUEST_CODE_PERFIL && resultCode == RESULT_OK) {
+            mImageFile = new File(mAbsolutePhotoPath);
+            Picasso.get().load(mPhotoPath).into(fotoPerfil);
+        }
 
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        ViewedMensajeHelper.updateOnline(false,EditarPerfilActivity.this);
-    }
-
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        if (mListener!=null){
-            mListener.remove();
+        /**
+         * SELECCION DE FOTOGRAFIA
+         */
+        if (requestCode == PHOTO_REQUEST_CODE_BANNER && resultCode == RESULT_OK) {
+            mImageFile2 = new File(mAbsolutePhotoPath2);
+            Picasso.get().load(mPhotoPath2).into(fotoBanner);
         }
     }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 0) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[1] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                // Los permisos han sido concedidos
-                Toast.makeText(this, "Permisos concedidos", Toast.LENGTH_SHORT).show();
-            } else {
-                // Al menos uno de los permisos fue denegado
-                Toast.makeText(this, "Permisos denegados", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
 }
