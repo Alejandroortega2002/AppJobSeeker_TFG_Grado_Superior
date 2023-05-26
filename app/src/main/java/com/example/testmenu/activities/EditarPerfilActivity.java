@@ -5,12 +5,16 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +28,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.testmenu.Manifest;
 import com.example.testmenu.R;
 import com.example.testmenu.entidades.Usuarios;
 import com.example.testmenu.firebase.AutentificacioFirebase;
@@ -49,6 +54,7 @@ import dmax.dialog.SpotsDialog;
 
 public class EditarPerfilActivity extends AppCompatActivity {
 
+    private static final int PERMISSION_REQUEST_CODE = 1;
     ImageButton btnAtras;
     CircleImageView fotoPerfil;
     ImageView fotoBanner;
@@ -91,6 +97,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
     File mPhotoFile2;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -440,4 +447,5 @@ public class EditarPerfilActivity extends AppCompatActivity {
             Picasso.get().load(mPhotoPath2).into(fotoBanner);
         }
     }
+
 }

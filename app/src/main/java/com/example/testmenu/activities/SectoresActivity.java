@@ -1,3 +1,4 @@
+
 package com.example.testmenu.activities;
 
 import androidx.annotation.NonNull;
@@ -21,7 +22,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
 public class SectoresActivity extends AppCompatActivity {
-
     ImageButton btnSalir;
     TextView textViewSectores;
     static TextView txtNoHayPublicacion;
@@ -32,11 +32,6 @@ public class SectoresActivity extends AppCompatActivity {
     PublicacionFirebase publicacionFirebase;
     PostsAdapter postsAdapter;
 
-    /**
-     * Método que se llama al crear la actividad.
-     *
-     * @param savedInstanceState Objeto Bundle que contiene el estado anteriormente guardado de la actividad.
-     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +58,12 @@ public class SectoresActivity extends AppCompatActivity {
             finish();
         });
 
+        if (reciclerPorSectores != null) {
+            reciclerPorSectores.setAdapter(postsAdapter);
+        }
 
     }
 
-    /**
-     * Método que se llama cuando la actividad está a punto de hacerse visible para el usuario.
-     */
     @Override
     public void onStart() {
         super.onStart();
@@ -78,41 +73,38 @@ public class SectoresActivity extends AppCompatActivity {
                         .setQuery(query, Publicacion.class)
                         .build();
         postsAdapter = new PostsAdapter(options, SectoresActivity.this);
-        reciclerPorSectores.setAdapter(postsAdapter);
-        postsAdapter.startListening();
+
+        if (reciclerPorSectores != null) {
+            reciclerPorSectores.setAdapter(postsAdapter);
+        }
+
+        if (postsAdapter != null) {
+            postsAdapter.startListening();
+        }
 
         vacio();
-
     }
 
-    /**
-     * Método que se llama cuando la actividad ya no es visible para el usuario.
-     */
     @Override
     public void onStop() {
         super.onStop();
-        postsAdapter.stopListening();
+        if (postsAdapter != null) {
+            postsAdapter.stopListening();
+        }
     }
 
-    /**
-     * Método para verificar si el RecyclerView está vacío y mostrar u ocultar un TextView en consecuencia.
-     */
     public static void vacio() {
-        if (reciclerPorSectores.getAdapter() != null) {
+        if (reciclerPorSectores != null && reciclerPorSectores.getAdapter() != null) {
+            // De esta manera sabes si tu RecyclerView está vacío
             if (reciclerPorSectores.getAdapter().getItemCount() == 0) {
-                txtNoHayPublicacion.setVisibility(View.VISIBLE);
+                txtNoHayPublicacion.setVisibility(View.VISIBLE); // HOLA QUE TAL Mostrar el TextView si el RecyclerView está vacío
             } else {
-                txtNoHayPublicacion.setVisibility(View.GONE);
+                txtNoHayPublicacion.setVisibility(View.GONE); // Ocultar el TextView si el RecyclerView no está vacío
             }
         }
     }
 
-    /**
-     * Método para manejar las acciones del elemento seleccionado en la barra de acciones.
-     *
-     * @param item El elemento de la barra de acciones seleccionado.
-     * @return `true` si el evento se ha consumido, `false` de lo contrario.
-     */
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
