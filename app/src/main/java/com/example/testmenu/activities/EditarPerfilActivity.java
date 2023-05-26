@@ -420,17 +420,14 @@ public class EditarPerfilActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /**
-         * SELECCION DE IMAGEN DESDE LA GALERIA
-         */
+
         if (requestCode == GALLERY_REQUEST_CODE_PERFIL && resultCode == RESULT_OK) {
             try {
-
                 mImageFile = FileUtil.from(this, data.getData());
                 fotoPerfil.setImageBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()));
-            } catch (Exception e) {
-                Log.d("ERROR", "Se produjo un error " + e.getMessage());
-                Toast.makeText(this, "Se produjo un error " + e.getMessage(), Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Se produjo un error al seleccionar la imagen", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -438,78 +435,30 @@ public class EditarPerfilActivity extends AppCompatActivity {
             try {
                 mImageFile2 = FileUtil.from(this, data.getData());
                 fotoBanner.setImageBitmap(BitmapFactory.decodeFile(mImageFile2.getAbsolutePath()));
-            } catch (Exception e) {
-                Log.d("ERROR", "Se produjo un error " + e.getMessage());
-                Toast.makeText(this, "Se produjo un error " + e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
-
-        /**
-         * SELECCION DE FOTOGRAFIA
-         */
-        if (requestCode == PHOTO_REQUEST_CODE_PERFIL && resultCode == RESULT_OK) {
-            mImageFile = new File(mAbsolutePhotoPath);
-            Picasso.get().load(mPhotoPath).into(fotoPerfil);
-        }
-
-        /**
-         * SELECCION DE FOTOGRAFIA
-         */
-        if (requestCode == PHOTO_REQUEST_CODE_BANNER && resultCode == RESULT_OK) {
-            mImageFile2 = new File(mAbsolutePhotoPath2);
-            Picasso.get().load(mPhotoPath2).into(fotoBanner);
-        }
-        /**
-         * FOTO CAMARA(DISPOSITIVO)
-         */
-        if (requestCode == PHOTO_REQUEST_CODE_PERFIL && resultCode == RESULT_OK) {
-            try {
-                // Asignar la imagen capturada al ImageView
-                fotoPerfil.setImageBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()));
-
-            } catch (Exception e) {
-                Log.d("ERROR", "Se produjo un error " + e.getMessage());
-                Toast.makeText(this, "Se produjo un error " + e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        } else if (requestCode == PHOTO_REQUEST_CODE_BANNER && resultCode == RESULT_OK) {
-            try {
-                // Asignar la imagen capturada al ImageView
-                fotoBanner.setImageBitmap(BitmapFactory.decodeFile(mAbsolutePhotoPath2));
-
-            } catch (Exception e) {
-                Log.d("ERROR", "Se produjo un error " + e.getMessage());
-                Toast.makeText(this, "Se produjo un error " + e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
-
-        // Aquí añade el código que te proporcioné anteriormente para manejar la selección de imágenes desde la galería
-        if (data != null && data.getData() != null) {
-            Uri imageUri = data.getData();
-            File imageFile = null;
-            try {
-                imageFile = FileUtil.from(this, imageUri);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
+                Toast.makeText(this, "Se produjo un error al seleccionar la imagen", Toast.LENGTH_LONG).show();
             }
+        }
 
-            if (requestCode == GALLERY_REQUEST_CODE_PERFIL) {
-                mImageFile = imageFile;
-            } else if (requestCode == GALLERY_REQUEST_CODE_BANNER) {
-                mImageFile2 = imageFile;
+        if ((requestCode == PHOTO_REQUEST_CODE_PERFIL || requestCode == PHOTO_REQUEST_CODE_BANNER) && resultCode == RESULT_OK) {
+            File imageFile;
+            if (requestCode == PHOTO_REQUEST_CODE_PERFIL) {
+                imageFile = new File(mAbsolutePhotoPath);
+                fotoPerfil.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
+            } else {
+                imageFile = new File(mAbsolutePhotoPath2);
+                fotoBanner.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
             }
-
             try {
-                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                if (requestCode == GALLERY_REQUEST_CODE_PERFIL) {
-                    fotoPerfil.setImageBitmap(bitmap);
-                } else if (requestCode == GALLERY_REQUEST_CODE_BANNER) {
-                    fotoBanner.setImageBitmap(bitmap);
-                }
+                mImageFile = imageFile;
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(this, "Se produjo un error al capturar la foto", Toast.LENGTH_LONG).show();
             }
         }
     }
+
     @Override
     protected void onStart() {
         super.onStart();
