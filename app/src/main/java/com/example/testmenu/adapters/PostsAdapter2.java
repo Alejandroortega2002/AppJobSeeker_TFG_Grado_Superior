@@ -109,6 +109,14 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
 
     }
 
+    /**
+     * Obtiene el número de "Me gusta" para una publicación específica de la base de datos de Firebase y actualiza
+     * el campo de texto correspondiente en el ViewHolder con el número de "Me gusta".
+     *
+     * @param idPost  el ID de la publicación para la que se desea obtener el número de "Me gusta"
+     * @param holder  el ViewHolder que contiene el campo de texto donde se mostrará el número de "Me gusta"
+     * @return void
+     */
     private void getNumeroDeLikes(String idPost, final PostsAdapter2.ViewHolder holder) {
         mListener = favoritosFirebase.getLikesByPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -122,6 +130,12 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
         });
     }
 
+    /**
+     * Realiza la acción de dar o quitar un "me gusta" a una publicación.
+     *
+     * @param favoritos representa el "me gusta" que se quiere dar/quitar.
+     * @param holder objeto de la clase ViewHolder que contiene la vista del elemento de la lista de publicaciones.
+     */
     private void favoritos(final Favoritos favoritos, final PostsAdapter2.ViewHolder holder) {
         favoritosFirebase.getLikeByPostAndUser(favoritos.getIdPost(), autentificacioFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -141,6 +155,14 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
     }
 
 
+    /**
+     * Comprueba si un post ha sido marcado como favorito por el usuario actual y actualiza la imagen de la vista correspondiente.
+     *
+     * @param idPost el ID del post que se quiere comprobar.
+     * @param idUser el ID del usuario que se quiere comprobar si ha marcado el post como favorito.
+     * @param holder el ViewHolder que contiene la imagen del botón de favoritos.
+     * @return void
+     */
     private void checkComprobarFavoritos(String idPost, String idUser, final PostsAdapter2.ViewHolder holder) {
         favoritosFirebase.getLikeByPostAndUser(idPost, idUser).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -156,7 +178,13 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
 
     }
 
-
+    /**
+     * Se muestra el nombre del usuario deseado.
+     *
+     * @param idUser id del usuario que se desea obtener
+     * @param holder el ViewHolder que contiene el textview para mostrar el usuario
+     * @return void
+     */
     private void getUsuarioInfo(String idUser, final PostsAdapter2.ViewHolder holder) {
         usuariosBBDDFirebase.getUsuarios(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -179,6 +207,11 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
         });
     }
 
+    /**
+     * Se borra la oferta cuyo id equivalga a la del parámetro
+     * @param id id de publicación
+     * @return void
+     */
     private void borrarPublicacion(String id) {
         publicacionFirebase.borrarPublicacion(id).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -224,6 +257,14 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
 
     }
 
+    /**
+     * Muestra un Dialog de aviso al usuario.
+     * <p>
+     * Si se desea borrar la oferta se eliminará de la base de datos
+     *
+     * @param idPublicacion id de la publicación en caso de querer borrar la oferta
+     * @return void
+     */
     public void mostrarAlertBorrarPublicacion(String idPublicacion) {
         // con este tema personalizado evitamos los bordes por defecto
         customDialog = new Dialog(context, R.style.Theme_Translucent);

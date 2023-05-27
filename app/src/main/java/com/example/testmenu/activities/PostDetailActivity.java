@@ -116,6 +116,11 @@ public class PostDetailActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Intent que dirige al <b>ChatActivity</b>
+     *
+     * @return void
+     */
     private void goToChatActivity() {
     Intent i = new Intent(this, ChatActivity.class);
     i.putExtra("idUser1",mAutentificacioFirebase.getUid());
@@ -127,7 +132,10 @@ public class PostDetailActivity extends AppCompatActivity {
     /**
      * Configura el SliderView y establece el adaptador SliderAdapter para mostrar los elementos del slider.
      * <p>
-     * Se establecen diferentes propiedades del SliderView, como la animación de indicador, la dirección de ciclo automático, el tiempo de desplazamiento, etc.
+     * Se establecen diferentes propiedades del SliderView, como la animación de indicador, la dirección de ciclo automático,
+     * el tiempo de desplazamiento, etc.
+     *
+     * @return void
      */
     private void instanceSlider() {
         // Instancia el adaptador SliderAdapter y lo configura para mostrar los elementos del slider

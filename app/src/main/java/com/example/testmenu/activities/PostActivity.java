@@ -190,9 +190,9 @@ public class PostActivity extends AppCompatActivity {
 
 
     /**
-     * Método privado que muestra un cuadro de diálogo para seleccionar una opción de imagen.
+     * Muestra un cuadro de diálogo que permite al usuario seleccionar una imagen de la galería o tomar una foto.
      *
-     * @param numberImage El número de imagen para el que se seleccionará la opción.
+     * @param numberImage el número de imagen que se seleccionará (1 o 2).
      */
     private void selectOptionImagen(final int numberImage) {
         // Configura un cuadro de diálogo que muestra las opciones para seleccionar o tomar una foto
@@ -222,9 +222,10 @@ public class PostActivity extends AppCompatActivity {
     }
 
     /**
-     * Método privado que inicia la aplicación de la cámara para tomar una foto.
+     * Inicia la aplicación de la cámara para tomar una foto y guarda la imagen en un archivo temporal.
      *
-     * @param requestCode El código de solicitud para identificar la solicitud específica.
+     * @param requestCode el código de solicitud que se utiliza para identificar la solicitud.
+     * @return void
      */
     @SuppressLint("QueryPermissionsNeeded")
     private void takePhoto(int requestCode) {
@@ -260,11 +261,11 @@ public class PostActivity extends AppCompatActivity {
 
 
     /**
-     * Método privado que crea un archivo temporal para guardar la imagen capturada por la cámara.
+     * Crea un archivo de foto temporal con un nombre de archivo único utilizando la fecha y hora actuales.
      *
-     * @param requestCode El código de solicitud para identificar la solicitud específica.
-     * @return El archivo creado para la imagen.
-     * @throws IOException Si ocurre un error al crear el archivo.
+     * @param requestCode el código de solicitud para la foto, para guardar la ruta absoluta del archivo
+     * @return archivo de imagen creado
+     * @throws IOException si hay algún error al crear el archivo
      */
     private File createPhotoFile(int requestCode) throws IOException {
         // Crea un nombre de archivo único usando la fecha y hora actuales
@@ -294,9 +295,14 @@ public class PostActivity extends AppCompatActivity {
 
 
     /**
-     * Método que se ejecuta al hacer clic en el botón de publicar.
-     * Realiza validaciones de los campos de entrada y realiza la acción de guardar la imagen.
+     * Recupera los valores de los campos de título, precio y descripción, y verifica que no estén vacíos.
+     * <p>
+     * Luego verifica que se hayan seleccionado ambas imágenes y llama al método "saveImage" para guardar las imágenes
+     * en la base de datos.
+     *
+     * @return void
      */
+
     private void clickPost() {
         mTitulo = mTextInputTitulo.getText().toString().trim();
         mPrecio = mTextInputPrecio.getText().toString().trim();
@@ -320,11 +326,13 @@ public class PostActivity extends AppCompatActivity {
 
 
     /**
-     * Método que guarda las imágenes en Firebase Storage y crea una publicación en Firestore.
+     * Este método se encarga de guardar las imágenes en Firebase Storage y luego guardar la información
+     * de la publicación en Firestore.
      *
-     * @param imageFile1 El archivo de la primera imagen.
-     * @param imageFile2 El archivo de la segunda imagen.
+     * @param imageFile1 archivo de imagen 1 a guardar
+     * @param imageFile2 archivo de imagen 2 a guardar
      */
+
     private void saveImage(File imageFile1, final File imageFile2) {
         // Guardar la primera imagen
         mImagenFirebase.save(PostActivity.this, imageFile1).addOnCompleteListener(task -> {
@@ -370,9 +378,10 @@ public class PostActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que abre la galería de imágenes para seleccionar una imagen.
+     * Abre la galería del dispositivo por el directorio <b>image/</b>
      *
-     * @param requestCode El código de solicitud para identificar la respuesta de la selección de imagen.
+     * @param requestCode el código de solicitud que se utiliza para identificar la solicitud
+     * @return void
      */
     private void openGallery(int requestCode) {
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);

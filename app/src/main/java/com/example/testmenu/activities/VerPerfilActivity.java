@@ -129,7 +129,8 @@ public class VerPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que navega a la actividad de ajustes.
+     * Cambio a la activity Ajustes
+     * @return void
      */
     public void irAjustes() {
         Intent i = new Intent(this, AjustesActivity.class);
@@ -137,7 +138,11 @@ public class VerPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que rellena la información del usuario en la vista.
+     * Rellena los campos de la activity con los datos del usuario desde la base de datos
+     * <p>
+     * Se consulta un documento, en caso de que exista, se rellena los datos del perfil que se desea observar.En caso de error, se registra en el Log con un mensaje
+     *
+     * @return void
      */
     public void rellenarInformacionUsuario() {
         DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(VPidUser);
@@ -200,7 +205,9 @@ public class VerPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que obtiene el número de publicaciones del usuario y lo muestra en la vista.
+     * Muestra la cifra de ofertas que el usuario posee
+     *
+     * @return void
      */
     public void getNumeroPublicaciones() {
         publicacionFirebase.getPublicacionDeUsuario(VPidUser).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -214,7 +221,11 @@ public class VerPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que verifica si el usuario actual es diferente al usuario del perfil mostrado y oculta ciertos botones en caso afirmativo.
+     * Comprueba que el id del usuario coincide con el que se solicita ver el perfil.
+     * <p>
+     *  Si coinciden, se muetran funciones unicas.
+     *
+     * @return void
      */
     public void checkUser() {
         if (!VPidUser.equals(autentificacioFirebase.getUid())) {

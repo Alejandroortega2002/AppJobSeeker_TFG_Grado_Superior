@@ -87,6 +87,14 @@ public class InicioFragment extends Fragment {
         startActivity(intent);
     }
 
+    /**
+     * Configura un listener de texto de búsqueda para el objeto SearchView.
+     * <p>
+     * Establece el comportamiento para cuando se envía una consulta de búsqueda (onQueryTextSubmit)
+     * y cuando el texto de búsqueda cambia (onQueryTextChange).
+     *
+     * @return void
+     */
     private void busquedasDiferentes() {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -103,6 +111,16 @@ public class InicioFragment extends Fragment {
         });
     }
 
+    /**
+     * Realiza una búsqueda utilizando el texto de consulta proporcionado.
+     * <p>
+     * Se obtiene una consulta de búsqueda utilizando el método <b>getPostByTitulo()</b> de mPublicacionfirebase.
+     * Se construyen las opciones de FirestoreRecyclerOptions con la consulta de búsqueda y la clase Publicacion.
+     * Se crea un nuevo PostsAdapter con las opciones y el contexto actual.
+     * Se establece el adaptador en el RecyclerView y se inicia la escucha del adaptador.
+     *
+     * @param query El texto de búsqueda utilizado para buscar publicaciones.
+     */
     private void buscar(String query) {
         Query searchQuery = mPublicacionfirebase.getPostByTitulo(query);
         FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()

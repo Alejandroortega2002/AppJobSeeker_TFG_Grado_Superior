@@ -136,6 +136,11 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    /**
+     * Muestra el numero de ofertas que tiene publicadas el usuario con la sesion iniciada actual
+     *
+     * @return void
+     */
     public void getNumeroPublicaciones() {
         publicacionFirebase.getPublicacionDeUsuario(autentificacioFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -147,6 +152,11 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    /**
+     * Intent que permite dirigirse a <b>AjustesActivity</b>
+     *
+     * @return void
+     */
     public void irAjustes() {
         Intent i = new Intent(getActivity(), AjustesActivity.class);
         startActivity(i);
@@ -156,11 +166,22 @@ public class ProfileFragment extends Fragment {
 //        Intent i = new Intent(getActivity(), Favoritos.class);
 //        startActivity(i);
 //    }
+
+    /**
+     * Intent que permite dirigirse a <b>MisOfertasActivity</b>
+     *
+     * @return void
+     */
     public void irOfertas() {
         Intent i = new Intent(getActivity(), MisOfertasActivity.class);
         startActivity(i);
     }
 
+    /**
+     * Rellena el perfil del usuario con la sesión iniciada actual y muestra sus datos en tiempo real
+     *
+     * @return void
+     */
     public void rellenarInformacionUsuario() {
         DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(idUser);
          mListener =documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {

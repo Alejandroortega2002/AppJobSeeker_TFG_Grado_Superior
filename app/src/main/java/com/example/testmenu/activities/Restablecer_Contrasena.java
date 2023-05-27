@@ -51,7 +51,9 @@ public class Restablecer_Contrasena extends AppCompatActivity {
     }
 
     /**
-     * Método para validar la dirección de correo electrónico ingresada.
+     * Comprobar si el correo asignado es valido y se envía por <b>enviarEmail()</b>
+     *
+     * @return void
      */
     public void validarEmail() {
         String email = emailRecuperar.getText().toString();
@@ -63,10 +65,10 @@ public class Restablecer_Contrasena extends AppCompatActivity {
         enviarEmail(email);
     }
 
-    /**
-     * Método para enviar un correo electrónico de recuperación de contraseña.
+    /**Se manda un mail al correo asignado y se avisa al usuario del envio
      *
-     * @param email La dirección de correo electrónico a la cual se enviará el correo de recuperación.
+     * @param email correo al que se le enviará el mail
+     * @return void
      */
     public void enviarEmail(String email) {
         authFirebase.recuperarContrasena(email).addOnCompleteListener(new OnCompleteListener<Void>() {

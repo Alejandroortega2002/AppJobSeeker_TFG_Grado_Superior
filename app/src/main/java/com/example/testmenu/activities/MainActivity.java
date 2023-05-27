@@ -103,14 +103,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Crea el token de Firebase para el usuario autenticado.
+     * Crea un token del usuario que tiene la sesión iniciada actual
+     *
+     * @return void
      */
     private void createToken() {
         mTokenFirebase.create(mAutentificationFirebase.getUid());
     }
 
     /**
-     * Solicita permiso al usuario para recibir notificaciones.
+     * Pide por un UI activar las notificaciones en el usuario
+     *
+     * @return void
      */
     private void askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)

@@ -70,6 +70,16 @@ public class MessageReceiver extends BroadcastReceiver {
         sendMensaje(message);
     }
 
+    /**
+     * Crea un objeto de entidad <b>Mensaje</b> y se obtiene el token del objeto.
+     * <p>
+     * Se instancia un objeto de entidad Mensaje y se le asigna sus datos.
+     * Se instancia un objeto de clase <b>MensajeFirebase</b> en el que mandamos crear a la base de datos un documento del nuevo objeto.
+     * En el caso de que se cumpla, se llama al método <b>getToken()</b>
+     *
+     * @param message el texto que se evnia
+     * @return void
+     */
     private void sendMensaje(String message) {
         final Mensaje mensaje = new Mensaje();
         mensaje.setIdChat(mExtraIdChat);
@@ -88,6 +98,17 @@ public class MessageReceiver extends BroadcastReceiver {
         });
     }
 
+    /**
+     * Se consulta del token del mensaje creado y se envia una notificacion
+     * <p>
+     * Se realiza una consulta a la base de datos. Se revisa si existe el documento con el token filtrado por el id del user que envia el mensaje.
+     * En caso de que exista, se obtienen los últimos mensajes y se guardan en un array para luego convertirlos a un formato Json con la clase <b>Gson</b>.
+     * Luego, se llama al método <b>sendNotification()</b>
+     *
+     * @param message objeto mensaje del que se ha creado
+     * @return void
+     *
+     */
     private void getToken(final Mensaje message){
         mTokenFirebase.getToken(mExtraIdSender).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -106,6 +127,18 @@ public class MessageReceiver extends BroadcastReceiver {
         });
     }
 
+    /**
+     *Envía una notificación al token especificado con el mensaje y los datos adicionales dados.
+     *<p>
+     *Se instancia un objeto mapa para guardar varios datos por clave-valor.
+     *Se instancia un objeto de tipo FCMBody(Fire Cloud Messaging) el cual se le asignan por parámetro el token, la prioridad, el tiempo y el objeto data.
+     *Después se envia la notificación al otro usuario.
+     *
+     *@param token El token al que se enviará la notificación.
+     *@param messages Mensajes adicionales para incluir en la notificación.
+     *@param message El objeto de mensaje que contiene información sobre el remitente y el receptor.
+     *@return void
+     */
     private void sendNotificaction(final String token, String messages, Mensaje message){
         final Map<String, String> data = new HashMap<>();
         data.put("title","MENSAJE");
@@ -135,6 +168,11 @@ public class MessageReceiver extends BroadcastReceiver {
         });
 
     }
+    /**
+     *Recupera el texto del mensaje del intent dado.
+     *@param intent El intent que contiene el texto del mensaje.
+     *@return El texto del mensaje si está disponible, null en caso contrario.
+     */
     private CharSequence getMessageText(Intent intent){
         Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
         if (remoteInput!=null){

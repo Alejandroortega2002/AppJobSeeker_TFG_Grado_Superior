@@ -28,7 +28,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.testmenu.Manifest;
+
 import com.example.testmenu.R;
 import com.example.testmenu.entidades.Usuarios;
 import com.example.testmenu.firebase.AutentificacioFirebase;
@@ -155,6 +155,12 @@ public class EditarPerfilActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Rellena los campos de Editext e Images de la activity con los datos del usuario desde la base de datos
+     * <p>
+     * En caso de error, se registra en el Log con un mensaje
+     * @return void
+     */
     public void rellenarInformacionUsuario() {
         DocumentReference documentReference = mUsersProvider.refereciaColeccion(mAuthProvider.getUid());
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -212,6 +218,11 @@ public class EditarPerfilActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Se guardan los nuevos datos y se registran en la base de datos
+     *
+     * @return void
+     */
     private void clickEditProfile() {
         mUsername = usuario.getText().toString();
         mPhone = telefono.getText().toString();
@@ -248,6 +259,12 @@ public class EditarPerfilActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Almacena la imagen de perfil y portada del usuario en la base de datos de Firebase Storage.
+     *
+     * @param imageFile1 imagen de perfil
+     * @param imageFile2 imagen de portada
+     */
     private void saveImageCoverAndProfile(File imageFile1, final File imageFile2) {
         mDialog.show();
         mImageProvider.save(EditarPerfilActivity.this, imageFile1).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -293,6 +310,13 @@ public class EditarPerfilActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Guarda una imagen en Firebase Storage y actualiza la información del usuario con la URL de la imagen.
+     *
+     * @param image imagen a guardar
+     * @param isProfileImage  comprueba el tipo de archivo.
+     * @return void
+     */
     private void saveImage(File image, final boolean isProfileImage) {
         mDialog.show();
         mImageProvider.save(EditarPerfilActivity.this, image).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -326,6 +350,12 @@ public class EditarPerfilActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Pasa los cambios realizados a la base de datos, muestra un dialogo en caso de éxito o error
+     *
+     * @param usuario usuario ha actualizar
+     * @return void
+     */
     private void updateInfo(Usuarios usuario) {
         if (mDialog.isShowing()) {
             mDialog.show();
@@ -344,6 +374,12 @@ public class EditarPerfilActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Solicitud de cambio de imagen. Dependiendo de la solicitud se abre la galería o la cámara de fotos
+     *
+     * @param numberImage número de imagen (1 o 2)
+     * @return void
+     */
     private void selectOptionImagen(final int numberImage) {
 
         mBuilderSelector.setItems(options, (dialogInterface, i) -> {
@@ -364,6 +400,11 @@ public class EditarPerfilActivity extends AppCompatActivity {
         mBuilderSelector.show();
     }
 
+    /**
+     * Toma una foto y se le asigna a la solicitud deseada
+     *
+     * @param requestCode el código de solicitud que se utiliza para identificar la solicitud
+     */
     private void takePhoto(int requestCode) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -381,6 +422,13 @@ public class EditarPerfilActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Se crea archivo de la foto en formato <b>.jpg</b>
+     *
+     * @param requestCode el código de solicitud que se utiliza para identificar la solicitud
+     * @return archivo de imagen creado
+     * @throws IOException
+     */
     private File createPhotoFile(int requestCode) throws IOException {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File photoFile = File.createTempFile(
@@ -398,6 +446,12 @@ public class EditarPerfilActivity extends AppCompatActivity {
         return photoFile;
     }
 
+    /**
+     * Abre la galería del dispositivo por el directorio <b>image/</b>
+     *
+     * @param requestCode el código de solicitud que se utiliza para identificar la solicitud
+     * @return void
+     */
     private void openGallery(int requestCode) {
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");

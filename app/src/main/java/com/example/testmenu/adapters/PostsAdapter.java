@@ -96,6 +96,14 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
         checkComprobarFavoritos(postId, autentificacioFirebase.getUid(), holder);
     }
 
+    /**
+     * Obtiene el número de "Me gusta" para una publicación específica de la base de datos de Firebase y actualiza
+     * el campo de texto correspondiente en el ViewHolder con el número de "Me gusta".
+     *
+     * @param idPost  el ID de la publicación para la que se desea obtener el número de "Me gusta"
+     * @param holder  el ViewHolder que contiene el campo de texto donde se mostrará el número de "Me gusta"
+     * @return void
+     */
     private void getNumeroDeLikes(String idPost, final ViewHolder holder) {
         mListener = favoritosFirebase.getLikesByPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -109,6 +117,12 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
         });
     }
 
+    /**
+     * Realiza la acción de dar o quitar un "me gusta" a una publicación.
+     *
+     * @param favoritos representa el "me gusta" que se quiere dar/quitar.
+     * @param holder objeto de la clase ViewHolder que contiene la vista del elemento de la lista de publicaciones.
+     */
     private void favoritos(final Favoritos favoritos, final ViewHolder holder) {
         favoritosFirebase.getLikeByPostAndUser(favoritos.getIdPost(), autentificacioFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -127,7 +141,14 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
 
     }
 
-
+    /**
+     * Comprueba si un post ha sido marcado como favorito por el usuario actual y actualiza la imagen de la vista correspondiente.
+     *
+     * @param idPost el ID del post que se quiere comprobar.
+     * @param idUser el ID del usuario que se quiere comprobar si ha marcado el post como favorito.
+     * @param holder el ViewHolder que contiene la imagen del botón de favoritos.
+     * @return void
+     */
     private void checkComprobarFavoritos(String idPost, String idUser, final ViewHolder holder) {
         favoritosFirebase.getLikeByPostAndUser(idPost, idUser).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -143,7 +164,13 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
 
     }
 
-
+    /**
+     * Se muestra el nombre del usuario deseado.
+     *
+     * @param idUser id del usuario que se desea obtener
+     * @param holder el ViewHolder que contiene el textview para mostrar el usuario
+     * @return void
+     */
     private void getUsuarioInfo(String idUser, final ViewHolder holder) {
         usuariosBBDDFirebase.getUsuarios(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override

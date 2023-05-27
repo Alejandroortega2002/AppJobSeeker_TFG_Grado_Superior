@@ -79,9 +79,13 @@ public class RegistroActivity extends AppCompatActivity {
 
 
     /**
-     * Este método verifica las credenciales introducidas comprobando la longitud del nombre de usuario, email, contraseña introducidos,
-     * y la coincidencia de la contraseña de confirmación. Si las credenciales son válidas, llama al método registrarUsuario
+     * Comprueba los datos del usuario siguiendo unos criterios necesarios.
+     * <p>
+     * Se verifica la longitud del nombre de usuario, email, contraseña introducidos,
+     * y la coincidencia de la contraseña de confirmación. Si las credenciales son válidas, llama al método <b>registrarUsuario()<b>
      * para registrar el usuario con Firebase.
+     *
+     * @return void
      */
     public void verificarCredenciales() {
 
@@ -108,8 +112,14 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
     /**
-     * Este método registra al usuario en Firebase utilizando el correo electrónico y la contraseña proporcionados. Muestra una barra de progreso
+     * Este método registra al usuario en Firebase. Muestra una barra de progreso
      * durante el proceso de registro y redirige a la actividad de inicio de sesión si el registro se realiza correctamente.
+     *
+     * @param nUsuario username
+     * @param numTelefono telefono
+     * @param email correo
+     * @param contrasena contrasena
+     * @return void
      */
 
     public void registrarUsuario(final String nUsuario, final String numTelefono, final String email, final String contrasena) {

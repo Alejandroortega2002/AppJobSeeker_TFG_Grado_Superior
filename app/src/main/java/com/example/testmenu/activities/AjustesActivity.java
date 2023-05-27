@@ -92,9 +92,12 @@ public class AjustesActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Cierra la sesión del usuario actual.
-     * Se redirige al usuario a la pantalla de inicio de sesión.
+    /** Cierra sesión de la cuenta actual cambiando de vista.
+     * <p>
+     * Estableciendo los flags FLAG_ACTIVITY_CLEAR_TASK y FLAG_ACTIVITY_NEW_TASK para asegurarse de que se eliminen las actividades
+     * previas en la pila de actividades y se inicie una nueva tarea en la actividad principal.
+     *
+     * @return void
      */
     private void logout() {
         mAutentificacionFirebase.logout();
@@ -104,9 +107,10 @@ public class AjustesActivity extends AppCompatActivity {
     }
 
     /**
-     * Muestra un diálogo de confirmación antes de cerrar la sesión del usuario.
+     * Dialogo customizado, alerta al usuario antes de ejecutar una acción
      *
-     * @param view La vista actual.
+     * @param view vista donde mostrar alert
+     * @return void
      */
     public void mostrarAlertCerrarSesion(View view) {
         // Con este tema personalizado evitamos los bordes por defecto.
@@ -145,9 +149,10 @@ public class AjustesActivity extends AppCompatActivity {
     }
 
     /**
-     * Muestra un diálogo de confirmación antes de eliminar la cuenta del usuario.
+     * Dialog customizado que alerta al usuario antes de una acción
      *
-     * @param view La vista actual.
+     * @param view vista donde mostrar alert
+     * @return void
      */
     public void mostrarAlertBorrarCueta(View view) {
         // Con este tema personalizado evitamos los bordes por defecto.
@@ -186,13 +191,14 @@ public class AjustesActivity extends AppCompatActivity {
     }
 
     /**
-     * Elimina el usuario actualmente autenticado de la base de datos de usuarios
-     * y elimina su cuenta de autenticación.
-     * Si se realiza con éxito, se cierra la sesión y se redirige al usuario a la
-     * pantalla de inicio de sesión.
+     * Borra el usuario actualmente autenticado de la base de datos y elimina su cuenta de autenticación.
+     * <p>
+     * Si se realiza con éxito, se cierra la sesión y se redirige al usuario a la pantalla de inicio de sesión.
      *
-     * @throws NullPointerException Si el usuario actual no está autenticado.
+     * @throws NullPointerException si el usuario actual no está autenticado
+     * @return void
      */
+
     private void BorrarUsuario() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         UsuariosBBDDFirebase usuariosBBDDFirebase = new UsuariosBBDDFirebase();

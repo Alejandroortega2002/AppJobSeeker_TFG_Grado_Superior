@@ -160,8 +160,12 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
-     * Obtiene los mensajes del chat.
+     * Obtiene los mensajes de un chat específico y los muestra en el RecyclerView.
+     * <p>
+     *
+     * @return void
      */
+
     private void getMensajeChat() {
         Query query = mMensajeFirebase.getMensajeByChat(mExtraIdChat);
         FirestoreRecyclerOptions<Mensaje> options =
@@ -194,10 +198,17 @@ public class ChatActivity extends AppCompatActivity {
 
 
     /**
-     * Envía un mensaje.
-     *
-     * @SuppressLint("NotifyDataSetChanged") Esta anotación suprime las advertencias relacionadas con el uso de notifyDataSetChanged().
+     * Almacena el mensaje y lo envia al usuario destinatario.
+     * <p>
+     * El mensaje se alamcena en una variable y se comprueba si esta tiene algun valor.
+     * Se crea un objeto de tipo <b>Mensaje</b> y se le asigna los valores requeridos.
+     * Dependiendo de quien envió el mensaje, será asignado en <b>mensaje.setIdSender(mExtraIdUser1)</b>.
+     * Se crea el objeto en la documentación de Firebase y se realiza un listener de la tarea.
+     * Si termina con éxito, se notifica al adaptador de los datos modificados y se llama al método <b>getToken()</b>
+     * <p>
+     * @return void
      */
+
     private void sendMensaje() {
         String textMensaje = mEditTextMensaje.getText().toString();
         if (!textMensaje.isEmpty()) {
@@ -215,9 +226,9 @@ public class ChatActivity extends AppCompatActivity {
             mensaje.setIdChat(mExtraIdChat);
             mensaje.setMessage(textMensaje);
 
-            /**
-             * Crea el mensaje en Firebase Firestore.
-             */
+
+            //Crea el mensaje en Firebase Firestore.
+
             mMensajeFirebase.create(mensaje).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     mEditTextMensaje.setText("");
@@ -235,6 +246,7 @@ public class ChatActivity extends AppCompatActivity {
      * Muestra una barra de herramientas personalizada con los elementos proporcionados.
      *
      * @param resource El recurso de diseño para la barra de herramientas personalizada.
+     * @return void
      */
     private void showCustomToolbar(int resource) {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -267,6 +279,8 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * Obtiene la información del usuario relacionado al chat y actualiza la interfaz de usuario correspondiente.
+     * <p>
+     * @return void
      */
     private void getUserInfo() {
         String idUserInfo = "";
@@ -310,8 +324,11 @@ public class ChatActivity extends AppCompatActivity {
 
 
     /**
-     * Comprueba si existe un chat entre los usuarios especificados. Si no existe, crea un nuevo chat; de lo contrario, obtiene el chat existente y muestra los mensajes.
+     * Comprobar si el chat ya existe entre usuarios, en caso contrario se crea uno nuevo.
+     * <p>
+     * @return void
      */
+
     private void checkIfChatExist() {
         mChatsFirebase.getChatByUser1AndUser2(mExtraIdUser1, mExtraIdUser2).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -330,8 +347,16 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
-     * Actualiza el estado de visualización de los mensajes del chat actual.
+     * Actualiza el estado de visualización de los mensajes en el chat.
+     * Comprueba el remitente de los mensajes y marca los mensajes correspondientes como vistos.
+     * <p>
+     * Se comprueba que usuario es el autenticado, dependiendo de ello, la vista es diferente.
+     * Se obtiene los mensajes del chat para el remitente específico.
+     * Recorre los documentos de los mensajes y marca cada uno como visto
+     *
+     * @return void
      */
+
     private void updateViewed() {
         String idSender = "";
         if (mAuthFirebase.getUid().equals(mExtraIdUser1)) {
@@ -351,6 +376,8 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * Crea un nuevo chat entre los usuarios especificados y establece los valores iniciales.
+     *
+     * @return void
      */
     private void createChat() {
         Chat chat = new Chat();
@@ -375,10 +402,16 @@ public class ChatActivity extends AppCompatActivity {
 
 
     /**
-     * Obtiene el token de notificación del receptor del mensaje especificado y realiza acciones adicionales.
+     * Obtiene el token de notificación del usuario correspondiente al mensaje y realiza una acción adicional.
+     * <p>
+     * Comprueba el ID del usuario actual y obtiene el token del otro usuario del chat.
+     * Luego, utiliza el token para realizar una acción adicional con el método <b>getLastThreeMessages()<b>
      *
-     * @param mensaje El mensaje para el cual se obtendrá el token y se enviará una notificación.
+     * @param mensaje Objeto de clase Mensaje, se extraen los mensajes enviados.
+     * @return void
+     *
      */
+
     private void getToken(final Mensaje mensaje) {
         String idUser = "";
         if (mAuthFirebase.getUid().equals(mExtraIdUser1)) {
@@ -402,11 +435,18 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
-     * Obtiene los últimos tres mensajes del chat actual y envía una notificación con la información correspondiente al receptor.
+     * Obtiene los últimos tres mensajes del chat correspondientes al remitente actual y realiza una acción adicional.
+     *<p>
+     * Utiliza el ID del chat y el ID del remitente actual para obtener los mensajes.
+     * Se comprube que la consulta fue un éxito y se pasa y convierte el documento a un objeto de tipo Mensajes
+     * Se utiliza el método <b>Collections.reverse()<b> para mostrar el array de los mensajes en orden correcto en las notificaciones.
+     * Luego, realiza una acción adicional con los mensajes obtenidos y el token de notificación en <b>sendNotification()<b>
      *
-     * @param message El mensaje actual que se incluirá en la notificación.
-     * @param token   El token de notificación del receptor.
+     * @param message El mensaje actual para el cual se obtendrán los últimos tres mensajes y se realizará la acción adicional.
+     * @param token   El token de notificación del usuario correspondiente.
+     * @return void
      */
+
     private void getLastThreeMessages(Mensaje message, final String token) {
         mMensajeFirebase.getLastThreeMensajeByChatAndSender(mExtraIdChat, mAuthFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -434,12 +474,17 @@ public class ChatActivity extends AppCompatActivity {
 
 
     /**
-     * Envía una notificación al receptor con los mensajes y detalles correspondientes.
+     * Envía una notificación utilizando el token de notificación y otros datos relacionados con el mensaje.
+     * <p>
+     * Crea un mapa de datos que contiene información como el título, cuerpo del mensaje, nombres de usuario, ID del chat, etc.
+     * Luego, utiliza el mapa de datos para enviar una notificación mediante el objeto <b>mNotificationFirebase<b>.
      *
-     * @param token    El token de notificación del receptor.
-     * @param messages Los mensajes del chat en formato JSON.
-     * @param message  El último mensaje enviado.
+     * @param token    El token de notificación del destinatario.
+     * @param messages Los mensajes en formato JSON.
+     * @param message  El mensaje actual para el cual se enviará la notificación.
+     * @return void
      */
+
     private void sendNotificaction(final String token, String messages, Mensaje message) {
         final Map<String, String> data = new HashMap<>();
         data.put("title", "MENSAJE");
@@ -501,8 +546,11 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
-     * Obtiene la información del usuario actual (emisor) y actualiza las variables correspondientes.
+     * Se  obtiene la información necesaria del usuario que está autenticado en la app.
+     * <p>
+     * @return void
      */
+
     private void getMyInfoUser() {
         mUsuarioFirebase.getUsuarios(mAuthFirebase.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override

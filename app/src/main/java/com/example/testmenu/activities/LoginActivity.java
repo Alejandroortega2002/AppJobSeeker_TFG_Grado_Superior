@@ -94,9 +94,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Este método se llama cuando la actividad se está iniciando y comprueba si hay una sesión de usuario activa.
-     * Si hay una sesión de usuario activa, se inicia una nueva actividad MainActivity y se eliminan las actividades anteriores de la pila.
-     * Si no hay una sesión de usuario activa, no se realiza ninguna acción adicional y se muestra la actividad LoginActivity.
+     Se llama cuando la actividad se está iniciando y comprueba si hay una sesión de usuario activa.
+     <p>
+     Si hay una sesión de usuario activa, se inicia una nueva actividad MainActivity y se eliminan las actividades anteriores de la pila.
+
+     @return void
      */
     @Override
     protected void onStart() {
@@ -111,10 +113,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
     /**
-     * Este método se utiliza para iniciar sesión con una cuenta de Google. Primero, se obtiene un intent para iniciar sesión a través del cliente de inicio de sesión de Google (mGoogleSignInClient)
-     * mediante la llamada a getSignInIntent(). Luego, se inicia la actividad para obtener los datos del usuario utilizando startActivityForResult(), pasando el intent
-     * obtenido y un código de solicitud (RC_SIGN_IN). Cuando se complete la actividad de inicio de sesión, se recibirá un resultado en el método onActivityResult() con el mismo código
-     * de solicitud (RC_SIGN_IN), donde se pueden obtener los datos del usuario y realizar las acciones correspondientes.
+     * Iniciar sesión con una cuenta de Google.
+     * <p>
+     * Se obtiene un intent para iniciar sesión a través del cliente de inicio de sesión de Google (mGoogleSignInClient)
+     * mediante la llamada a <b>getSignInIntent()</b>. Se inicia la actividad <b> startActivityForResult()</b>, pasando el intent
+     * obtenido y un código de solicitud (RC_SIGN_IN).
+     * <p>
+     * Se recibirá un resultado en el método onActivityResult() con el mismo código
+     * de solicitud (RC_SIGN_IN), permitiendo obtener los datos del usuario y realizar las acciones correspondientes.
+     *
+     * @return void
      */
     public void singIn() {
         Intent singInIntent = mGoogleSignInClient.getSignInIntent();
@@ -123,16 +131,19 @@ public class LoginActivity extends AppCompatActivity {
 
 
     /**
-     * Este método es llamado después de que el usuario selecciona una cuenta de Google para iniciar sesión en la aplicación. El método recibe
-     * tres parámetros: requestCode, resultCode y data.
-     * El requestCode es un código de solicitud que se utiliza para identificar la solicitud de inicio de sesión de Google en la actividad que se llama.
-     * El resultCode es un código que indica si la solicitud fue exitosa o no.
-     * El data es un objeto Intent que contiene información sobre la cuenta de Google seleccionada por el usuario.
-     * Dentro del método, se verifica si el requestCode coincide con el código de solicitud de inicio de sesión de Google (RC_SIGN_IN).
+     * El usuario selecciona una cuenta de Google para iniciar sesión.
+     * Se verifica si el requestCode coincide con el código de solicitud de inicio de sesión de Google (RC_SIGN_IN).
+     * <p>
      * Si es así, se obtiene la cuenta de Google del objeto Intent mediante el método GoogleSignIn.getSignedInAccountFromIntent(data).
-     * Si se puede obtener la cuenta del usuario, se llama al método firebaseAuthWithGoogle() para iniciar sesión en Firebase con las credenciales de Google del usuario.
-     * Si no se puede obtener la cuenta del usuario, se muestra un mensaje de error en el registro de eventos de Android (Log) y en una ventana emergente Toast para informar al usuario que el inicio de sesión no fue exitoso.
+     * Si se puede obtener la cuenta del usuario, se llama al método <b>firebaseAuthWithGoogle()</b> para iniciar sesión en Firebase con las credenciales de Google del usuario.
+     * Si no se puede obtener la cuenta, se anota en el registro de eventos de Android (Log) y muestra una ventana emergente.
+     *
+     * @param requestCode código de solicitud
+     * @param resultCode confirmación de solicitud
+     * @param data contiene info de la cuenta seleccionada
+     * @return void
      */
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -160,13 +171,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Este método se encarga de autenticar al usuario utilizando las credenciales de Google. Este método recibe como parámetro un token de identificación
-     * de Google (idToken) que se utiliza para crear una credencial de autenticación (credential). A continuación, se llama al método signInWithCredential
-     * de la instancia de mAuth (objeto de autenticación de Firebase) para autenticar al usuario con la credencial de Google creada.
-     * El método signInWithCredential retorna un Task que indica si la autenticación fue exitosa o no. Si la autenticación es exitosa,
-     * se muestra un mensaje de éxito y se inicia la actividad principal de la aplicación (MainActivity). Si la autenticación falla, se muestra un mensaje de error.
-     * Este método utiliza una clase anónima que implementa la interfaz OnCompleteListener<AuthResult> para manejar el resultado
-     * de la autenticación. En el método onComplete de esta clase anónima, se verifica si la autenticación fue exitosa o no, y se realiza la acción correspondiente en cada caso.
+     * Autenticar al usuario utilizando las credenciales de Google.
+     * <p>
+     * Se llama al método <b>signInWithCredential()</b>
+     * para autenticar al usuario con la credencial de Google creada, este retorna un Task y se comprueba la autenticación.
+     * Uso de clase anónima que implementa la interfaz <b>"OnCompleteListener<AuthResult>"</b> para manejar el resultado
+     * de la autenticación.
+     * <p>
+     * Se muestra un mensaje de éxito y se inicia la actividad (MainActivity).
+     * Si la autenticación falla, se muestra un mensaje de error.
+     *
+     * @param googleSignInAccount token de Google
+     * @return void
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount googleSignInAccount) {
         mDialog.show();
@@ -187,6 +203,16 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Esta función valida si un usuario existe en la base de datos de Firebase.
+     * <p>
+     * Si el usuario existe, inicia sesión y muestra un mensaje de éxito.
+     * Si no existe, crea un nuevo usuario en la base de datos y muestra un mensaje de éxito.
+     * Si no se puede almacenar la información del usuario en la base de datos, muestra un mensaje de error.
+     *
+     * @param id el ID del usuario a validar
+     * @return void
+     */
     private void validarUser(String id) {
 
         usuariosBBDDFirebase.getUsuarios(id).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -245,7 +271,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
     /**
-     * Este método se encarga de verificar las credenciales
+     * Este método se encarga de verificar las credenciales y si cumplen los requisitos minimos para el inicio de sesión
+     *
+     * @return void
      */
     public void verificarCredenciales() {
         String email = editEmail.getText().toString();
@@ -264,8 +292,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Este método se encarga de iniciar sesion con firebase
+     * Este método se encarga de iniciar sesion con firebase.
+     * <p>
+     * Si el inicio de sesión fue exitoso, ocultar la barra de progreso y redirigir al usuario a MainActivity
+     * Si falla, ocultar la barra de progreso y mostrar un mensaje de error.
+     *
+     * @param email el correo que usamos para iniciar sesión
+     * @param contrasena el pwd que asociamos al email
+     * @return void
      */
+
     public void iniciarSesionCorreo(String email, String contrasena) {
         // Iniciar sesión con el correo electrónico y la contraseña ingresados
         mDialog.show();
@@ -302,7 +338,12 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Este método se encarga de mostrar los errores si algo ha salido mal
+     *
+     * @param input edittext donde se muestre el mensaje
+     * @param s texto que se desea mostrar como error principal
+     * @return void
      */
+
     private void mostrarError(EditText input, String s) {
         // Mostrar un mensaje de error en caso de que el correo electrónico o la contraseña sean inválidos
         input.setError(s);

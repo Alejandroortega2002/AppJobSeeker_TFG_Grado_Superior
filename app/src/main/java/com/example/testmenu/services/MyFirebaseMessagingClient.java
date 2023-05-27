@@ -48,6 +48,12 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
         }
     }
 
+    /**
+     * Muestra una notificación en el dispositivo.
+     *
+     * @param title el título de la notificación
+     * @param body el cuerpo o contenido de la notificación
+     */
     private void showNotification(String title,String body){
         NotificationHelper notificationHelper = new NotificationHelper(getBaseContext());
         NotificationCompat.Builder builder = notificationHelper.getNotification(title,body);
@@ -56,6 +62,11 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
         notificationHelper.getmManager().notify(numero,builder.build());
     }
 
+    /**
+     * Muestra un mensaje de notificación utilizando los datos proporcionados.
+     *
+     * @param data un mapa de pares clave-valor que contiene los datos necesarios para mostrar la notificación
+     */
     private void showNotificationMessage(Map<String,String> data){
         final String imageSender =data.get("imageSender");
         final String imageReceiver =data.get("imageReceiver");
@@ -90,7 +101,13 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
                 });
     }
 
-
+    /**
+     * Obtiene la imagen del remitente y luego llama al método para obtener la imagen del receptor.
+     *
+     * @param data un mapa de pares clave-valor que contiene los datos necesarios para obtener las imágenes
+     * @param bitmapSender una instancia de Bitmap que representa la imagen del remitente
+     * @param imageReceiver una cadena de texto que representa la URL de la imagen del receptor
+     */
     private void getImageReceiver(final Map<String,String> data, String imageReceiver,Bitmap bitmapSender){
         Picasso.get()
                 .load(imageReceiver)
@@ -112,6 +129,13 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
                 });
     }
 
+    /**
+     * Notifica un mensaje con los datos proporcionados y muestra una notificación en el dispositivo.
+     *
+     * @param data un mapa de pares clave-valor que contiene los datos necesarios para notificar el mensaje
+     * @param bitmapSender una instancia de Bitmap que representa la imagen del remitente
+     * @param bitmapReceiver una instancia de Bitmap que representa la imagen del receptor
+     */
     private void notifyMessage(Map<String,String> data, Bitmap bitmapSender, Bitmap bitmapReceiver){
         final String usernameSender =data.get("usernameSender");
         final String usernameReceiver =data.get("usernameReceiver");

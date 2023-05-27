@@ -65,6 +65,13 @@ public class ValoracionesAdapter extends FirestoreRecyclerAdapter<Valoraciones, 
         cargarDetallesUsuario(userId, holder);
     }
 
+    /**
+     * Carga el contenido de los usuarios y sus valoraciones desde Firebase
+     * <p>
+     * @param userId id del user al que se desea sacar la info
+     * @param holder el viewholder en donde mostrar los datos de la base de datos
+     * @return void
+     */
     private void cargarDetallesUsuario(String userId, final HolderValoraciones holder) {
         if (userId != null) {
             usuariosBBDDFirebase.getUsuarios(userId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

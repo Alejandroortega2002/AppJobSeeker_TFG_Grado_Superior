@@ -47,6 +47,10 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
 
     }
 
+    /**
+     * Cuenta el tamano de los items
+     * @return mSliderItems valor del tamano
+     */
     @Override
     public int getCount() {
         //slider view count could be dynamic size

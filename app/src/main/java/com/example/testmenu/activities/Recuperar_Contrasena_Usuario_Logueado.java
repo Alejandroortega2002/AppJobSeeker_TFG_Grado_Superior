@@ -74,8 +74,9 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
         rellenarInformacionUsuario();
     }
 
-    /**
-     * Método para validar la dirección de correo electrónico ingresada.
+    /**Comprobar si el correo asignado es valido y se envía por <b>emailRecuperar()</b>
+     *
+     * @return void
      */
     public void validarEmail() {
         String email = emailRecuperar.getText().toString();
@@ -88,8 +89,14 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
     }
 
     /**
-     * Método para obtener y mostrar la información del usuario actualmente logueado.
+     * Rellena la información del usuario en la interfaz de usuario.
+     * <p>
+     * Obtiene la información del usuario de la base de datos de Firebase Firestore
+     * y actualiza la interfaz de usuario con la información obtenida.
+     *
+     * @return void
      */
+
     public void rellenarInformacionUsuario() {
         DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(autentificacioFirebase.getUid());
         mListener = documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -120,11 +127,15 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
         });
     }
 
-    /**
-     * Método para enviar un correo electrónico para recuperar la contraseña.
+    /**Se manda un mail al correo asignado por parámetro.
+     * <p>
+     * Se manda una tarea para mandar un correo de reseteo de contraseña al correo pasado por parámetro.
+     * Si al completarse tiene éxito, se avisa al usuario por un toast del evento.
      *
-     * @param email La dirección de correo electrónico a la cual se enviará el correo de recuperación.
+     * @param email correo
+     * @return void
      */
+
     public void enviarEmail(String email) {
         autentificacioFirebase.recuperarContrasena(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

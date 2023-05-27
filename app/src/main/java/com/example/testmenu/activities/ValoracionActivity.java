@@ -117,7 +117,13 @@ public class ValoracionActivity extends AppCompatActivity {
     }
 
     /**
-     * Método para cargar las valoraciones del usuario y calcular su media.
+     * Carga las valoraciones del usuario desde Firebase y actualiza la interfaz de usuario con la media de las valoraciones y el número total de valoraciones.
+     * <p>
+     * Obtiene documentos de las valoraciones del usuario mediante <b>getCommentsByUser<b>.
+     * Si la consulta tiene éxito, se itera los documentos y se convierten en objetos de tipo <b>Valoraciones<b>, esto permite hacer una media del total de las valoraciones.
+     * Se actualiza la media en la base de datos con el método <b>updateMedia()<b>
+     *
+     * @return void
      */
     private void cargarValoraciones() {
         valoracionFirebase.getCommentsByUser(userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -185,7 +191,9 @@ public class ValoracionActivity extends AppCompatActivity {
     }
 
     /**
-     * Método para cargar los detalles del usuario (nombre de usuario y foto de perfil) en la vista.
+     * Muestra los datos del perfil del usuario que se desea ver sus valoraciones si su documento existe.
+     *
+     * @return void
      */
     private void cargarDetallesUsuario() {
         if (userId != null) {

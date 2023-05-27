@@ -47,6 +47,12 @@ public class NotificationHelper extends ContextWrapper {
         getmManager().createNotificationChannel(notificationChannel);
     }
 
+    /**
+     * Devuelve el objeto NotificationManager.
+     * Si el objeto manager es nulo, se inicializa utilizando el servicio de notificaciones del contexto.
+     *
+     * @return El objeto NotificationManager.
+     */
     public NotificationManager getmManager() {
         if (manager == null) {
             manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -54,6 +60,14 @@ public class NotificationHelper extends ContextWrapper {
         return manager;
     }
 
+    /**
+     * Devuelve un objeto NotificationCompat.Builder con la configuración especificada.
+     * El objeto NotificationCompat.Builder se configura con el título, cuerpo, icono, color y estilo de notificación.
+     *
+     * @param title El título de la notificación.
+     * @param body El cuerpo de la notificación.
+     * @return El objeto NotificationCompat.Builder configurado.
+     */
     public NotificationCompat.Builder getNotification(String title, String body){
         return  new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentTitle(title)
@@ -66,6 +80,21 @@ public class NotificationHelper extends ContextWrapper {
         );
     }
 
+    /**
+     * Devuelve un objeto NotificationCompat.Builder con la configuración especificada para mostrar un mensaje de notificación.
+     * <p>
+     * El objeto NotificationCompat.Builder se configura con los mensajes, nombres de usuario, último mensaje, imágenes de perfil,
+     * y una acción de notificación.
+     *
+     * @param mensajes Un array de objetos Mensaje que representan los mensajes de la conversación.
+     * @param usernameSender El nombre de usuario del remitente.
+     * @param usernameReceiver El nombre de usuario del receptor.
+     * @param lastMessage El último mensaje de la conversación.
+     * @param bitmapSender El mapa de bits (Bitmap) que representa la imagen de perfil del remitente. Puede ser nulo.
+     * @param bitmapReceiver El mapa de bits (Bitmap) que representa la imagen de perfil del receptor. Puede ser nulo.
+     * @param action La acción de notificación a mostrar en la notificación.
+     * @return El objeto NotificationCompat.Builder configurado.
+     */
     public NotificationCompat.Builder getNotificationMessage(
             Mensaje[] mensajes,
             String usernameSender,

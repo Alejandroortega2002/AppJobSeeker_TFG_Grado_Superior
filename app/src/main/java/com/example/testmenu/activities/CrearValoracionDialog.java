@@ -112,9 +112,10 @@ public class CrearValoracionDialog extends DialogFragment {
 
 
     /**
-     * Agrega los datos de la valoración y crea una nueva valoración en la base de datos.
+     * Se instancia el objeto Valoracion en el que se le asigna los datos del usuario con la sesión actual iniciada
      *
-     * @param idUser El ID del usuario a quien se está valorando.
+     * @param idUser id del usuario con la sesión iniciada
+     * @return void
      */
     public void meterDatos(String idUser) {
         String ratings = String.valueOf(estrellasCrear.getRating());
@@ -144,9 +145,13 @@ public class CrearValoracionDialog extends DialogFragment {
 
 
     /**
-     * Carga los detalles del usuario para mostrar en el diálogo de creación de valoración.
+     * Carga los datos del usuario que está logeado y lo muestra en un Dialog customizado.
+     * <p>
+     * Se realiza una consulta filtrada por el id del usuario para obtener su información en un documento.
+     * Si existe, se rellenan los datos pedidos para mostrarlos en el dialog
      *
-     * @param userId El ID del usuario.
+     * @param userId id del usuario que está actualmente logeado
+     * @return void
      */
     public void cargarDetallesUsuario(String userId) {
         if (userId != null) {
@@ -172,9 +177,14 @@ public class CrearValoracionDialog extends DialogFragment {
 
 
     /**
-     * Envía una notificación al usuario que recibió la valoración.
+     * Adquiere el token del usuario al que se desea mandar la notificación y si existe se crea la notificación con su body creado.
+     * <p>
+     * Se realiza una consulta filtrada con el id del usuario logeado. Si encuentra su documento, se comprueba que los campos requeridos existan.
+     * Se crea un mapa de datos que contiene información como el título, cuerpo del mensaje, nombres de usuario, ID del chat, etc.
+     * Luego, utiliza el mapa de datos para enviar una notificación mediante el objeto <b>mNotificationFirebase<b>.
      *
-     * @param comentario El comentario de la valoración.
+     * @param comentario la valoracion que el usuario ha escrito
+     * @return void
      */
     private void sendNotification(String comentario) {
         if (idUser == null) {
@@ -218,7 +228,13 @@ public class CrearValoracionDialog extends DialogFragment {
 
 
     /**
-     * Valida la valoración ingresada por el usuario.
+     * Valida la valoración ingresada por el usuario y la calificación seleccionada.
+     *<p>
+     * Verifica si los campos están vacíos y si se ha seleccionado una calificación válida.
+     * Si los requisitos se cumplen, llama al método <b>meterDatos()<b> y luego cierra el diálogo.
+     * Si los requisitos no se cumplen, muestra un mensaje de error correspondiente y no realiza ninguna acción adicional.
+     *
+     *@return void
      */
     public void validarValoracion() {
         String ratings = String.valueOf(estrellasCrear.getRating());
