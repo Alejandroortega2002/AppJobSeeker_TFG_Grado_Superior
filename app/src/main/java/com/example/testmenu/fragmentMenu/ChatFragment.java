@@ -21,11 +21,11 @@ import com.google.firebase.firestore.Query;
 
 public class ChatFragment extends Fragment {
 
-    ChatsAdapter mAdapter;
-    RecyclerView mRecyclerView;
-    AutentificacioFirebase mAuthFirebase;
-    View mView;
-    ChatsFirebase mChatsFirebase;
+    private ChatsAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private AutentificacioFirebase mAuthFirebase;
+    private View mView;
+    private ChatsFirebase mChatsFirebase;
 
     public ChatFragment() {
 

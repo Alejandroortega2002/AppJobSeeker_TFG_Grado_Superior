@@ -33,15 +33,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.ViewHolder> {
 
-    Context context;
-    UsuariosBBDDFirebase mUsersProvider;
-    AutentificacioFirebase mAuthProvider;
-    ChatsFirebase mChatsFirebase;
+   private Context context;
+   private UsuariosBBDDFirebase mUsersProvider;
+   private AutentificacioFirebase mAuthProvider;
+   private ChatsFirebase mChatsFirebase;
 
-    MensajeFirebase mMensajeFirebase;
+   private MensajeFirebase mMensajeFirebase;
 
-    ListenerRegistration mListener;
-    ListenerRegistration mListenerLastMessage;
+   private ListenerRegistration mListener;
+   private ListenerRegistration mListenerLastMessage;
 
     public ChatsAdapter(FirestoreRecyclerOptions<Chat> options, Context context) {
         super(options);
@@ -53,7 +53,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Chat chat) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Chat chat) {
 
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String chatId = document.getId();
@@ -93,7 +93,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
      * @param frameLayoutMessageNotRead layout que se aparecerá si hay mensajes.
      * @return void
      */
-    private void getMessageNotRead(String chatId, String idSender, TextView mensajesNoLeidos, FrameLayout frameLayoutMessageNotRead) {
+    public void getMessageNotRead(String chatId, String idSender, TextView mensajesNoLeidos, FrameLayout frameLayoutMessageNotRead) {
         mListener= mMensajeFirebase.getMensajeByChatAndSender(chatId,idSender).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -127,7 +127,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
      * @param textViewLastMessage textView en donde se monstrará el último mensaje.
      * @return void
      */
-    private void getLastMessage(String chatId, TextView textViewLastMessage) {
+    public void getLastMessage(String chatId, TextView textViewLastMessage) {
         mListenerLastMessage= mMensajeFirebase.getLastMessage(chatId).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -142,7 +142,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
         });
     }
 
-    private void goToChatActivity(String chatId,String idUser1,String idUser2) {
+    public void goToChatActivity(String chatId,String idUser1,String idUser2) {
 
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("idChat", chatId);
@@ -157,7 +157,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
      * @param holder el viewholder en donde mostrar la info
      * @return void
      */
-    private void getUserInfo(String idUser, final ViewHolder holder) {
+    public void getUserInfo(String idUser, final ViewHolder holder) {
         mUsersProvider.getUsuarios(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -187,12 +187,12 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewUsername;
-        TextView textViewLastMessage;
-        FrameLayout frameLayoutMessageNotRead;
-        TextView mensajesNoLeidos;
-        CircleImageView circleImageChat;
-        View viewHolder;
+        private TextView textViewUsername;
+        private TextView textViewLastMessage;
+        private FrameLayout frameLayoutMessageNotRead;
+        private TextView mensajesNoLeidos;
+        private CircleImageView circleImageChat;
+        private View viewHolder;
 
         public ViewHolder(View view) {
             super(view);

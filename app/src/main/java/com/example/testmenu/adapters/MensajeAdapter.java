@@ -31,9 +31,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MensajeAdapter extends FirestoreRecyclerAdapter<Mensaje, MensajeAdapter.ViewHolder> {
 
-    Context context;
-    UsuariosBBDDFirebase mUsersProvider;
-    AutentificacioFirebase mAuthProvider;
+    private Context context;
+    private UsuariosBBDDFirebase mUsersProvider;
+    private AutentificacioFirebase mAuthProvider;
 
     public MensajeAdapter(FirestoreRecyclerOptions<Mensaje> options, Context context) {
         super(options);
@@ -45,7 +45,7 @@ public class MensajeAdapter extends FirestoreRecyclerAdapter<Mensaje, MensajeAda
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull final Mensaje mensaje) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull final Mensaje mensaje) {
 
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String mensajeId = document.getId();
@@ -82,9 +82,9 @@ public class MensajeAdapter extends FirestoreRecyclerAdapter<Mensaje, MensajeAda
             holder.textViewDate.setTextColor(Color.LTGRAY);
         }
 
-        if(mensaje.isViewed()){
+        if (mensaje.isViewed()) {
             holder.imageViewViewed.setImageResource(R.drawable.icon_check_blue);
-        }else{
+        } else {
             holder.imageViewViewed.setImageResource(R.drawable.icon_check_gray);
 
         }
@@ -99,11 +99,11 @@ public class MensajeAdapter extends FirestoreRecyclerAdapter<Mensaje, MensajeAda
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewMensaje;
-        TextView textViewDate;
-        ImageView imageViewViewed;
-        LinearLayout linearLayoutMensaje;
-        View viewHolder;
+        private TextView textViewMensaje;
+        private TextView textViewDate;
+        private ImageView imageViewViewed;
+        private LinearLayout linearLayoutMensaje;
+        private View viewHolder;
 
         public ViewHolder(View view) {
             super(view);

@@ -27,13 +27,12 @@ import com.google.firebase.firestore.Query;
 public class MisOfertasActivity2 extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    RecyclerView recyclerView;
-    ImageButton btnSalir;
+    private RecyclerView recyclerView;
+    private ImageButton btnSalir;
 
-    AutentificacioFirebase mAutentificacionFirebase;
-    PublicacionFirebase mPublicacionfirebase;
-    PostsAdapter2 mPostsAdapter2;
-
+    private AutentificacioFirebase mAutentificacionFirebase;
+    private PublicacionFirebase mPublicacionfirebase;
+    private PostsAdapter2 mPostsAdapter2;
     private String idUserCarta;
 
     /**
@@ -43,7 +42,7 @@ public class MisOfertasActivity2 extends AppCompatActivity {
      */
     @SuppressLint("MissingInflatedId")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_ofertas);
 
@@ -95,7 +94,7 @@ public class MisOfertasActivity2 extends AppCompatActivity {
      * Método llamado al pausar la actividad.
      */
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         ViewedMensajeHelper.updateOnline(false, MisOfertasActivity2.this);
     }

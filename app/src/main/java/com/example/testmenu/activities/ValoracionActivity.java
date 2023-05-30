@@ -57,8 +57,8 @@ public class ValoracionActivity extends AppCompatActivity {
 
     private RecyclerView reciclerValoraciones;
 
-    AutentificacioFirebase autentificacioFirebase;
-    UsuariosBBDDFirebase usuariosBBDDFirebase;
+    private AutentificacioFirebase autentificacioFirebase;
+    private UsuariosBBDDFirebase usuariosBBDDFirebase;
 
     private ArrayList<Valoraciones> listaValoraciones;
     private Dialog customDialog;
@@ -67,7 +67,7 @@ public class ValoracionActivity extends AppCompatActivity {
 
     private ImageButton btnSalir, btnCrearValoracion;
 
-    ValoracionFirebase valoracionFirebase;
+    private ValoracionFirebase valoracionFirebase;
     private float suma;
 
     private float ratingSum = 0;
@@ -80,7 +80,7 @@ public class ValoracionActivity extends AppCompatActivity {
      */
     @SuppressLint({"MissingInflatedId"})
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_valoracion);
 
@@ -108,7 +108,7 @@ public class ValoracionActivity extends AppCompatActivity {
         });
 
         btnCrearValoracion.setOnClickListener(view -> {
-            CrearValoracionDialog dialog = new CrearValoracionDialog(userId,this);
+            CrearValoracionDialog dialog = new CrearValoracionDialog(userId, this);
             dialog.show(getSupportFragmentManager(), "CrearValoracionDialog");
         });
 
@@ -125,7 +125,7 @@ public class ValoracionActivity extends AppCompatActivity {
      *
      * @return void
      */
-    private void cargarValoraciones() {
+    public void cargarValoraciones() {
         valoracionFirebase.getCommentsByUser(userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -161,7 +161,7 @@ public class ValoracionActivity extends AppCompatActivity {
      * Método que se llama al iniciar la actividad.
      */
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         Query query = valoracionFirebase.getCommentsByUser(userId);
         FirestoreRecyclerOptions<Valoraciones> options =
@@ -177,7 +177,7 @@ public class ValoracionActivity extends AppCompatActivity {
      * Método que se llama al detener la actividad.
      */
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         valoracionesAdapter.stopListening();
     }
@@ -186,7 +186,7 @@ public class ValoracionActivity extends AppCompatActivity {
      * Método que se llama al reanudar la actividad.
      */
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
     }
 
@@ -195,7 +195,7 @@ public class ValoracionActivity extends AppCompatActivity {
      *
      * @return void
      */
-    private void cargarDetallesUsuario() {
+    public void cargarDetallesUsuario() {
         if (userId != null) {
             usuariosBBDDFirebase.getUsuarios(userId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override

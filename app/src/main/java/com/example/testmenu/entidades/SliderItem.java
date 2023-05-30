@@ -2,8 +2,8 @@ package com.example.testmenu.entidades;
 
 public class SliderItem {
 
-    String imageUrl;
-    long timestamp;
+    private String imageUrl;
+    private long timestamp;
 
     public SliderItem(){
 

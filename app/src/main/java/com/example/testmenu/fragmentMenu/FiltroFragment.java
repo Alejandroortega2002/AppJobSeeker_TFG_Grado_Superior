@@ -15,7 +15,6 @@ import com.example.testmenu.activities.SectoresActivity;
 import com.example.testmenu.databinding.FragmentFiltroBinding;
 
 public class FiltroFragment extends Fragment {
-    /*Declaramos su Xml correspondiente a traves del ViewBiding*/
 
     private FragmentFiltroBinding binding;
 

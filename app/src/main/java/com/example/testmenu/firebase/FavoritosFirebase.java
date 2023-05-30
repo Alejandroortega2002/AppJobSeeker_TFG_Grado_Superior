@@ -2,14 +2,20 @@ package com.example.testmenu.firebase;
 
 import com.example.testmenu.entidades.Favoritos;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FavoritosFirebase {
 
-    CollectionReference mCollection;
+    private CollectionReference mCollection;
 
     public FavoritosFirebase() {
         mCollection = FirebaseFirestore.getInstance().collection("Likes");
@@ -36,6 +42,34 @@ public class FavoritosFirebase {
 
     public Task<Void> delete(String id) {
         return mCollection.document(id).delete();
+    }
+
+    public Task<Void> deleteFavoritesByUser(String userId) {
+        Query query = mCollection.whereEqualTo("idUser", userId);
+
+        return query.get().continueWithTask(task -> {
+            List<Task<Void>> deleteTasks = new ArrayList<>();
+
+            for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                deleteTasks.add(documentSnapshot.getReference().delete());
+            }
+
+            return Tasks.whenAll(deleteTasks);
+        });
+    }
+
+    public Task<Void> deleteFavoritesByPost(String postId) {
+        Query query = mCollection.whereEqualTo("idPost", postId);
+
+        return query.get().continueWithTask(task -> {
+            List<Task<Void>> deleteTasks = new ArrayList<>();
+
+            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                deleteTasks.add(documentSnapshot.getReference().delete());
+            }
+
+            return Tasks.whenAll(deleteTasks);
+        });
     }
 
 }

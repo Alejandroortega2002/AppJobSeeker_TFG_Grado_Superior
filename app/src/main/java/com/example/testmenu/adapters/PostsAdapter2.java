@@ -41,16 +41,16 @@ import java.util.Date;
 
 public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAdapter2.ViewHolder> {
 
-    Context context;
-    AutentificacioFirebase autentificacioFirebase;
-    PublicacionFirebase publicacionFirebase;
+    private Context context;
+    private AutentificacioFirebase autentificacioFirebase;
+    private PublicacionFirebase publicacionFirebase;
 
-    UsuariosBBDDFirebase usuariosBBDDFirebase;
-    FavoritosFirebase favoritosFirebase;
+    private UsuariosBBDDFirebase usuariosBBDDFirebase;
+    private FavoritosFirebase favoritosFirebase;
 
-    Dialog customDialog;
+    private Dialog customDialog;
 
-    ListenerRegistration mListener;
+    private ListenerRegistration mListener;
 
 
     public PostsAdapter2(FirestoreRecyclerOptions<Publicacion> options, Context contexto) {
@@ -63,7 +63,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Publicacion publicacion) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Publicacion publicacion) {
 
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String postId = document.getId();
@@ -117,7 +117,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * @param holder  el ViewHolder que contiene el campo de texto donde se mostrará el número de "Me gusta"
      * @return void
      */
-    private void getNumeroDeLikes(String idPost, final PostsAdapter2.ViewHolder holder) {
+    public void getNumeroDeLikes(String idPost, final PostsAdapter2.ViewHolder holder) {
         mListener = favoritosFirebase.getLikesByPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -136,7 +136,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * @param favoritos representa el "me gusta" que se quiere dar/quitar.
      * @param holder objeto de la clase ViewHolder que contiene la vista del elemento de la lista de publicaciones.
      */
-    private void favoritos(final Favoritos favoritos, final PostsAdapter2.ViewHolder holder) {
+    public void favoritos(final Favoritos favoritos, final PostsAdapter2.ViewHolder holder) {
         favoritosFirebase.getLikeByPostAndUser(favoritos.getIdPost(), autentificacioFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -163,7 +163,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * @param holder el ViewHolder que contiene la imagen del botón de favoritos.
      * @return void
      */
-    private void checkComprobarFavoritos(String idPost, String idUser, final PostsAdapter2.ViewHolder holder) {
+    public void checkComprobarFavoritos(String idPost, String idUser, final PostsAdapter2.ViewHolder holder) {
         favoritosFirebase.getLikeByPostAndUser(idPost, idUser).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -185,7 +185,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * @param holder el ViewHolder que contiene el textview para mostrar el usuario
      * @return void
      */
-    private void getUsuarioInfo(String idUser, final PostsAdapter2.ViewHolder holder) {
+    public void getUsuarioInfo(String idUser, final PostsAdapter2.ViewHolder holder) {
         usuariosBBDDFirebase.getUsuarios(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -212,17 +212,17 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * @param id id de publicación
      * @return void
      */
-    private void borrarPublicacion(String id) {
-        publicacionFirebase.borrarPublicacion(id).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
+    public void borrarPublicacion(String id) {
+        favoritosFirebase.deleteFavoritesByPost(id).addOnCompleteListener(task -> {
+            publicacionFirebase.borrarPublicacion(id).addOnCompleteListener(task2 -> {
+                if (task2.isSuccessful()) {
                     Toast.makeText(context, "La publicación se eliminó correctamente", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "No se pudo eliminar la publicación", Toast.LENGTH_SHORT).show();
                 }
-            }
+            });
         });
+
     }
 
     @NonNull
@@ -234,12 +234,12 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewTitulo, nombreUsuario, textViewTipoContrato, txtFavoritos, textViewSector;
+        private TextView textViewTitulo, nombreUsuario, textViewTipoContrato, txtFavoritos, textViewSector;
 
-        ImageView imageViewPost, imgFavoritos;
-        View viewHolder;
-        ImageButton btnCerrar;
-        RatingBar mediaUsuario;
+        private ImageView imageViewPost, imgFavoritos;
+        private View viewHolder;
+        private ImageButton btnCerrar;
+        private RatingBar mediaUsuario;
 
         public ViewHolder(View view) {
             super(view);

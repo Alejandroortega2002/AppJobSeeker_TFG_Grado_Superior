@@ -82,7 +82,7 @@ public class InicioFragment extends Fragment {
         }
     }
 
-    private void goToPost() {
+    public void goToPost() {
         Intent intent = new Intent(getContext(), PostActivity.class);
         startActivity(intent);
     }
@@ -95,7 +95,7 @@ public class InicioFragment extends Fragment {
      *
      * @return void
      */
-    private void busquedasDiferentes() {
+    public void busquedasDiferentes() {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -121,7 +121,7 @@ public class InicioFragment extends Fragment {
      *
      * @param query El texto de búsqueda utilizado para buscar publicaciones.
      */
-    private void buscar(String query) {
+    public void buscar(String query) {
         Query searchQuery = mPublicacionfirebase.getPostByTitulo(query);
         FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
                 .setQuery(searchQuery, Publicacion.class)

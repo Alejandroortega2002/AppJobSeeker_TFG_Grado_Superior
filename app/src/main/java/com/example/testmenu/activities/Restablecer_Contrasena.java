@@ -23,7 +23,7 @@ public class Restablecer_Contrasena extends AppCompatActivity {
     private Button recuperarContrasena;
     private EditText emailRecuperar;
 
-    AutentificacioFirebase authFirebase;
+    private AutentificacioFirebase authFirebase;
 
     /**
      * Método que se llama al crear la actividad.
@@ -32,7 +32,7 @@ public class Restablecer_Contrasena extends AppCompatActivity {
      */
     @SuppressLint("MissingInflatedId")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restablecer_contrasena);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

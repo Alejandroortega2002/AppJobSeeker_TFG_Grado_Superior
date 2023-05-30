@@ -35,9 +35,9 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
     private Button recuperarContrasena;
     private ImageButton btnVolverEditar;
     private EditText emailRecuperar;
-    AutentificacioFirebase autentificacioFirebase;
-    UsuariosBBDDFirebase usuariosBBDDFirebase;
-    ListenerRegistration mListener;
+    private AutentificacioFirebase autentificacioFirebase;
+    private UsuariosBBDDFirebase usuariosBBDDFirebase;
+    private ListenerRegistration mListener;
 
     /**
      * Método que se llama al crear la actividad.
@@ -46,7 +46,7 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
      */
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recuperar_contrasena_usuario_logueado);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -158,7 +158,7 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
      * Método que se llama cuando la actividad se vuelve visible para el usuario.
      */
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         ViewedMensajeHelper.updateOnline(true, Recuperar_Contrasena_Usuario_Logueado.this);
     }
@@ -167,7 +167,7 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
      * Método que se llama cuando la actividad pierde el foco y no es visible para el usuario.
      */
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         ViewedMensajeHelper.updateOnline(false, Recuperar_Contrasena_Usuario_Logueado.this);
     }
@@ -175,7 +175,7 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
     /**
      * Método que se llama cuando la actividad está a punto de ser destruida.
      */
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         if (mListener != null) {
             mListener.remove();

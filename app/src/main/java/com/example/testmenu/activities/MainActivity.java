@@ -36,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-    TokenFirebase mTokenFirebase;
-    AutentificacioFirebase mAutentificationFirebase;
+    private TokenFirebase mTokenFirebase;
+    private AutentificacioFirebase mAutentificationFirebase;
 
-    UsuariosBBDDFirebase mUsuarioFirebase;
+    private UsuariosBBDDFirebase mUsuarioFirebase;
 
     // Declare the launcher at the top of your Activity/Fragment:
     private final ActivityResultLauncher<String> requestPermissionLauncher =
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
      * Método llamado al iniciar la actividad.
      */
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         ViewedMensajeHelper.updateOnline(true, MainActivity.this);
     }
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
      * Método llamado al pausar la actividad.
      */
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         ViewedMensajeHelper.updateOnline(false, MainActivity.this);
     }
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return void
      */
-    private void createToken() {
+    public void createToken() {
         mTokenFirebase.create(mAutentificationFirebase.getUid());
     }
 
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return void
      */
-    private void askNotificationPermission() {
+    public void askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void askCameraPermission() {
+    public void askCameraPermission() {
         // Verificar y solicitar los permisos necesarios
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||

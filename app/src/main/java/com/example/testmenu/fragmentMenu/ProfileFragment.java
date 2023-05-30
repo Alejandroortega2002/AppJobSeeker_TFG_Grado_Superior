@@ -54,14 +54,12 @@ public class ProfileFragment extends Fragment {
 
     private ImageButton btnAjustesPerfil;
 
-    FrameLayout mLinearLayoutEditProfile;
+    private FrameLayout mLinearLayoutEditProfile;
 
-    AutentificacioFirebase autentificacioFirebase;
-    UsuariosBBDDFirebase usuariosBBDDFirebase;
-    PublicacionFirebase publicacionFirebase;
-    ListenerRegistration mListener;
-
-
+    private AutentificacioFirebase autentificacioFirebase;
+    private UsuariosBBDDFirebase usuariosBBDDFirebase;
+    private PublicacionFirebase publicacionFirebase;
+    private ListenerRegistration mListener;
     private String idUser;
 
 
@@ -78,13 +76,13 @@ public class ProfileFragment extends Fragment {
         usuariosBBDDFirebase = new UsuariosBBDDFirebase();
         publicacionFirebase = new PublicacionFirebase();
 
-        telefono = (TextView) binding.nTelefono;
-        nombreU = (TextView) binding.nPerfil;
-        email = (TextView) binding.pEmail;
-        descripcion = (TextView) binding.pDescripcion;
-        numeroDeOrfetas = (TextView) binding.nPublicaciones;
-        fotoBanner = (ImageView) binding.banner;
-        fotoPerfil = (CircleImageView) binding.fotoPerfil;
+        telefono = binding.nTelefono;
+        nombreU = binding.nPerfil;
+        email = binding.pEmail;
+        descripcion = binding.pDescripcion;
+        numeroDeOrfetas = binding.nPublicaciones;
+        fotoBanner = binding.banner;
+        fotoPerfil = binding.fotoPerfil;
         btnFavoritos = binding.btnFavoritos;
         btnMisOfertas = binding.btnMisOfertas;
 

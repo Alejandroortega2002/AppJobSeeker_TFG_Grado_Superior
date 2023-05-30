@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MensajeFirebase {
-    CollectionReference mCollection;
+    private CollectionReference mCollection;
 
     public MensajeFirebase(){
         mCollection = FirebaseFirestore.getInstance().collection("Mensajes");

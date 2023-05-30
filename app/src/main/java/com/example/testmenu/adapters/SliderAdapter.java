@@ -59,8 +59,8 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
 
     class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
 
-        View itemView;
-        ImageView imageViewSlider;
+        private View itemView;
+        private ImageView imageViewSlider;
 
 
         public SliderAdapterVH(View itemView) {

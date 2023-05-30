@@ -6,6 +6,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 public class UsuariosBBDDFirebase {
 
-    private final CollectionReference mColeccion;
+    private CollectionReference mColeccion;
 
     public UsuariosBBDDFirebase() {
         mColeccion = FirebaseFirestore.getInstance().collection("Usuarios");
@@ -23,6 +24,12 @@ public class UsuariosBBDDFirebase {
         return mColeccion.document(id).get();
     }
 
+    public Query getNombreUser(String nombreUser){
+        return mColeccion.whereEqualTo("usuario",nombreUser);
+    }
+    public Query getCorreoUser(String correo){
+        return mColeccion.whereEqualTo("email",correo);
+    }
     public DocumentReference getUsuariosRealTime(String id) {
         return mColeccion.document(id);
     }

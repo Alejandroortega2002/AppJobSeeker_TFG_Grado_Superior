@@ -1,7 +1,5 @@
 package com.example.testmenu.activities;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,8 +9,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,12 +20,10 @@ import com.example.testmenu.firebase.UsuariosBBDDFirebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import dmax.dialog.SpotsDialog;
 
@@ -38,16 +32,16 @@ public class RegistroActivity extends AppCompatActivity {
     private Button btnRegistrar, btnLogin;
     private EditText Nusuario, Email, Telefono, editContrasena, editConfirmContrasena;
     private ProgressDialog barraProgreso;
-    AlertDialog mDialog;
+    private AlertDialog mDialog;
 
-  //Firebase
+    //Firebase
 
-    AutentificacioFirebase authFirebase;
-    UsuariosBBDDFirebase usuariosBBDDFirebase;
+    private AutentificacioFirebase authFirebase;
+    private UsuariosBBDDFirebase usuariosBBDDFirebase;
 
     @SuppressLint("MissingInflatedId")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -77,7 +71,6 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Comprueba los datos del usuario siguiendo unos criterios necesarios.
      * <p>
@@ -88,7 +81,6 @@ public class RegistroActivity extends AppCompatActivity {
      * @return void
      */
     public void verificarCredenciales() {
-
         String nusuario = Nusuario.getText().toString();
         String telefono = Telefono.getText().toString();
         String email = Email.getText().toString();
@@ -96,35 +88,127 @@ public class RegistroActivity extends AppCompatActivity {
         String confirmContrasena = editConfirmContrasena.getText().toString();
 
         if (nusuario.isEmpty() || nusuario.length() < 5) {
-            mostrarError(Nusuario, "Nombre de Usuario no valido");
-        } else if (email.isEmpty() || !email.contains("@")) {
-            mostrarError(Email, "Email no valido");
-        } else if (contrasena.isEmpty() || contrasena.length() < 7) {
-            mostrarError(editContrasena, "Contraseña no valida minimo 7 caracteres");
-        } else if (confirmContrasena.isEmpty() || !confirmContrasena.equals(contrasena)) {
-            mostrarError(editConfirmContrasena, "Contraseña no valida, no coincide.");
-        } else {
-            mDialog.show();
-            registrarUsuario(nusuario, telefono, email, contrasena);
-
+            mostrarError(Nusuario, "Nombre de usuario no válido. Debe tener al menos 5 caracteres.");
+            return;
         }
 
+        existeNombreUsuario(nusuario, new VerificacionCallback() {
+            @Override
+            public void onVerificacionCompleta(boolean existe) {
+                if (existe) {
+                    return;
+                }
+
+                if (telefono.isEmpty() || !esNumeroTelefonoValido(telefono)) {
+                    mostrarError(Telefono, "Número de teléfono no válido. Debe contener solo dígitos.");
+                    return;
+                }
+
+                if (email.isEmpty() || !esEmailValido(email)) {
+                    mostrarError(Email, "Correo electrónico no válido. Debe tener un formato válido.");
+                    return;
+                }
+
+                existeCorreoElectronico(email, new VerificacionCallback() {
+                    @Override
+                    public void onVerificacionCompleta(boolean existe) {
+                        if (existe) {
+                            return;
+                        }
+
+                        if (contrasena.isEmpty() || contrasena.length() < 8) {
+                            mostrarError(editContrasena, "Contraseña no válida. Debe tener al menos 8 caracteres.");
+                            return;
+                        }
+
+                        if (!requisitosContrasena(contrasena)) {
+                            mostrarError(editContrasena, "La contraseña no cumple con los requisitos de seguridad.(Tiene que tener al menos una mayúscula, una minúscula, un número y un caracter especial)");
+                            return;
+                        }
+
+                        if (!contrasena.equals(confirmContrasena)) {
+                            mostrarError(editConfirmContrasena, "Las contraseñas no coinciden.");
+                            return;
+                        }
+
+                        mDialog.show();
+                        registrarUsuario(nusuario, telefono, email, contrasena);
+                    }
+                });
+            }
+        });
     }
+
+
+    public boolean esNumeroTelefonoValido(String telefono) {
+        return telefono.matches("\\d+");
+    }
+
+    public boolean esEmailValido(String email) {
+        return email.matches("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}");
+    }
+
+    public boolean requisitosContrasena(String contrasena) {
+        return contrasena.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^_&+=]).{8,}");
+    }
+
+    public interface VerificacionCallback {
+        void onVerificacionCompleta(boolean existe);
+    }
+
+
+    public void existeNombreUsuario(String nombreUser, VerificacionCallback callback) {
+        usuariosBBDDFirebase.getNombreUser(nombreUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    boolean existe = !task.getResult().isEmpty();
+                    if (existe) {
+                        mostrarError(Nusuario, "El nombre de usuario ya está registrado.");
+                    }
+                    callback.onVerificacionCompleta(existe);
+                } else {
+                    mostrarError(Nusuario, "Error al verificar el nombre de usuario.");
+                    callback.onVerificacionCompleta(true);
+                }
+            }
+        });
+    }
+
+    public void existeCorreoElectronico(String email, VerificacionCallback callback) {
+        usuariosBBDDFirebase.getCorreoUser(email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    boolean existe = !task.getResult().isEmpty();
+                    if (existe) {
+                        mostrarError(Email, "El correo del usuario ya está registrado.");
+                    }
+                    callback.onVerificacionCompleta(existe);
+                } else {
+                    mostrarError(Email, "Error al verificar el correo del usuario.");
+                    callback.onVerificacionCompleta(true);
+                }
+            }
+        });
+    }
+
+
 
     /**
      * Este método registra al usuario en Firebase. Muestra una barra de progreso
      * durante el proceso de registro y redirige a la actividad de inicio de sesión si el registro se realiza correctamente.
      *
-     * @param nUsuario username
+     * @param nUsuario    username
      * @param numTelefono telefono
-     * @param email correo
-     * @param contrasena contrasena
+     * @param email       correo
+     * @param contrasena  contrasena
      * @return void
      */
 
     public void registrarUsuario(final String nUsuario, final String numTelefono, final String email, final String contrasena) {
         mDialog.show();
-        authFirebase.registro(email,contrasena).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        authFirebase.registro(email, contrasena).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
@@ -140,7 +224,6 @@ public class RegistroActivity extends AppCompatActivity {
                     usuario.setMedia(0.0F);
                     usuario.setFotoPerfil(null);
                     usuario.setTimeStamp(new Date().getTime());
-
 
 
                     usuariosBBDDFirebase.createUsuarios(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -177,6 +260,18 @@ public class RegistroActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (barraProgreso != null && barraProgreso.isShowing()) {
+            barraProgreso.dismiss();
+        }
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
+    }
+
+
     /**
      * Este método muestra una barra de progreso en la pantalla con un título y un mensaje mientras se realiza un proceso de registro.
      * Primero, se establece el título de la barra de progreso en "Proceso de Registro" y el mensaje en "Registrando usuario, espere un momento".
@@ -196,7 +291,7 @@ public class RegistroActivity extends AppCompatActivity {
      * @param input el EditText en el que se mostrará el error.
      * @param s     el mensaje de error que se mostrará en el EditText.
      */
-    private void mostrarError(EditText input, String s) {
+    public void mostrarError(EditText input, String s) {
         input.setError(s);
         input.requestFocus();
     }

@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -38,18 +37,18 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editEmail, editContrasena;
     private Button btnLogin, btnRecuperar, btnRegistrar, btnloginGoogle;
     private ProgressDialog barraProgreso;
-    AlertDialog mDialog;
-    AutentificacioFirebase authFirebase;
-    UsuariosBBDDFirebase usuariosBBDDFirebase;
+    private AlertDialog mDialog;
+    private AutentificacioFirebase authFirebase;
+    private UsuariosBBDDFirebase usuariosBBDDFirebase;
 
 
     //Google
     private GoogleSignInClient mGoogleSignInClient;
-    int RC_SIGN_IN = 1;
-    String TAG = "GoogleSignIn";
+    private int RC_SIGN_IN = 1;
+    private String TAG = "GoogleSignIn";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -94,14 +93,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     Se llama cuando la actividad se está iniciando y comprueba si hay una sesión de usuario activa.
-     <p>
-     Si hay una sesión de usuario activa, se inicia una nueva actividad MainActivity y se eliminan las actividades anteriores de la pila.
-
-     @return void
+     * Se llama cuando la actividad se está iniciando y comprueba si hay una sesión de usuario activa.
+     * <p>
+     * Si hay una sesión de usuario activa, se inicia una nueva actividad MainActivity y se eliminan las actividades anteriores de la pila.
+     *
+     * @return void
      */
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         if (authFirebase.getUserSession() != null) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -139,13 +138,13 @@ public class LoginActivity extends AppCompatActivity {
      * Si no se puede obtener la cuenta, se anota en el registro de eventos de Android (Log) y muestra una ventana emergente.
      *
      * @param requestCode código de solicitud
-     * @param resultCode confirmación de solicitud
-     * @param data contiene info de la cuenta seleccionada
+     * @param resultCode  confirmación de solicitud
+     * @param data        contiene info de la cuenta seleccionada
      * @return void
      */
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
@@ -184,7 +183,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param googleSignInAccount token de Google
      * @return void
      */
-    private void firebaseAuthWithGoogle(GoogleSignInAccount googleSignInAccount) {
+    public void firebaseAuthWithGoogle(GoogleSignInAccount googleSignInAccount) {
         mDialog.show();
         authFirebase.loginGoogle(googleSignInAccount).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -213,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param id el ID del usuario a validar
      * @return void
      */
-    private void validarUser(String id) {
+    public void validarUser(String id) {
 
         usuariosBBDDFirebase.getUsuarios(id).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -297,7 +296,7 @@ public class LoginActivity extends AppCompatActivity {
      * Si el inicio de sesión fue exitoso, ocultar la barra de progreso y redirigir al usuario a MainActivity
      * Si falla, ocultar la barra de progreso y mostrar un mensaje de error.
      *
-     * @param email el correo que usamos para iniciar sesión
+     * @param email      el correo que usamos para iniciar sesión
      * @param contrasena el pwd que asociamos al email
      * @return void
      */
@@ -340,11 +339,11 @@ public class LoginActivity extends AppCompatActivity {
      * Este método se encarga de mostrar los errores si algo ha salido mal
      *
      * @param input edittext donde se muestre el mensaje
-     * @param s texto que se desea mostrar como error principal
+     * @param s     texto que se desea mostrar como error principal
      * @return void
      */
 
-    private void mostrarError(EditText input, String s) {
+    public void mostrarError(EditText input, String s) {
         // Mostrar un mensaje de error en caso de que el correo electrónico o la contraseña sean inválidos
         input.setError(s);
         input.requestFocus();

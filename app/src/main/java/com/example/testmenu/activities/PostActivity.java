@@ -49,52 +49,48 @@ import dmax.dialog.SpotsDialog;
 
 public class PostActivity extends AppCompatActivity {
 
-    ImageView mImageViewPost1;
-    ImageView mImageViewPost2;
-    Button mButtonPost;
-    ImagenFirebase mImagenFirebase;
-    PublicacionFirebase mPublicacionFribase;
-    AutentificacioFirebase mAutentificacionFirebase;
-    TextInputEditText mTextInputTitulo;
-    TextInputEditText mTextInputPrecio;
-    TextInputEditText mTextInputDescripcion;
-    ImageView mImageviewContrato1;
-    ImageView mImageviewContrato2;
-    ImageView mImageviewContrato3;
-    ImageView mImageviewContrato4;
-    CircleImageView mCircleBack;
+    private ImageView mImageViewPost1;
+    private ImageView mImageViewPost2;
+    private Button mButtonPost;
+    private ImagenFirebase mImagenFirebase;
+    private PublicacionFirebase mPublicacionFribase;
+    private AutentificacioFirebase mAutentificacionFirebase;
+    private TextInputEditText mTextInputTitulo;
+    private TextInputEditText mTextInputPrecio;
+    private TextInputEditText mTextInputDescripcion;
+    private ImageView mImageviewContrato1;
+    private ImageView mImageviewContrato2;
+    private ImageView mImageviewContrato3;
+    private ImageView mImageviewContrato4;
+    private CircleImageView mCircleBack;
+    private TextView mTextViewCategoria;
+    private Spinner mTextViewSector;
+    private File mImageFile;
+    private File mImageFile2;
+    private String mCategoria = "";
+    private String mSector = "";
+    private String mTitulo = "";
+    private String mPrecio = "";
+    private String mDescripcion = "";
+    private AlertDialog.Builder mBuilderSelector;
+    private CharSequence options[];
 
-
-    TextView mTextViewCategoria;
-    Spinner mTextViewSector;
-    File mImageFile;
-    File mImageFile2;
-
-    String mCategoria = "";
-
-    String mSector = "";
-    String mTitulo = "";
-    String mPrecio = "";
-    String mDescripcion = "";
-    AlertDialog.Builder mBuilderSelector;
-    CharSequence options[];
-
-    private final int GALLERY_REQUEST_CODE = 1;
-    private final int GALLERY_REQUEST_CODE_2 = 2;
-    private final int PHOTO_REQUEST_CODE = 3;
+    private int GALLERY_REQUEST_CODE = 1;
+    private int GALLERY_REQUEST_CODE_2 = 2;
+    private int PHOTO_REQUEST_CODE = 3;
     private final int PHOTO_REQUEST_CODE_2 = 4;
 
     //FOTO1
-    String mAbsolutePhotoPath;
-    String mPhotoPath;
-    //FOTO2
-    String mAbsolutePhotoPath2;
-    String mPhotoPath2;
+    private String mAbsolutePhotoPath;
+    private String mPhotoPath;
 
-    AlertDialog dialogoEspera;
+    //FOTO2
+    private String mAbsolutePhotoPath2;
+    private String mPhotoPath2;
+    private AlertDialog dialogoEspera;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -158,6 +154,7 @@ public class PostActivity extends AppCompatActivity {
 
 
     }
+
     /**
      * Método llamado cuando se obtienen los resultados de la solicitud de permisos.
      *
@@ -187,7 +184,7 @@ public class PostActivity extends AppCompatActivity {
      *
      * @param numberImage el número de imagen que se seleccionará (1 o 2).
      */
-    private void selectOptionImagen(final int numberImage) {
+    public void selectOptionImagen(final int numberImage) {
         // Configura un cuadro de diálogo que muestra las opciones para seleccionar o tomar una foto
         AlertDialog.Builder mBuilderSelector = new AlertDialog.Builder(this);
         mBuilderSelector.setTitle("Selecciona una opción:");
@@ -221,7 +218,7 @@ public class PostActivity extends AppCompatActivity {
      * @return void
      */
     @SuppressLint("QueryPermissionsNeeded")
-    private void takePhoto(int requestCode) {
+    public void takePhoto(int requestCode) {
         // Crea una intención para iniciar la aplicación de la cámara
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -252,7 +249,6 @@ public class PostActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Crea un archivo de foto temporal con un nombre de archivo único utilizando la fecha y hora actuales.
      *
@@ -260,7 +256,7 @@ public class PostActivity extends AppCompatActivity {
      * @return archivo de imagen creado
      * @throws IOException si hay algún error al crear el archivo
      */
-    private File createPhotoFile(int requestCode) throws IOException {
+    public File createPhotoFile(int requestCode) throws IOException {
         // Crea un nombre de archivo único usando la fecha y hora actuales
         String timeStamp = String.valueOf(new Date().getTime());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -296,7 +292,7 @@ public class PostActivity extends AppCompatActivity {
      * @return void
      */
 
-    private void clickPost() {
+    public void clickPost() {
         mTitulo = mTextInputTitulo.getText().toString().trim();
         mPrecio = mTextInputPrecio.getText().toString().trim();
         mDescripcion = mTextInputDescripcion.getText().toString().trim();
@@ -317,7 +313,6 @@ public class PostActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Este método se encarga de guardar las imágenes en Firebase Storage y luego guardar la información
      * de la publicación en Firestore.
@@ -326,7 +321,7 @@ public class PostActivity extends AppCompatActivity {
      * @param imageFile2 archivo de imagen 2 a guardar
      */
 
-    private void saveImage(File imageFile1, final File imageFile2) {
+    public void saveImage(File imageFile1, final File imageFile2) {
         // Guardar la primera imagen
         mImagenFirebase.save(PostActivity.this, imageFile1).addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
@@ -376,7 +371,7 @@ public class PostActivity extends AppCompatActivity {
      * @param requestCode el código de solicitud que se utiliza para identificar la solicitud
      * @return void
      */
-    private void openGallery(int requestCode) {
+    public void openGallery(int requestCode) {
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, requestCode);
@@ -389,7 +384,7 @@ public class PostActivity extends AppCompatActivity {
      * @param resultCode  El código de resultado devuelto por la actividad.
      * @param data        El intent que contiene el resultado de la actividad.
      */
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         /**
@@ -468,19 +463,17 @@ public class PostActivity extends AppCompatActivity {
     }
 
 
-
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
-        ViewedMensajeHelper.updateOnline(true,PostActivity.this);
+        ViewedMensajeHelper.updateOnline(true, PostActivity.this);
     }
 
 
-
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
-        ViewedMensajeHelper.updateOnline(false,PostActivity.this);
+        ViewedMensajeHelper.updateOnline(false, PostActivity.this);
     }
 
 

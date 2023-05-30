@@ -54,52 +54,51 @@ import dmax.dialog.SpotsDialog;
 
 public class EditarPerfilActivity extends AppCompatActivity {
 
-    private static final int PERMISSION_REQUEST_CODE = 1;
-    ImageButton btnAtras;
-    CircleImageView fotoPerfil;
-    ImageView fotoBanner;
-    EditText usuario, telefono, descripcion;
-    Button editarPerfil;
+    private static int PERMISSION_REQUEST_CODE = 1;
+    private ImageButton btnAtras;
+    private CircleImageView fotoPerfil;
+    private ImageView fotoBanner;
+    private EditText usuario, telefono, descripcion;
+    private Button editarPerfil;
 
-    AlertDialog mDialog;
+    private AlertDialog mDialog;
 
-    ImagenFirebase mImageProvider;
-    UsuariosBBDDFirebase mUsersProvider;
-    AutentificacioFirebase mAuthProvider;
+    private ImagenFirebase mImageProvider;
+    private UsuariosBBDDFirebase mUsersProvider;
+    private AutentificacioFirebase mAuthProvider;
 
-    String mUsername = "";
-    String mPhone = "";
-    String mImageProfile = "";
-    String mImageCover = "";
-    String mDescripcion = "";
+    private String mUsername = "";
+    private String mPhone = "";
+    private String mImageProfile = "";
+    private String mImageCover = "";
+    private String mDescripcion = "";
 
     //Imagenes
+    private File mImageFile;
+    private File mImageFile2;
 
-    File mImageFile;
-    File mImageFile2;
+    private AlertDialog.Builder mBuilderSelector;
+    private CharSequence options[];
 
-    AlertDialog.Builder mBuilderSelector;
-    CharSequence options[];
-
-    private final int GALLERY_REQUEST_CODE_PERFIL = 1;
-    private final int GALLERY_REQUEST_CODE_BANNER = 2;
-    private final int PHOTO_REQUEST_CODE_PERFIL = 3;
-    private final int PHOTO_REQUEST_CODE_BANNER = 4;
-
+    private int GALLERY_REQUEST_CODE_PERFIL = 1;
+    private int GALLERY_REQUEST_CODE_BANNER = 2;
+    private int PHOTO_REQUEST_CODE_PERFIL = 3;
+    private int PHOTO_REQUEST_CODE_BANNER = 4;
 
     //FOTO1
-    String mAbsolutePhotoPath;
-    String mPhotoPath;
-    File mPhotoFile;
+    private String mAbsolutePhotoPath;
+    private String mPhotoPath;
+    private File mPhotoFile;
+
     //FOTO2
-    String mAbsolutePhotoPath2;
-    String mPhotoPath2;
-    File mPhotoFile2;
+    private String mAbsolutePhotoPath2;
+    private String mPhotoPath2;
+    private File mPhotoFile2;
 
 
     @SuppressLint("MissingInflatedId")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_perfil);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -159,6 +158,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
      * Rellena los campos de Editext e Images de la activity con los datos del usuario desde la base de datos
      * <p>
      * En caso de error, se registra en el Log con un mensaje
+     *
      * @return void
      */
     public void rellenarInformacionUsuario() {
@@ -179,18 +179,18 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
 
                     // Verificar si los valores obtenidos son nulos antes de establecer el texto en los TextViews
-                    if(value.contains("fotoPerfil")){
+                    if (value.contains("fotoPerfil")) {
                         String perfil = value.getString("fotoPerfil");
-                        if(perfil != null){
-                            if(!perfil.isEmpty()){
+                        if (perfil != null) {
+                            if (!perfil.isEmpty()) {
                                 Picasso.get().load(perfil).into(fotoPerfil);
                             }
                         }
                     }
-                    if(value.contains("banner")){
+                    if (value.contains("banner")) {
                         String banner = value.getString("banner");
-                        if(banner != null){
-                            if(!banner.isEmpty()){
+                        if (banner != null) {
+                            if (!banner.isEmpty()) {
                                 Picasso.get().load(banner).into(fotoBanner);
                             }
                         }
@@ -223,7 +223,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
      *
      * @return void
      */
-    private void clickEditProfile() {
+    public void clickEditProfile() {
         mUsername = usuario.getText().toString();
         mPhone = telefono.getText().toString();
         mDescripcion = descripcion.getText().toString();
@@ -265,7 +265,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
      * @param imageFile1 imagen de perfil
      * @param imageFile2 imagen de portada
      */
-    private void saveImageCoverAndProfile(File imageFile1, final File imageFile2) {
+    public void saveImageCoverAndProfile(File imageFile1, final File imageFile2) {
         mDialog.show();
         mImageProvider.save(EditarPerfilActivity.this, imageFile1).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -313,11 +313,11 @@ public class EditarPerfilActivity extends AppCompatActivity {
     /**
      * Guarda una imagen en Firebase Storage y actualiza la información del usuario con la URL de la imagen.
      *
-     * @param image imagen a guardar
-     * @param isProfileImage  comprueba el tipo de archivo.
+     * @param image          imagen a guardar
+     * @param isProfileImage comprueba el tipo de archivo.
      * @return void
      */
-    private void saveImage(File image, final boolean isProfileImage) {
+    public void saveImage(File image, final boolean isProfileImage) {
         mDialog.show();
         mImageProvider.save(EditarPerfilActivity.this, image).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -356,7 +356,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
      * @param usuario usuario ha actualizar
      * @return void
      */
-    private void updateInfo(Usuarios usuario) {
+    public void updateInfo(Usuarios usuario) {
         if (mDialog.isShowing()) {
             mDialog.show();
         }
@@ -380,7 +380,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
      * @param numberImage número de imagen (1 o 2)
      * @return void
      */
-    private void selectOptionImagen(final int numberImage) {
+    public void selectOptionImagen(final int numberImage) {
 
         mBuilderSelector.setItems(options, (dialogInterface, i) -> {
             if (i == 0) {
@@ -405,7 +405,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
      *
      * @param requestCode el código de solicitud que se utiliza para identificar la solicitud
      */
-    private void takePhoto(int requestCode) {
+    public void takePhoto(int requestCode) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
@@ -429,7 +429,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
      * @return archivo de imagen creado
      * @throws IOException
      */
-    private File createPhotoFile(int requestCode) throws IOException {
+    public File createPhotoFile(int requestCode) throws IOException {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File photoFile = File.createTempFile(
                 new Date() + "_photo",
@@ -452,14 +452,14 @@ public class EditarPerfilActivity extends AppCompatActivity {
      * @param requestCode el código de solicitud que se utiliza para identificar la solicitud
      * @return void
      */
-    private void openGallery(int requestCode) {
+    public void openGallery(int requestCode) {
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, requestCode);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         /**
          * SELECCION DE IMAGEN DESDE LA GALERIA

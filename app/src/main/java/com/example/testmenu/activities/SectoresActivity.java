@@ -22,19 +22,19 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
 public class SectoresActivity extends AppCompatActivity {
-    ImageButton btnSalir;
-    TextView textViewSectores;
-    static TextView txtNoHayPublicacion;
-    String sector;
+    private ImageButton btnSalir;
+    private TextView textViewSectores;
+     static TextView txtNoHayPublicacion;
+    private String sector;
 
     static RecyclerView reciclerPorSectores;
-    AutentificacioFirebase autentificacioFirebase;
-    PublicacionFirebase publicacionFirebase;
-    PostsAdapter postsAdapter;
+    private AutentificacioFirebase autentificacioFirebase;
+    private PublicacionFirebase publicacionFirebase;
+    private PostsAdapter postsAdapter;
 
     @SuppressLint("MissingInflatedId")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sectores);
         reciclerPorSectores = findViewById(R.id.recyclerViewSectores);

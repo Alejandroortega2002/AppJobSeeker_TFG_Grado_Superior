@@ -30,18 +30,18 @@ import java.util.List;
 public class MisFavoritosActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
-    ImageButton btnSalir;
+    private ImageButton btnSalir;
 
-    AutentificacioFirebase mAutentificacionFirebase;
-    PublicacionFirebase mPublicacionfirebase;
+    private AutentificacioFirebase mAutentificacionFirebase;
+    private PublicacionFirebase mPublicacionfirebase;
 
-    FavoritosFirebase favoritosFirebase;
-    PostsAdapter2 mPostsAdapter2;
+    private FavoritosFirebase favoritosFirebase;
+    private PostsAdapter2 mPostsAdapter2;
 
-    List<String> postIds;
-    Favoritos favoritos;
+    private List<String> postIds;
+    private Favoritos favoritos;
 
     /**
      * Método llamado al crear la actividad.
@@ -50,7 +50,7 @@ public class MisFavoritosActivity extends AppCompatActivity {
      */
     @SuppressLint("MissingInflatedId")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_favoritos);
 

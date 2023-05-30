@@ -1,7 +1,7 @@
 package com.example.testmenu.entidades;
 
 public class Valoraciones {
-    String id, userId, userPostId,valoracion, nota, timeStamp;
+    private String id, userId, userPostId,valoracion, nota, timeStamp;
 
     public Valoraciones() {
 

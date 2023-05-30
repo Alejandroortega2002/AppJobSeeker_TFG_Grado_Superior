@@ -49,7 +49,7 @@ public class ValoracionesAdapter extends FirestoreRecyclerAdapter<Valoraciones, 
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull HolderValoraciones holder, int position, @NonNull Valoraciones valoraciones) {
+    public void onBindViewHolder(@NonNull HolderValoraciones holder, int position, @NonNull Valoraciones valoraciones) {
 
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         //String userId = valoraciones.getUserId();
@@ -72,7 +72,7 @@ public class ValoracionesAdapter extends FirestoreRecyclerAdapter<Valoraciones, 
      * @param holder el viewholder en donde mostrar los datos de la base de datos
      * @return void
      */
-    private void cargarDetallesUsuario(String userId, final HolderValoraciones holder) {
+    public void cargarDetallesUsuario(String userId, final HolderValoraciones holder) {
         if (userId != null) {
             usuariosBBDDFirebase.getUsuarios(userId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override

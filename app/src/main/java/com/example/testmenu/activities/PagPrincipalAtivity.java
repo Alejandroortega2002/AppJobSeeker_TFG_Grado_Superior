@@ -31,7 +31,7 @@ public class PagPrincipalAtivity extends AppCompatActivity {
      */
     @SuppressLint({"MissingInflatedId", "SourceLockedOrientationActivity"})
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pag_principal_ativity);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

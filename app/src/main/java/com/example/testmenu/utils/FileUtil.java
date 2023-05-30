@@ -21,7 +21,7 @@ public class FileUtil {
     private static final int EOF = -1;
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
-    private FileUtil() {
+    public FileUtil() {
 
     }
 
@@ -65,7 +65,7 @@ public class FileUtil {
      * @param fileName el nombre de archivo a dividir
      * @return un arreglo de dos elementos que contiene el nombre del archivo y su extensión
      */
-    private static String[] splitFileName(String fileName) {
+    public static String[] splitFileName(String fileName) {
         String name = fileName;
         String extension = "";
         int i = fileName.lastIndexOf(".");
@@ -85,7 +85,7 @@ public class FileUtil {
      * @return El nombre del archivo.
      */
     @SuppressLint("Range")
-    private static String getFileName(Context context, Uri uri) {
+    public static String getFileName(Context context, Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {
             Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
@@ -122,7 +122,7 @@ public class FileUtil {
      * @param newName nuevo nombre para el archivo.
      * @return el nuevo archivo renombrado.
      */
-    private static File rename(File file, String newName) {
+    public static File rename(File file, String newName) {
         File newFile = new File(file.getParent(), newName);
         if (!newFile.equals(file)) {
             if (newFile.exists() && newFile.delete()) {
@@ -144,7 +144,7 @@ public class FileUtil {
      * @return el número total de bytes copiados.
      * @throws IOException si ocurre un error al copiar los datos.
      */
-    private static long copy(InputStream input, OutputStream output) throws IOException {
+    public static long copy(InputStream input, OutputStream output) throws IOException {
         long count = 0;
         int n;
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];

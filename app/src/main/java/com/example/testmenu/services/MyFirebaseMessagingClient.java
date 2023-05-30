@@ -54,7 +54,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
      * @param title el título de la notificación
      * @param body el cuerpo o contenido de la notificación
      */
-    private void showNotification(String title,String body){
+    public void showNotification(String title,String body){
         NotificationHelper notificationHelper = new NotificationHelper(getBaseContext());
         NotificationCompat.Builder builder = notificationHelper.getNotification(title,body);
         Random random = new Random();
@@ -67,14 +67,14 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
      *
      * @param data un mapa de pares clave-valor que contiene los datos necesarios para mostrar la notificación
      */
-    private void showNotificationMessage(Map<String,String> data){
+    public void showNotificationMessage(Map<String,String> data){
         final String imageSender =data.get("imageSender");
         final String imageReceiver =data.get("imageReceiver");
 
         getImageSender(data,imageSender,imageReceiver);
     }
 
-    private void getImageSender(final Map<String,String> data, final String imageSender,final String imageReceiver) {
+    public void getImageSender(final Map<String,String> data, final String imageSender,final String imageReceiver) {
         new Handler(Looper.getMainLooper())
                 .post(new Runnable() {
                     @Override
@@ -108,7 +108,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
      * @param bitmapSender una instancia de Bitmap que representa la imagen del remitente
      * @param imageReceiver una cadena de texto que representa la URL de la imagen del receptor
      */
-    private void getImageReceiver(final Map<String,String> data, String imageReceiver,Bitmap bitmapSender){
+    public void getImageReceiver(final Map<String,String> data, String imageReceiver,Bitmap bitmapSender){
         Picasso.get()
                 .load(imageReceiver)
                 .into(new Target() {
@@ -136,7 +136,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
      * @param bitmapSender una instancia de Bitmap que representa la imagen del remitente
      * @param bitmapReceiver una instancia de Bitmap que representa la imagen del receptor
      */
-    private void notifyMessage(Map<String,String> data, Bitmap bitmapSender, Bitmap bitmapReceiver){
+    public void notifyMessage(Map<String,String> data, Bitmap bitmapSender, Bitmap bitmapReceiver){
         final String usernameSender =data.get("usernameSender");
         final String usernameReceiver =data.get("usernameReceiver");
         final String lastMessage =data.get("lastMessage");

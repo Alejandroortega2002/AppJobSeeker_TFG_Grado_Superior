@@ -39,14 +39,12 @@ import java.util.Date;
 
 public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAdapter.ViewHolder> {
 
-    Context context;
-    AutentificacioFirebase autentificacioFirebase;
-    PublicacionFirebase publicacionFirebase;
-    UsuariosBBDDFirebase usuariosBBDDFirebase;
-
-    FavoritosFirebase favoritosFirebase;
-
-    ListenerRegistration mListener;
+   private Context context;
+   private AutentificacioFirebase autentificacioFirebase;
+   private PublicacionFirebase publicacionFirebase;
+   private UsuariosBBDDFirebase usuariosBBDDFirebase;
+   private FavoritosFirebase favoritosFirebase;
+   private ListenerRegistration mListener;
 
 
     public PostsAdapter(FirestoreRecyclerOptions<Publicacion> options, Context contexto) {
@@ -59,7 +57,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Publicacion publicacion) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Publicacion publicacion) {
 
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String postId = document.getId();
@@ -104,7 +102,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
      * @param holder  el ViewHolder que contiene el campo de texto donde se mostrará el número de "Me gusta"
      * @return void
      */
-    private void getNumeroDeLikes(String idPost, final ViewHolder holder) {
+    public void getNumeroDeLikes(String idPost, final ViewHolder holder) {
         mListener = favoritosFirebase.getLikesByPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -123,7 +121,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
      * @param favoritos representa el "me gusta" que se quiere dar/quitar.
      * @param holder objeto de la clase ViewHolder que contiene la vista del elemento de la lista de publicaciones.
      */
-    private void favoritos(final Favoritos favoritos, final ViewHolder holder) {
+    public void favoritos(final Favoritos favoritos, final ViewHolder holder) {
         favoritosFirebase.getLikeByPostAndUser(favoritos.getIdPost(), autentificacioFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -149,7 +147,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
      * @param holder el ViewHolder que contiene la imagen del botón de favoritos.
      * @return void
      */
-    private void checkComprobarFavoritos(String idPost, String idUser, final ViewHolder holder) {
+    public void checkComprobarFavoritos(String idPost, String idUser, final ViewHolder holder) {
         favoritosFirebase.getLikeByPostAndUser(idPost, idUser).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -171,7 +169,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
      * @param holder el ViewHolder que contiene el textview para mostrar el usuario
      * @return void
      */
-    private void getUsuarioInfo(String idUser, final ViewHolder holder) {
+    public void getUsuarioInfo(String idUser, final ViewHolder holder) {
         usuariosBBDDFirebase.getUsuarios(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {

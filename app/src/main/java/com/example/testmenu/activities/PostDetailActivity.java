@@ -33,34 +33,28 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PostDetailActivity extends AppCompatActivity {
 
-    SliderView mSliderView;
-    SliderAdapter mSliderAdapter;
-    List<SliderItem> mSliderItems = new ArrayList<>();
-    PublicacionFirebase mPublicacionFirebase;
-    UsuariosBBDDFirebase mUsuariosFribase;
-
-    AutentificacioFirebase mAutentificacioFirebase;
-
-    String mExtraPostId;
-
-
-    TextView mTextViewTitulo;
-    TextView mTextViewDescripcion;
-    TextView mTextViewUsername;
-    TextView mTextViewPhone;
-    TextView mTextViewNameCategoria;
-    ImageView mImageViewCategoria;
-    CircleImageView mCircleImageViewProfile;
-    Button mButtonShowProfile;
-
-    ImageButton btnChat;
-
+    private SliderView mSliderView;
+    private SliderAdapter mSliderAdapter;
+    private List<SliderItem> mSliderItems = new ArrayList<>();
+    private PublicacionFirebase mPublicacionFirebase;
+    private UsuariosBBDDFirebase mUsuariosFribase;
+    private AutentificacioFirebase mAutentificacioFirebase;
+    private String mExtraPostId;
+    private TextView mTextViewTitulo;
+    private TextView mTextViewDescripcion;
+    private TextView mTextViewUsername;
+    private TextView mTextViewPhone;
+    private TextView mTextViewNameCategoria;
+    private ImageView mImageViewCategoria;
+    private CircleImageView mCircleImageViewProfile;
+    private Button mButtonShowProfile;
+    private ImageButton btnChat;
     private ImageButton btnSalir;
     private String idUser = "";
 
     @SuppressLint("MissingInflatedId")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -85,7 +79,6 @@ public class PostDetailActivity extends AppCompatActivity {
         mExtraPostId = getIntent().getStringExtra("id");
 
 
-
         btnSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,8 +89,8 @@ public class PostDetailActivity extends AppCompatActivity {
         mButtonShowProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(PostDetailActivity.this,VerPerfilActivity.class);
-                i.putExtra("idUser",idUser);
+                Intent i = new Intent(PostDetailActivity.this, VerPerfilActivity.class);
+                i.putExtra("idUser", idUser);
                 startActivity(i);
 
             }
@@ -113,7 +106,6 @@ public class PostDetailActivity extends AppCompatActivity {
         getPost();
 
 
-
     }
 
     /**
@@ -121,11 +113,11 @@ public class PostDetailActivity extends AppCompatActivity {
      *
      * @return void
      */
-    private void goToChatActivity() {
-    Intent i = new Intent(this, ChatActivity.class);
-    i.putExtra("idUser1",mAutentificacioFirebase.getUid());
-    i.putExtra("idUser2",idUser);
-    startActivity(i);
+    public void goToChatActivity() {
+        Intent i = new Intent(this, ChatActivity.class);
+        i.putExtra("idUser1", mAutentificacioFirebase.getUid());
+        i.putExtra("idUser2", idUser);
+        startActivity(i);
 
     }
 
@@ -137,7 +129,7 @@ public class PostDetailActivity extends AppCompatActivity {
      *
      * @return void
      */
-    private void instanceSlider() {
+    public void instanceSlider() {
         // Instancia el adaptador SliderAdapter y lo configura para mostrar los elementos del slider
         mSliderAdapter = new SliderAdapter(PostDetailActivity.this, mSliderItems);
         mSliderView.setSliderAdapter(mSliderAdapter);
@@ -166,7 +158,7 @@ public class PostDetailActivity extends AppCompatActivity {
      * <p>
      * Se crea una instancia del slider para mostrar las imágenes de la publicación.
      */
-    private void getPost() {
+    public void getPost() {
         mPublicacionFirebase.getPostById(mExtraPostId).addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 if (documentSnapshot.contains("image1")) {
@@ -194,8 +186,8 @@ public class PostDetailActivity extends AppCompatActivity {
                     mTextViewNameCategoria.setText(categoria);
                 }
                 if (documentSnapshot.contains("idUser")) {
-                     idUser = documentSnapshot.getString("idUser");
-                    if (mAutentificacioFirebase.getUid().equals(idUser)){
+                    idUser = documentSnapshot.getString("idUser");
+                    if (mAutentificacioFirebase.getUid().equals(idUser)) {
                         btnChat.setVisibility(View.GONE);
                     }
                     getUserInfo(idUser);
@@ -210,7 +202,7 @@ public class PostDetailActivity extends AppCompatActivity {
      *
      * @param idUser El identificador del usuario a consultar.
      */
-    private void getUserInfo(String idUser) {
+    public void getUserInfo(String idUser) {
         mUsuariosFribase.getUsuarios(idUser).addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 if (documentSnapshot.contains("usuario")) {
@@ -231,20 +223,17 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
-        ViewedMensajeHelper.updateOnline(true,PostDetailActivity.this);
+        ViewedMensajeHelper.updateOnline(true, PostDetailActivity.this);
     }
-
 
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
-        ViewedMensajeHelper.updateOnline(false,PostDetailActivity.this);
+        ViewedMensajeHelper.updateOnline(false, PostDetailActivity.this);
     }
-
-
 
 
 }

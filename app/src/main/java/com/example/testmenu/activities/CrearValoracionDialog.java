@@ -46,16 +46,13 @@ public class CrearValoracionDialog extends DialogFragment {
     private RatingBar estrellasCrear;
     private EditText escribirValoracion;
     private Button enviar, cancelar;
-
-    String valoracion;
-    String nUsuarioActivity;
-    AutentificacioFirebase autentificacioFirebase;
-    UsuariosBBDDFirebase usuariosBBDDFirebase;
-    ValoracionFirebase valoracionFirebase;
-
-    NotificationFirebase mNotificationFirebase;
-    TokenFirebase mTokenFirebase;
-
+    private String valoracion;
+    private String nUsuarioActivity;
+    private AutentificacioFirebase autentificacioFirebase;
+    private UsuariosBBDDFirebase usuariosBBDDFirebase;
+    private ValoracionFirebase valoracionFirebase;
+    private NotificationFirebase mNotificationFirebase;
+    private TokenFirebase mTokenFirebase;
     private Context context;
     /**
      * Constructor vacío requerido para DialogFragment.
@@ -193,7 +190,7 @@ public class CrearValoracionDialog extends DialogFragment {
      * @param comentario la valoracion que el usuario ha escrito
      * @return void
      */
-    private void sendNotification(String comentario) {
+    public void sendNotification(String comentario) {
         if (idUser == null) {
             return;
         }

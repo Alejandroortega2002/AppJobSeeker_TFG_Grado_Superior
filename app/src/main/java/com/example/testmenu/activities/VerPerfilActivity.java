@@ -48,11 +48,11 @@ public class VerPerfilActivity extends AppCompatActivity {
 
     private LinearLayout btnverOfertas, btnverFavortitos, btnValoracion;
 
-    AutentificacioFirebase autentificacioFirebase;
-    UsuariosBBDDFirebase usuariosBBDDFirebase;
-    PublicacionFirebase publicacionFirebase;
+    private AutentificacioFirebase autentificacioFirebase;
+    private UsuariosBBDDFirebase usuariosBBDDFirebase;
+    private PublicacionFirebase publicacionFirebase;
 
-    ListenerRegistration mListener;
+    private ListenerRegistration mListener;
 
     /**
      * Método que se llama al crear la actividad.
@@ -61,7 +61,7 @@ public class VerPerfilActivity extends AppCompatActivity {
      */
     @SuppressLint("MissingInflatedId")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_perfil);
         autentificacioFirebase = new AutentificacioFirebase();
@@ -243,7 +243,7 @@ public class VerPerfilActivity extends AppCompatActivity {
      * Método que se llama al iniciar la actividad y actualiza el estado del usuario a "en línea".
      */
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         ViewedMensajeHelper.updateOnline(true, VerPerfilActivity.this);
     }
@@ -252,7 +252,7 @@ public class VerPerfilActivity extends AppCompatActivity {
      * Método que se llama al pausar la actividad y actualiza el estado del usuario a "desconectado".
      */
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         ViewedMensajeHelper.updateOnline(false, VerPerfilActivity.this);
     }
@@ -261,7 +261,7 @@ public class VerPerfilActivity extends AppCompatActivity {
      * Método que se llama al destruir la actividad y elimina el listener de la base de datos si está activo.
      */
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         if (mListener != null) {
             mListener.remove();

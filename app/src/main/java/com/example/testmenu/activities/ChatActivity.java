@@ -55,42 +55,27 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
-    String mExtraIdUser1;
-    String mExtraIdUser2;
-    String mExtraIdChat;
-    ChatsFirebase mChatsFirebase;
-    MensajeFirebase mMensajeFirebase;
-    AutentificacioFirebase mAuthFirebase;
-    UsuariosBBDDFirebase mUsuarioFirebase;
-    NotificationFirebase mNotificationFirebase;
-
-    TokenFirebase mTokenFirebase;
-
-    EditText mEditTextMensaje;
-    ImageView mImageViewSendMensaje;
-
-    CircleImageView mCircleImageProfile;
-    TextView mTextViewUsername;
-    TextView mTextViewRelativeTime;
-    ImageView mImageViewBack;
-    RecyclerView mRecyclerViewMensaje;
-    MensajeAdapter mAdapter;
-    View mActionBarView;
-
-    LinearLayoutManager mLinearLayoutManager;
-    ListenerRegistration mListener;
-    String username;
-
-    long mIdNotificationChat;
-
-    String myUsername;
-    String mUsernameChat;
-
-    String mImageReceiver = "";
-    String mImageSender = "";
+    private String mExtraIdUser1, mExtraIdUser2, mExtraIdChat,username,myUsername, mUsernameChat,mImageReceiver = "", mImageSender = "";
+    private ChatsFirebase mChatsFirebase;
+    private MensajeFirebase mMensajeFirebase;
+    private AutentificacioFirebase mAuthFirebase;
+    private UsuariosBBDDFirebase mUsuarioFirebase;
+    private NotificationFirebase mNotificationFirebase;
+    private TokenFirebase mTokenFirebase;
+    private EditText mEditTextMensaje;
+    private ImageView mImageViewSendMensaje;
+    private CircleImageView mCircleImageProfile;
+    private TextView mTextViewUsername, mTextViewRelativeTime;
+    private ImageView mImageViewBack;
+    private RecyclerView mRecyclerViewMensaje;
+    private MensajeAdapter mAdapter;
+    private View mActionBarView;
+    private LinearLayoutManager mLinearLayoutManager;
+    private ListenerRegistration mListener;
+    private long mIdNotificationChat;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         mChatsFirebase = new ChatsFirebase();
@@ -138,7 +123,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         mAdapter.stopListening();
     }
@@ -152,7 +137,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         if (mListener != null) {
             mListener.remove();
@@ -166,7 +151,7 @@ public class ChatActivity extends AppCompatActivity {
      * @return void
      */
 
-    private void getMensajeChat() {
+    public void getMensajeChat() {
         Query query = mMensajeFirebase.getMensajeByChat(mExtraIdChat);
         FirestoreRecyclerOptions<Mensaje> options =
                 new FirestoreRecyclerOptions.Builder<Mensaje>()
@@ -209,7 +194,7 @@ public class ChatActivity extends AppCompatActivity {
      * @return void
      */
 
-    private void sendMensaje() {
+    public void sendMensaje() {
         String textMensaje = mEditTextMensaje.getText().toString();
         if (!textMensaje.isEmpty()) {
             final Mensaje mensaje = new Mensaje();
@@ -248,7 +233,7 @@ public class ChatActivity extends AppCompatActivity {
      * @param resource El recurso de diseño para la barra de herramientas personalizada.
      * @return void
      */
-    private void showCustomToolbar(int resource) {
+    public void showCustomToolbar(int resource) {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -282,7 +267,7 @@ public class ChatActivity extends AppCompatActivity {
      * <p>
      * @return void
      */
-    private void getUserInfo() {
+    public void getUserInfo() {
         String idUserInfo = "";
 
         // Determinar el ID del usuario relacionado al chat
@@ -329,7 +314,7 @@ public class ChatActivity extends AppCompatActivity {
      * @return void
      */
 
-    private void checkIfChatExist() {
+    public void checkIfChatExist() {
         mChatsFirebase.getChatByUser1AndUser2(mExtraIdUser1, mExtraIdUser2).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -357,7 +342,7 @@ public class ChatActivity extends AppCompatActivity {
      * @return void
      */
 
-    private void updateViewed() {
+    public void updateViewed() {
         String idSender = "";
         if (mAuthFirebase.getUid().equals(mExtraIdUser1)) {
             idSender = mExtraIdUser2;
@@ -379,7 +364,7 @@ public class ChatActivity extends AppCompatActivity {
      *
      * @return void
      */
-    private void createChat() {
+    public void createChat() {
         Chat chat = new Chat();
         chat.setIdUser1(mExtraIdUser1);
         chat.setIdUser2(mExtraIdUser2);
@@ -412,7 +397,7 @@ public class ChatActivity extends AppCompatActivity {
      *
      */
 
-    private void getToken(final Mensaje mensaje) {
+    public void getToken(final Mensaje mensaje) {
         String idUser = "";
         if (mAuthFirebase.getUid().equals(mExtraIdUser1)) {
             idUser = mExtraIdUser2;
@@ -447,7 +432,7 @@ public class ChatActivity extends AppCompatActivity {
      * @return void
      */
 
-    private void getLastThreeMessages(Mensaje message, final String token) {
+    public void getLastThreeMessages(Mensaje message, final String token) {
         mMensajeFirebase.getLastThreeMensajeByChatAndSender(mExtraIdChat, mAuthFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -467,7 +452,7 @@ public class ChatActivity extends AppCompatActivity {
                 Collections.reverse(mensajeArrayList);
                 Gson gson = new Gson();
                 String mensajes = gson.toJson(mensajeArrayList);
-                sendNotificaction(token, mensajes, message);
+                sendNotification(token, mensajes, message);
             }
         });
     }
@@ -485,7 +470,7 @@ public class ChatActivity extends AppCompatActivity {
      * @return void
      */
 
-    private void sendNotificaction(final String token, String messages, Mensaje message) {
+    public void sendNotification(final String token, String messages, Mensaje message) {
         final Map<String, String> data = new HashMap<>();
         data.put("title", "MENSAJE");
         data.put("body", message.getMessage());
@@ -497,10 +482,10 @@ public class ChatActivity extends AppCompatActivity {
         data.put("idReceiver", message.getIdReceiver());
         data.put("idChat", message.getIdChat());
 
-        if (mImageSender.equals("")) {
+        if (mImageSender == null || mImageSender.equals("")) {
             mImageSender = "IMAGEN_NO_VALIDA";
         }
-        if (mImageReceiver.equals("")) {
+        if (mImageReceiver == null || mImageReceiver.equals("")) {
             mImageReceiver = "IMAGEN_NO_VALIDA";
         }
         data.put("imageSender", mImageSender);
@@ -525,14 +510,10 @@ public class ChatActivity extends AppCompatActivity {
                 mNotificationFirebase.sendNotification(body).enqueue(new Callback<FCMResponse>() {
                     @Override
                     public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-                        if (response.body() != null) {
-                            if (response.body().getSuccess() == 1) {
-                                // Notificación enviada con éxito
-                            } else {
-                                Toast.makeText(ChatActivity.this, "ERROR: No se pudo enviar la notificación", Toast.LENGTH_SHORT).show();
-                            }
+                        if (response.isSuccessful() && response.body() != null && response.body().getSuccess() == 1) {
+                            // Notificación enviada con éxito
                         } else {
-                            Toast.makeText(ChatActivity.this, "Mensaje NO enviado", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChatActivity.this, "ERROR: No se pudo enviar la notificación", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -551,7 +532,7 @@ public class ChatActivity extends AppCompatActivity {
      * @return void
      */
 
-    private void getMyInfoUser() {
+    public void getMyInfoUser() {
         mUsuarioFirebase.getUsuarios(mAuthFirebase.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {

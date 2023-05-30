@@ -35,17 +35,16 @@ import retrofit2.Response;
 
 public class MessageReceiver extends BroadcastReceiver {
 
-    String mExtraIdSender;
-    String mExtraIdReceiver;
-    String mExtraIdChat;
-    String mExtraUsernameSender;
-    String mExtraUsernameReceiver;
-    String mExtraImageSender;
-    String mExtraImageReceiver;
-    int mExtraIdNotificaction;
-
-    TokenFirebase mTokenFirebase;
-    NotificationFirebase mNotificationFirebase;
+    private String mExtraIdSender;
+    private String mExtraIdReceiver;
+    private String mExtraIdChat;
+    private String mExtraUsernameSender;
+    private String mExtraUsernameReceiver;
+    private String mExtraImageSender;
+    private String mExtraImageReceiver;
+    private int mExtraIdNotificaction;
+    private TokenFirebase mTokenFirebase;
+    private NotificationFirebase mNotificationFirebase;
     @Override
     public void onReceive(Context context, Intent intent) {
         mExtraIdSender = intent.getExtras().getString("idSender");
@@ -80,7 +79,7 @@ public class MessageReceiver extends BroadcastReceiver {
      * @param message el texto que se evnia
      * @return void
      */
-    private void sendMensaje(String message) {
+    public void sendMensaje(String message) {
         final Mensaje mensaje = new Mensaje();
         mensaje.setIdChat(mExtraIdChat);
         mensaje.setIdSender(mExtraIdReceiver);
@@ -109,7 +108,7 @@ public class MessageReceiver extends BroadcastReceiver {
      * @return void
      *
      */
-    private void getToken(final Mensaje message){
+    public void getToken(final Mensaje message){
         mTokenFirebase.getToken(mExtraIdSender).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -139,7 +138,7 @@ public class MessageReceiver extends BroadcastReceiver {
      *@param message El objeto de mensaje que contiene información sobre el remitente y el receptor.
      *@return void
      */
-    private void sendNotificaction(final String token, String messages, Mensaje message){
+    public void sendNotificaction(final String token, String messages, Mensaje message){
         final Map<String, String> data = new HashMap<>();
         data.put("title","MENSAJE");
         data.put("body", message.getMessage());
@@ -173,7 +172,7 @@ public class MessageReceiver extends BroadcastReceiver {
      *@param intent El intent que contiene el texto del mensaje.
      *@return El texto del mensaje si está disponible, null en caso contrario.
      */
-    private CharSequence getMessageText(Intent intent){
+    public CharSequence getMessageText(Intent intent){
         Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
         if (remoteInput!=null){
             return remoteInput.getCharSequence(NOTIFICATION_REPLY);

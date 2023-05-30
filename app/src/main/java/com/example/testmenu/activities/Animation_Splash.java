@@ -1,10 +1,10 @@
 
 /**
-
- La clase Animation_Splash representa la actividad de pantalla de inicio con animación.
- Muestra una animación de splash y luego redirige al usuario a la actividad PagPrincipalActivity.
+ * La clase Animation_Splash representa la actividad de pantalla de inicio con animación.
+ * Muestra una animación de splash y luego redirige al usuario a la actividad PagPrincipalActivity.
  */
 package com.example.testmenu.activities;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,7 +22,7 @@ public class Animation_Splash extends AppCompatActivity {
      * @param savedInstanceState El paquete de estado guardado.
      */
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.animation_splash);
 
