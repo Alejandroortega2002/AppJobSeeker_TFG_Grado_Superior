@@ -108,7 +108,7 @@ public class ValoracionActivity extends AppCompatActivity {
         });
 
         btnCrearValoracion.setOnClickListener(view -> {
-            CrearValoracionDialog dialog = new CrearValoracionDialog(userId);
+            CrearValoracionDialog dialog = new CrearValoracionDialog(userId,this);
             dialog.show(getSupportFragmentManager(), "CrearValoracionDialog");
         });
 

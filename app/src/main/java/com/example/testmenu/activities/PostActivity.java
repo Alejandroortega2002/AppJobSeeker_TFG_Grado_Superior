@@ -99,13 +99,6 @@ public class PostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        // Verificar y solicitar los permisos necesarios
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-        }
-
         mImagenFirebase = new ImagenFirebase();
         mPublicacionFribase = new PublicacionFirebase();
         mAutentificacionFirebase = new AutentificacioFirebase();

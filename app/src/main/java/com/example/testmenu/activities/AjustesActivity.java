@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.testmenu.R;
 import com.example.testmenu.firebase.AutentificacioFirebase;
+import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
 import com.example.testmenu.fragmentMenu.ProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -203,12 +204,14 @@ public class AjustesActivity extends AppCompatActivity {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         UsuariosBBDDFirebase usuariosBBDDFirebase = new UsuariosBBDDFirebase();
         usuariosBBDDFirebase.deleteUsuarios(userID).addOnSuccessListener(aVoid -> {
+
             AutentificacioFirebase autentificacioFirebase = new AutentificacioFirebase();
+            PublicacionFirebase publicacionesFirebase= new PublicacionFirebase();
             autentificacioFirebase.deleteAccount().addOnSuccessListener(result -> {
                 autentificacioFirebase.logout();
-                Intent intent = new Intent(AjustesActivity.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                    Intent intent = new Intent(AjustesActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
             }).addOnFailureListener(e -> {
                 // Manejar el error aquí.
                 String errorMessage = "No se pudo eliminar la cuenta de autenticación. Inténtelo de nuevo más tarde.";

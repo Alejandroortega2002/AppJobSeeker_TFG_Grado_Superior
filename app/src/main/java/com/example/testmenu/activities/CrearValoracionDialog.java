@@ -69,8 +69,9 @@ public class CrearValoracionDialog extends DialogFragment {
      *
      * @param idUser El ID del usuario.
      */
-    public CrearValoracionDialog(String idUser) {
+    public CrearValoracionDialog(String idUser,Context context) {
         this.idUser = idUser;
+        this.context = context;
     }
 
 
@@ -94,6 +95,12 @@ public class CrearValoracionDialog extends DialogFragment {
         escribirValoracion = customDialog.findViewById(R.id.editEscribirValoracion);
         enviar = customDialog.findViewById(R.id.btnEnviarValoracion);
         cancelar = customDialog.findViewById(R.id.btnCancelarValoracion);
+
+        autentificacioFirebase = new AutentificacioFirebase();  // Inicialización de AutentificacioFirebase
+        usuariosBBDDFirebase = new UsuariosBBDDFirebase();  // Inicialización de UsuariosBBDDFirebase
+        valoracionFirebase = new ValoracionFirebase();  // Inicialización de ValoracionFirebase
+        mNotificationFirebase = new NotificationFirebase();  // Inicialización de NotificationFirebase
+        mTokenFirebase = new TokenFirebase();
 
         String userId = autentificacioFirebase.getUid();
         cargarDetallesUsuario(userId);
