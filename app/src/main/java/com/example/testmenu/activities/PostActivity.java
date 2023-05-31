@@ -178,7 +178,6 @@ public class PostActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      * Muestra un cuadro de diálogo que permite al usuario seleccionar una imagen de la galería o tomar una foto.
      *
@@ -210,6 +209,7 @@ public class PostActivity extends AppCompatActivity {
         // Muestra el cuadro de diálogo
         mBuilderSelector.show();
     }
+
 
     /**
      * Inicia la aplicación de la cámara para tomar una foto y guarda la imagen en un archivo temporal.
@@ -293,22 +293,28 @@ public class PostActivity extends AppCompatActivity {
      */
 
     public void clickPost() {
+        // Obtener los valores de los campos de entrada
         mTitulo = mTextInputTitulo.getText().toString().trim();
         mPrecio = mTextInputPrecio.getText().toString().trim();
         mDescripcion = mTextInputDescripcion.getText().toString().trim();
         mSector = mTextViewSector.getSelectedItem().toString().trim();
 
+        // Verificar si algún campo está vacío o no se ha seleccionado un sector
         if (mTitulo.isEmpty() || mPrecio.isEmpty() || mDescripcion.isEmpty() || mSector.equals("Sector")) {
             Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Selección de imagen
+        // Verificar si se ha seleccionado ambas imágenes
         if (mImageFile == null || mImageFile2 == null) {
             Toast.makeText(this, "Debes seleccionar ambas imágenes", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Mostrar el diálogo de espera
         dialogoEspera.show();
+
+        // Guardar las imágenes
         saveImage(mImageFile, mImageFile2);
     }
 
@@ -387,12 +393,12 @@ public class PostActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        /**
-         * SELECCION DE IMAGEN DESDE LA GALERIA
-         */
+        // Selección de imagen desde la galería
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
             try {
+                // Obtener el archivo de imagen seleccionado desde la galería
                 mImageFile = FileUtil.from(this, data.getData());
+                // Mostrar la imagen en el ImageView correspondiente
                 mImageViewPost1.setImageBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()));
             } catch (Exception e) {
                 Log.d("ERROR", "Se produjo un error " + e.getMessage());
@@ -402,7 +408,9 @@ public class PostActivity extends AppCompatActivity {
 
         if (requestCode == GALLERY_REQUEST_CODE_2 && resultCode == RESULT_OK) {
             try {
+                // Obtener el archivo de imagen seleccionado desde la galería
                 mImageFile2 = FileUtil.from(this, data.getData());
+                // Mostrar la imagen en el ImageView correspondiente
                 mImageViewPost2.setImageBitmap(BitmapFactory.decodeFile(mImageFile2.getAbsolutePath()));
             } catch (Exception e) {
                 Log.d("ERROR", "Se produjo un error " + e.getMessage());
@@ -410,12 +418,10 @@ public class PostActivity extends AppCompatActivity {
             }
         }
 
-        /**
-         * FOTO CAMARA(DISPOSITIVO)
-         */
+        // Captura de foto desde la cámara
         if (requestCode == PHOTO_REQUEST_CODE && resultCode == RESULT_OK) {
             try {
-                // Asignar la imagen capturada al ImageView
+                // Asignar la imagen capturada al ImageView correspondiente
                 mImageViewPost1.setImageBitmap(BitmapFactory.decodeFile(mAbsolutePhotoPath));
 
             } catch (Exception e) {
@@ -424,7 +430,7 @@ public class PostActivity extends AppCompatActivity {
             }
         } else if (requestCode == PHOTO_REQUEST_CODE_2 && resultCode == RESULT_OK) {
             try {
-                // Asignar la imagen capturada al ImageView
+                // Asignar la imagen capturada al ImageView correspondiente
                 mImageViewPost2.setImageBitmap(BitmapFactory.decodeFile(mAbsolutePhotoPath2));
 
             } catch (Exception e) {
@@ -433,23 +439,27 @@ public class PostActivity extends AppCompatActivity {
             }
         }
 
-        // Aquí añade el código que te proporcioné anteriormente para manejar la selección de imágenes desde la galería
+        // Manejo adicional de la selección de imágenes desde la galería
         if (data != null && data.getData() != null) {
             Uri imageUri = data.getData();
             File imageFile = null;
             try {
+                // Obtener el archivo de imagen seleccionado desde la galería
                 imageFile = FileUtil.from(this, imageUri);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
             if (requestCode == GALLERY_REQUEST_CODE) {
+                // Asignar el archivo de imagen al objeto mImageFile correspondiente
                 mImageFile = imageFile;
             } else if (requestCode == GALLERY_REQUEST_CODE_2) {
+                // Asignar el archivo de imagen al objeto mImageFile2 correspondiente
                 mImageFile2 = imageFile;
             }
 
             try {
+                // Mostrar la imagen en el ImageView correspondiente
                 Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
                 if (requestCode == GALLERY_REQUEST_CODE) {
                     mImageViewPost1.setImageBitmap(bitmap);

@@ -67,46 +67,57 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
 
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String postId = document.getId();
+
+        // Configura los valores de la publicación en el ViewHolder
         holder.textViewTitulo.setText(publicacion.getTitulo().toUpperCase());
         holder.textViewTipoContrato.setText("Contrato: " + publicacion.getCategoria());
         holder.textViewSector.setText("Sector: " + publicacion.getSector());
 
+        // Verifica si el ID del usuario de la publicación coincide con el ID del usuario autenticado
         if (publicacion.getIdUser().equals(autentificacioFirebase.getUid())) {
+            // Si es así, muestra el botón de cerrar
             holder.btnCerrar.setVisibility(View.VISIBLE);
         } else {
+            // Si no, oculta el botón de cerrar
             holder.btnCerrar.setVisibility(View.GONE);
         }
 
+        // Carga la imagen de la publicación en el ImageView utilizando Picasso
         if (publicacion.getImage1() != null) {
             if (!publicacion.getImage1().isEmpty()) {
                 Picasso.get().load(publicacion.getImage1()).into(holder.imageViewPost);
-
             }
         }
+
+        // Configura el listener de clic en el ViewHolder para abrir los detalles de la publicación
         holder.viewHolder.setOnClickListener(view -> {
             Intent intent = new Intent(context, PostDetailActivity.class);
             intent.putExtra("id", postId);
             context.startActivity(intent);
         });
 
+        // Configura el listener de clic en el botón de cerrar para mostrar el diálogo de confirmación de borrado
         holder.btnCerrar.setOnClickListener(view -> {
             mostrarAlertBorrarPublicacion(postId);
         });
 
+        // Configura el listener de clic en el botón de favoritos para agregar o eliminar la publicación de favoritos
         holder.imgFavoritos.setOnClickListener(view -> {
-
             Favoritos favoritos = new Favoritos();
             favoritos.setIdUser(autentificacioFirebase.getUid());
             favoritos.setIdPost(postId);
             favoritos.setTimestamp(new Date().getTime());
-
             favoritos(favoritos, holder);
         });
 
+        // Obtiene la información del usuario de la publicación y actualiza los elementos visuales correspondientes
         getUsuarioInfo(publicacion.getIdUser(), holder);
-        getNumeroDeLikes(postId, holder);
-        checkComprobarFavoritos(postId, autentificacioFirebase.getUid(), holder);
 
+        // Obtiene el número de likes de la publicación y actualiza el contador correspondiente
+        getNumeroDeLikes(postId, holder);
+
+        // Verifica si la publicación está en favoritos del usuario y actualiza el icono de favoritos correspondiente
+        checkComprobarFavoritos(postId, autentificacioFirebase.getUid(), holder);
     }
 
     /**
@@ -118,14 +129,17 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * @return void
      */
     public void getNumeroDeLikes(String idPost, final PostsAdapter2.ViewHolder holder) {
+        // Crea un oyente de cambios en la colección de "likes" para la publicación específica
         mListener = favoritosFirebase.getLikesByPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                // Verifica si hay instantáneas de documentos disponibles
                 if (queryDocumentSnapshots != null) {
+                    // Obtiene el número de "likes" contando las instantáneas de documentos
                     int numberLikes = queryDocumentSnapshots.size();
+                    // Actualiza el texto del contador de "likes" en el ViewHolder
                     holder.txtFavoritos.setText(String.valueOf(numberLikes) + " Me gustas");
                 }
-
             }
         });
     }
@@ -137,22 +151,29 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * @param holder objeto de la clase ViewHolder que contiene la vista del elemento de la lista de publicaciones.
      */
     public void favoritos(final Favoritos favoritos, final PostsAdapter2.ViewHolder holder) {
+        // Obtiene el documento de "like" por publicación y usuario
         favoritosFirebase.getLikeByPostAndUser(favoritos.getIdPost(), autentificacioFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                // Obtiene el número de documentos de "like" encontrados
                 int numberDocuments = queryDocumentSnapshots.size();
                 if (numberDocuments > 0) {
+                    // Si hay al menos un documento de "like", obtiene el ID del primer documento
                     String idLike = queryDocumentSnapshots.getDocuments().get(0).getId();
+                    // Actualiza la imagen del botón de "me gusta" en el ViewHolder para mostrar como sin marcar
                     holder.imgFavoritos.setImageResource(R.drawable.ic_me_gusta_sin_marcar);
+                    // Elimina el documento de "like" utilizando su ID
                     favoritosFirebase.delete(idLike);
                 } else {
+                    // Si no hay documentos de "like", actualiza la imagen del botón de "me gusta" en el ViewHolder para mostrar como marcado
                     holder.imgFavoritos.setImageResource(R.drawable.ic_me_gusta_marcado);
+                    // Crea un nuevo documento de "like" con la información de Favoritos
                     favoritosFirebase.create(favoritos);
                 }
             }
         });
-
     }
+
 
 
     /**
@@ -164,19 +185,23 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * @return void
      */
     public void checkComprobarFavoritos(String idPost, String idUser, final PostsAdapter2.ViewHolder holder) {
+        // Obtiene el documento de "like" por publicación y usuario
         favoritosFirebase.getLikeByPostAndUser(idPost, idUser).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                // Obtiene el número de documentos de "like" encontrados
                 int numberDocuments = queryDocumentSnapshots.size();
                 if (numberDocuments > 0) {
+                    // Si hay al menos un documento de "like", actualiza la imagen del botón de "me gusta" en el ViewHolder para mostrar como marcado
                     holder.imgFavoritos.setImageResource(R.drawable.ic_me_gusta_marcado);
                 } else {
+                    // Si no hay documentos de "like", actualiza la imagen del botón de "me gusta" en el ViewHolder para mostrar como sin marcar
                     holder.imgFavoritos.setImageResource(R.drawable.ic_me_gusta_sin_marcar);
                 }
             }
         });
-
     }
+
 
     /**
      * Se muestra el nombre del usuario deseado.
@@ -186,19 +211,27 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * @return void
      */
     public void getUsuarioInfo(String idUser, final PostsAdapter2.ViewHolder holder) {
+        // Obtiene la información del usuario mediante el ID de usuario
         usuariosBBDDFirebase.getUsuarios(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                // Verifica si el documento existe
                 if (documentSnapshot.exists()) {
+                    // Verifica si el documento contiene el campo "usuario"
                     if (documentSnapshot.contains("usuario")) {
+                        // Obtiene el valor del campo "usuario"
                         String nUsuario = documentSnapshot.getString("usuario");
+                        // Actualiza el TextView del nombre de usuario en el ViewHolder
                         holder.nombreUsuario.setText("@" + nUsuario.toUpperCase());
                     }
                 }
 
+                // Verifica si el documento contiene el campo "media"
                 if (documentSnapshot.contains("media")) {
+                    // Obtiene el valor del campo "media" como un Double
                     Double mediaDouble = documentSnapshot.getDouble("media");
                     if (mediaDouble != null) {
+                        // Convierte el Double a un float y lo asigna a la calificación del usuario en el ViewHolder
                         float media = mediaDouble.floatValue();
                         holder.mediaUsuario.setRating(media);
                     }
@@ -213,17 +246,21 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * @return void
      */
     public void borrarPublicacion(String id) {
+        // Elimina los favoritos asociados a la publicación mediante su ID
         favoritosFirebase.deleteFavoritesByPost(id).addOnCompleteListener(task -> {
+            // Borra la publicación mediante su ID
             publicacionFirebase.borrarPublicacion(id).addOnCompleteListener(task2 -> {
                 if (task2.isSuccessful()) {
+                    // Si se completó exitosamente, muestra un mensaje de éxito
                     Toast.makeText(context, "La publicación se eliminó correctamente", Toast.LENGTH_SHORT).show();
                 } else {
+                    // Si no se pudo completar, muestra un mensaje de error
                     Toast.makeText(context, "No se pudo eliminar la publicación", Toast.LENGTH_SHORT).show();
                 }
             });
         });
-
     }
+
 
     @NonNull
     @Override
@@ -266,39 +303,44 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * @return void
      */
     public void mostrarAlertBorrarPublicacion(String idPublicacion) {
-        // con este tema personalizado evitamos los bordes por defecto
+        // Crear un Dialog personalizado con un tema translúcido
         customDialog = new Dialog(context, R.style.Theme_Translucent);
-        //deshabilitamos el título por defecto
+        // Deshabilitar el título del Dialog por defecto
         customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //obligamos al usuario a pulsar los botones para cerrarlo
+        // Obligar al usuario a pulsar los botones para cerrarlo
         customDialog.setCancelable(false);
-        //establecemos el contenido de nuestro dialog
+        // Establecer el contenido de nuestro Dialog mediante el layout alert_dialog_cerrar_sesion
         customDialog.setContentView(R.layout.alert_dialog_cerrar_sesion);
 
+        // Obtener referencias a los elementos del layout
         TextView titulo = (TextView) customDialog.findViewById(R.id.titulo);
-        titulo.setText("Borrar Publicación");
-
         TextView contenido = (TextView) customDialog.findViewById(R.id.contenido);
-        contenido.setText("Estas seguro que quieres borrar esta Publicación permanentemente");
 
+        // Establecer el texto del título y el contenido del cuadro de diálogo
+        titulo.setText("Borrar Publicación");
+        contenido.setText("Estás seguro que quieres borrar esta Publicación permanentemente");
+
+        // Configurar el OnClickListener del botón "Aceptar"
         (customDialog.findViewById(R.id.aceptar)).setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
+                // Llamar al método borrarPublicacion para eliminar la publicación
                 borrarPublicacion(idPublicacion);
+                // Cerrar el cuadro de diálogo
                 customDialog.dismiss();
-
             }
         });
 
+        // Configurar el OnClickListener del botón "Cancelar"
         (customDialog.findViewById(R.id.cancelar)).setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
+                // Cerrar el cuadro de diálogo sin realizar ninguna acción
                 customDialog.dismiss();
             }
         });
 
+        // Mostrar el cuadro de diálogo personalizado
         customDialog.show();
     }
 

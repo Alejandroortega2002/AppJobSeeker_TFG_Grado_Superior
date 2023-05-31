@@ -15,15 +15,21 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-
 public class TokenFirebase {
     private CollectionReference mCollection;
 
+    /**
+     * Constructor de la clase TokenFirebase.
+     */
     public TokenFirebase(){
         mCollection = FirebaseFirestore.getInstance().collection("Tokens");
     }
 
+    /**
+     * Crea y guarda un token de notificación para un usuario específico.
+     *
+     * @param idUser El ID del usuario.
+     */
     public void create(String idUser){
         if (idUser == null){
             return;
@@ -38,18 +44,24 @@ public class TokenFirebase {
                             return;
                         }
 
-                        // Get new FCM registration token
+                        // Obtener el nuevo token de registro de FCM
                         Token tokenFB = new Token(task.getResult());
                         String token = task.getResult();
                         mCollection.document(idUser).set(tokenFB);
 
-                        // Log and toast
+                        // Imprimir el token en el log y mostrarlo en un toast
                         System.out.println(token);
                     }
                 });
 
     }
 
+    /**
+     * Obtiene el token de notificación de un usuario específico.
+     *
+     * @param idUser El ID del usuario.
+     * @return Una tarea (Task) que se completa con el documento que contiene el token.
+     */
     public Task<DocumentSnapshot> getToken(String idUser){
         return mCollection.document(idUser).get();
     }

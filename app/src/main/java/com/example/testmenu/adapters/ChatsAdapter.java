@@ -54,23 +54,29 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Chat chat) {
-
+        // Obtener el DocumentSnapshot del elemento en la posición especificada
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String chatId = document.getId();
-        if(mAuthProvider.getUid().equals(chat.getIdUser1())){
+
+        // Obtener la información del usuario correspondiente al chat
+        if (mAuthProvider.getUid().equals(chat.getIdUser1())){
             getUserInfo(chat.getIdUser2(),holder);
-        }else{
+        } else {
             getUserInfo(chat.getIdUser1(),holder);
         }
 
+        // Establecer un OnClickListener para el elemento de la lista
         holder.viewHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    goToChatActivity(chatId, chat.getIdUser1(), chat.getIdUser2());
+                goToChatActivity(chatId, chat.getIdUser1(), chat.getIdUser2());
             }
         });
+
+        // Obtener el último mensaje del chat y mostrarlo en un TextView
         getLastMessage(chatId,holder.textViewLastMessage);
 
+        // Obtener el número de mensajes no leídos en el chat y mostrarlo en un TextView y un FrameLayout
         String idSender = "";
         if (mAuthProvider.getUid().equals(chat.getIdUser1())){
             idSender= chat.getIdUser2();
@@ -94,15 +100,19 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
      * @return void
      */
     public void getMessageNotRead(String chatId, String idSender, TextView mensajesNoLeidos, FrameLayout frameLayoutMessageNotRead) {
+        // Se añade un EventListener al resultado de la consulta de mensajes filtrados por chatId e idSender
         mListener= mMensajeFirebase.getMensajeByChatAndSender(chatId,idSender).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null){
+                    // Se obtiene el tamaño de la consulta, que representa el número de mensajes no leídos
                     int size = value.size();
-                    if (size>0){
+                    if (size > 0){
+                        // Si hay mensajes no leídos, se muestra el FrameLayout y se establece el texto en el TextView
                         frameLayoutMessageNotRead.setVisibility(View.VISIBLE);
                         mensajesNoLeidos.setText(String.valueOf(size));
                     } else {
+                        // Si no hay mensajes no leídos, se oculta el FrameLayout
                         frameLayoutMessageNotRead.setVisibility(View.GONE);
                     }
                 }
@@ -113,9 +123,11 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
     public ListenerRegistration getListener(){
         return mListener;
     }
+
     public ListenerRegistration getmListenerLastMessage(){
         return mListenerLastMessage;
     }
+
 
     /**
      * Muestra el último mensaje enviado en el chat en un TextView.
@@ -128,12 +140,15 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
      * @return void
      */
     public void getLastMessage(String chatId, TextView textViewLastMessage) {
+        // Se añade un EventListener al resultado de la consulta del último mensaje del chat
         mListenerLastMessage= mMensajeFirebase.getLastMessage(chatId).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value!=null){
+                    // Se obtiene el tamaño de la consulta, que representa el número de mensajes en el chat
                     int size = value.size();
-                    if (size>0){
+                    if (size > 0){
+                        // Si hay mensajes en el chat, se obtiene el último mensaje del documento y se establece en el TextView
                         String lastMessage = value.getDocuments().get(0).getString("message");
                         textViewLastMessage.setText(lastMessage);
                     }
@@ -143,13 +158,16 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
     }
 
     public void goToChatActivity(String chatId,String idUser1,String idUser2) {
-
+        // Se crea un intent para abrir la actividad del chat
         Intent intent = new Intent(context, ChatActivity.class);
+        // Se pasan los parámetros necesarios a la actividad del chat
         intent.putExtra("idChat", chatId);
         intent.putExtra("idUser1", idUser1);
         intent.putExtra("idUser2", idUser2);
+        // Se inicia la actividad del chat
         context.startActivity(intent);
     }
+
 
     /**
      * Obtiene la info de el usuario del que se quiere
@@ -158,20 +176,23 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
      * @return void
      */
     public void getUserInfo(String idUser, final ViewHolder holder) {
+        // Se realiza una consulta a la base de datos para obtener la información del usuario
         mUsersProvider.getUsuarios(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
+                    // Si el documento existe en la base de datos, se verifica si contiene el campo "usuario"
                     if (documentSnapshot.contains("usuario")) {
+                        // Se obtiene el nombre de usuario y se establece en el TextView correspondiente del ViewHolder
                         String username = documentSnapshot.getString("usuario");
                         holder.textViewUsername.setText(username.toUpperCase());
                     }
+                    // Se verifica si el documento contiene el campo "fotoPerfil"
                     if (documentSnapshot.contains("fotoPerfil")) {
+                        // Se obtiene la URL de la imagen de perfil y se carga en el CircleImageView correspondiente del ViewHolder
                         String imageProfile = documentSnapshot.getString("fotoPerfil");
-                        if (imageProfile != null) {
-                            if (!imageProfile.isEmpty()) {
-                                Picasso.get().load(imageProfile).into(holder.circleImageChat);
-                            }
+                        if (imageProfile != null && !imageProfile.isEmpty()) {
+                            Picasso.get().load(imageProfile).into(holder.circleImageChat);
                         }
                     }
                 }

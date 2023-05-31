@@ -27,33 +27,36 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
 
     @Override
     public SliderAdapterVH onCreateViewHolder(ViewGroup parent) {
+        // Inflar el layout slider_layout_item en una nueva vista
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.slider_layout_item, parent, false);
+        // Crear una nueva instancia de SliderAdapterVH y asignar la vista inflada
         SliderAdapterVH viewHolder = new SliderAdapterVH(view);
+        // Obtener la referencia al ImageView en el layout
         viewHolder.imageViewSlider = view.findViewById(R.id.imageViewSlider);
+        // Devolver la instancia de SliderAdapterVH
         return viewHolder;
     }
 
-
     @Override
     public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
-
+        // Obtener el objeto SliderItem en la posición especificada
         SliderItem sliderItem = mSliderItems.get(position);
+        // Verificar si la URL de la imagen no es nula y no está vacía
         if (sliderItem.getImageUrl() != null) {
             if (!sliderItem.getImageUrl().isEmpty()) {
+                // Cargar la imagen desde la URL utilizando Picasso y asignarla al ImageView en el ViewHolder
                 Picasso.get().load(sliderItem.getImageUrl()).into(viewHolder.imageViewSlider);
-
             }
         }
-
     }
 
     /**
      * Cuenta el tamano de los items
+     *
      * @return mSliderItems valor del tamano
      */
     @Override
     public int getCount() {
-        //slider view count could be dynamic size
         return mSliderItems.size();
     }
 
@@ -66,7 +69,6 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         public SliderAdapterVH(View itemView) {
             super(itemView);
             imageViewSlider = itemView.findViewById(R.id.imageSlider);
-
             this.itemView = itemView;
         }
     }

@@ -6,6 +6,7 @@
 package com.example.testmenu.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -25,6 +26,7 @@ public class Animation_Splash extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.animation_splash);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Establece un temporizador de 2 segundos para mostrar la animación de splash.
         new Handler().postDelayed(new Runnable() {

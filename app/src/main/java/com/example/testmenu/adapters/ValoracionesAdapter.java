@@ -44,24 +44,29 @@ public class ValoracionesAdapter extends FirestoreRecyclerAdapter<Valoraciones, 
 
     @Override
     public HolderValoraciones onCreateViewHolder(ViewGroup parent, int viewType) {
+        // Inflar el layout carview_valoracion en una nueva vista
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.carview_valoracion, parent, false);
+        // Devolver una nueva instancia de HolderValoraciones y asignar la vista inflada
         return new HolderValoraciones(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull HolderValoraciones holder, int position, @NonNull Valoraciones valoraciones) {
-
+        // Obtener el documento en la posición especificada
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
-        //String userId = valoraciones.getUserId();
-
+        // Obtener el contenido de la valoración y asignarlo al TextView en el HolderValoraciones
         holder.contenido.setText(valoraciones.getValoracion());
+        // Obtener la fecha de la valoración y formatearla
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(valoraciones.getTimeStamp()));
         String dateFormat = DateFormat.getDateInstance().format(calendar.getTime());
-
+        // Obtener el userId del documento
         String userId = document.getString("userPostId");
+        // Asignar la calificación y la fecha al HolderValoraciones
         holder.estrellas.setRating(Float.parseFloat(valoraciones.getNota()));
         holder.fecha.setText(dateFormat);
+        // Cargar los detalles del usuario correspondiente al userId en el HolderValoraciones
         cargarDetallesUsuario(userId, holder);
     }
 
@@ -78,11 +83,12 @@ public class ValoracionesAdapter extends FirestoreRecyclerAdapter<Valoraciones, 
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
+                        // Obtener el nombre de usuario del documento y asignarlo al TextView en el HolderValoraciones
                         String nombreUsuario = documentSnapshot.getString("usuario");
                         if (nombreUsuario != null) {
                             holder.nombreUsuario.setText("@" + nombreUsuario.toUpperCase());
                         }
-
+                        // Obtener la URL de la foto de perfil del documento y cargarla en el ImageView en el HolderValoraciones
                         String fotoPerfil = documentSnapshot.getString("fotoPerfil");
                         if (fotoPerfil != null) {
                             // Cargar la imagen de perfil del usuario usando la biblioteca Picasso.
@@ -93,6 +99,7 @@ public class ValoracionesAdapter extends FirestoreRecyclerAdapter<Valoraciones, 
             });
         }
     }
+
 
 
     public static class HolderValoraciones extends RecyclerView.ViewHolder {

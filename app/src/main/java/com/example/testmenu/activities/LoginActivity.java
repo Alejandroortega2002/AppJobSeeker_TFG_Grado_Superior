@@ -325,17 +325,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Este método se encarga de mostrar la barra de progreso
-     */
-    /** public void mostrarBarraProgreso() {
-     // Mostrar una barra de progreso mientras se procesa el inicio de sesión
-     barraProgreso.setTitle("Proceso de Registro");
-     barraProgreso.setMessage("Registrando usuario, espere un momento");
-     barraProgreso.setCanceledOnTouchOutside(false);
-     barraProgreso.show();
-     }*/
-
-    /**
      * Este método se encarga de mostrar los errores si algo ha salido mal
      *
      * @param input edittext donde se muestre el mensaje

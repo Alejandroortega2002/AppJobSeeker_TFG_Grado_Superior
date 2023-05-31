@@ -103,13 +103,13 @@ public class AjustesActivity extends AppCompatActivity {
         btnBorrarCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarAlertBorrarCueta(v);
+                mostrarAlertBorrarCuenta(v);
             }
         });
     }
 
     /**
-     * Cierra sesión de la cuenta actual cambiando de vista.
+     * Cierra sesión de la cuenta actual cambiando de vista a la actividad principal.
      * <p>
      * Estableciendo los flags FLAG_ACTIVITY_CLEAR_TASK y FLAG_ACTIVITY_NEW_TASK para asegurarse de que se eliminen las actividades
      * previas en la pila de actividades y se inicie una nueva tarea en la actividad principal.
@@ -117,9 +117,15 @@ public class AjustesActivity extends AppCompatActivity {
      * @return void
      */
     public void logout() {
-        autentificacioFirebase.logout();
+        autentificacioFirebase.logout(); // Cierra la sesión del usuario actual llamando al método logout() de autentificacioFirebase.
+
+        // Crea un nuevo Intent para redirigir a la actividad principal.
         Intent intent = new Intent(AjustesActivity.this, PagPrincipalAtivity.class);
+
+        // Establece las banderas del Intent para controlar el comportamiento de la actividad que se va a iniciar.
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // Inicia la actividad principal utilizando el Intent creado anteriormente.
         startActivity(intent);
     }
 
@@ -130,39 +136,44 @@ public class AjustesActivity extends AppCompatActivity {
      * @return void
      */
     public void mostrarAlertCerrarSesion(View view) {
-        // Con este tema personalizado evitamos los bordes por defecto.
+        // Crea un nuevo diálogo personalizado.
         customDialog = new Dialog(this, R.style.Theme_Translucent);
-        // Deshabilitamos el título por defecto.
+
+        // Deshabilita el título del diálogo.
         customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // Obligamos al usuario a pulsar los botones para cerrarlo.
+
+        // Evita que el diálogo se cierre al tocar fuera de él.
         customDialog.setCancelable(false);
-        // Establecemos el contenido de nuestro diálogo.
+
+        // Establece el diseño de contenido del diálogo.
         customDialog.setContentView(R.layout.alert_dialog_cerrar_sesion);
 
+        // Obtiene y establece el título del diálogo.
         TextView titulo = (TextView) customDialog.findViewById(R.id.titulo);
         titulo.setText("Cerrar Sesión");
 
+        // Obtiene y establece el contenido del diálogo.
         TextView contenido = (TextView) customDialog.findViewById(R.id.contenido);
         contenido.setText("¿Estás seguro de que quieres cerrar la sesión de esta cuenta?");
 
+        // Configura el botón "Aceptar" del diálogo.
         (customDialog.findViewById(R.id.aceptar)).setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                logout();
-                customDialog.dismiss();
+                logout(); // Llama al método logout() para cerrar la sesión.
+                customDialog.dismiss(); // Cierra el diálogo.
             }
         });
 
+        // Configura el botón "Cancelar" del diálogo.
         (customDialog.findViewById(R.id.cancelar)).setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                customDialog.dismiss();
+                customDialog.dismiss(); // Cierra el diálogo sin cerrar la sesión.
             }
         });
 
-        customDialog.show();
+        customDialog.show(); // Muestra el diálogo.
     }
 
     /**
@@ -171,40 +182,45 @@ public class AjustesActivity extends AppCompatActivity {
      * @param view vista donde mostrar alert
      * @return void
      */
-    public void mostrarAlertBorrarCueta(View view) {
-        // Con este tema personalizado evitamos los bordes por defecto.
+    public void mostrarAlertBorrarCuenta(View view) {
+        // Crea un nuevo diálogo personalizado.
         customDialog = new Dialog(this, R.style.Theme_Translucent);
-        // Deshabilitamos el título por defecto.
+
+        // Deshabilita el título del diálogo.
         customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // Obligamos al usuario a pulsar los botones para cerrarlo.
+
+        // Evita que el diálogo se cierre al tocar fuera de él.
         customDialog.setCancelable(false);
-        // Establecemos el contenido de nuestro diálogo.
+
+        // Establece el diseño de contenido del diálogo.
         customDialog.setContentView(R.layout.alert_dialog_cerrar_sesion);
 
+        // Obtiene y establece el título del diálogo.
         TextView titulo = (TextView) customDialog.findViewById(R.id.titulo);
         titulo.setText("Borrar Cuenta");
 
+        // Obtiene y establece el contenido del diálogo.
         TextView contenido = (TextView) customDialog.findViewById(R.id.contenido);
         contenido.setText("¿Estás seguro de que quieres borrar esta cuenta?");
 
+        // Configura el botón "Aceptar" del diálogo.
         (customDialog.findViewById(R.id.aceptar)).setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                BorrarUsuario();
-                customDialog.dismiss();
+                BorrarUsuario(); // Llama al método BorrarUsuario() para eliminar la cuenta.
+                customDialog.dismiss(); // Cierra el diálogo.
             }
         });
 
+        // Configura el botón "Cancelar" del diálogo.
         (customDialog.findViewById(R.id.cancelar)).setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                customDialog.dismiss();
+                customDialog.dismiss(); // Cierra el diálogo sin borrar la cuenta.
             }
         });
 
-        customDialog.show();
+        customDialog.show(); // Muestra el diálogo.
     }
 
     /**
@@ -217,9 +233,11 @@ public class AjustesActivity extends AppCompatActivity {
      */
 
     public void BorrarUsuario() {
-        String userID = autentificacioFirebase.getUid();
+        String userID = autentificacioFirebase.getUid(); // Obtiene el ID del usuario actual.
+
         // Borrado de chat
-        chatsFirebase.deleteChatsByUserId(userID);
+        chatsFirebase.deleteChatsByUserId(userID); // Borra los chats asociados al usuario.
+
         // Borrado de publicaciones
         publicacionFirebase.borrarPublicacionesDeUsuario(userID)
                 .addOnSuccessListener(result1 -> {
@@ -235,7 +253,9 @@ public class AjustesActivity extends AppCompatActivity {
                                                         // Eliminación de cuenta de autenticación
                                                         autentificacioFirebase.deleteAccount()
                                                                 .addOnSuccessListener(aVoid4 -> {
-                                                                    autentificacioFirebase.logout();
+                                                                    autentificacioFirebase.logout(); // Cierra la sesión
+
+                                                                    // Redirige a la actividad de inicio de sesión
                                                                     Intent intent = new Intent(AjustesActivity.this, LoginActivity.class);
                                                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                                     startActivity(intent);

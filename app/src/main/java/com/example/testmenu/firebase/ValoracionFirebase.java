@@ -11,15 +11,23 @@ import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class ValoracionFirebase {
 
-    CollectionReference mCollection;
+    private CollectionReference mCollection;
 
+    /**
+     * Constructor de la clase ValoracionFirebase.
+     */
     public ValoracionFirebase() {
         mCollection = FirebaseFirestore.getInstance().collection("Valoracion");
     }
 
+    /**
+     * Crea una nueva valoración en la base de datos.
+     *
+     * @param valoraciones El objeto Valoraciones que representa la valoración.
+     * @return Una tarea (Task) que se completa cuando se haya creado la valoración.
+     */
     public Task<Void> create(Valoraciones valoraciones) {
         DocumentReference document = mCollection.document();
         String id = document.getId();
@@ -27,10 +35,22 @@ public class ValoracionFirebase {
         return mCollection.document().set(valoraciones);
     }
 
+    /**
+     * Obtiene una consulta de comentarios por usuario.
+     *
+     * @param idUser El ID del usuario.
+     * @return Una consulta (Query) que devuelve los comentarios del usuario especificado.
+     */
     public Query getCommentsByUser(String idUser) {
         return mCollection.whereEqualTo("userId", idUser);
     }
 
+    /**
+     * Elimina los comentarios de un usuario de la base de datos.
+     *
+     * @param idUser El ID del usuario.
+     * @return Una tarea (Task) que se completa cuando se hayan eliminado los comentarios del usuario.
+     */
     public Task<Void> deleteCommentsByUser(String idUser) {
         // Crea una consulta para obtener los comentarios del usuario especificado
         Query query = getCommentsByUser(idUser);
@@ -53,6 +73,4 @@ public class ValoracionFirebase {
             return Tasks.whenAll(deleteTasks);
         });
     }
-
-
 }

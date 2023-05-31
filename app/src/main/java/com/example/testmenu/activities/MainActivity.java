@@ -60,24 +60,37 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Bloquear la orientación de la pantalla en modo retrato
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        // Inflar el diseño de la actividad utilizando el enlace de datos generados por ViewBinding
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Habilitar la recopilación de análisis de Firebase
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
+
+        // Inicializar instancias de Firebase y solicitar el token de Firebase
         mTokenFirebase = new TokenFirebase();
         mAutentificationFirebase = new AutentificacioFirebase();
         mUsuarioFirebase = new UsuariosBBDDFirebase();
         createToken();
+
+        // Solicitar permiso de notificación
         askNotificationPermission();
+
+        // Solicitar permiso de cámara
         askCameraPermission();
 
+        // Crear un canal de notificación para versiones de Android posteriores a Oreo
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             NotificationChannel channel = new NotificationChannel("channel_id", "channel_name", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
 
+        // Configurar la barra de navegación inferior utilizando Navigation Component
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_filtro, R.id.navigation_perfil, R.id.navigation_chat, R.id.navigation_inicio)
@@ -119,18 +132,18 @@ public class MainActivity extends AppCompatActivity {
      * @return void
      */
     public void askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
+        // Esto es solo necesario para API nivel >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                     PackageManager.PERMISSION_GRANTED) {
-                // FCM SDK (and your app) can post notifications.
+                // El SDK de FCM (y tu aplicación) puede publicar notificaciones.
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                // TODO: display an educational UI explaining to the user the features that will be enabled
-                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
-                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-                //       If the user selects "No thanks," allow the user to continue without notifications.
+                // TODO: mostrar una interfaz educativa que explique al usuario las características que se habilitarán
+                //       al otorgar el permiso POST_NOTIFICATIONS. Esta interfaz debe proporcionar al usuario los botones
+                //       "Aceptar" y "No, gracias". Si el usuario selecciona "Aceptar", solicitar directamente el permiso.
+                //       Si el usuario selecciona "No, gracias", permitir que el usuario continúe sin notificaciones.
             } else {
-                // Directly ask for the permission
+                // Solicitar directamente el permiso
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             }
         }
@@ -141,10 +154,11 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Si alguno de los permisos no está concedido, solicitar los permisos
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         }
-
     }
+
 
 
 

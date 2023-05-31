@@ -79,14 +79,20 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
      * @return void
      */
     public void validarEmail() {
+        // Obtener el correo electrónico ingresado por el usuario
         String email = emailRecuperar.getText().toString();
 
+        // Verificar si el campo está vacío o si el formato del correo electrónico es inválido
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            // Mostrar un error en el campo de correo electrónico
             emailRecuperar.setError("Correo inválido");
             return;
         }
+
+        // Si el correo electrónico es válido, llamar al método enviarEmail() pasando el correo electrónico como argumento
         enviarEmail(email);
     }
+
 
     /**
      * Rellena la información del usuario en la interfaz de usuario.
@@ -98,20 +104,27 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
      */
 
     public void rellenarInformacionUsuario() {
+        // Obtener la referencia del documento del usuario actual utilizando su ID de autenticación
         DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(autentificacioFirebase.getUid());
+
+        // Establecer un listener para escuchar los cambios en el documento del usuario
         mListener = documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                // Verificar si el objeto DocumentSnapshot es nulo o si se produjo un error al obtenerlo
                 if (value != null) {
                     if (error != null) {
                         // Manejar el error de Firebase Firestore
                         Log.w(TAG, "Error al obtener el documento.", error);
                         return;
                     }
+
+                    // Verificar si el objeto DocumentSnapshot existe
                     if (value != null && value.exists()) {
                         // Obtener los valores del objeto DocumentSnapshot
                         String correo = value.getString("email");
 
+                        // Verificar si se recuperó el valor del correo electrónico y establecerlo en el TextView correspondiente
                         if (correo != null) {
                             emailRecuperar.setText(correo);
                         } else {
@@ -137,22 +150,26 @@ public class Recuperar_Contrasena_Usuario_Logueado extends AppCompatActivity {
      */
 
     public void enviarEmail(String email) {
+        // Utilizar el método recuperarContrasena() de la instancia de autenticación de Firebase para enviar un correo electrónico de recuperación de contraseña al usuario
         autentificacioFirebase.recuperarContrasena(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    // Mostrar un mensaje de inicio de sesión exitoso
+                    // Si el envío del correo electrónico fue exitoso, mostrar un mensaje de éxito
                     Toast.makeText(getApplicationContext(), "Se ha enviado un mensaje a tu correo electrónico.", Toast.LENGTH_SHORT).show();
 
+                    // Crear un intent para abrir la actividad AjustesActivity
                     Intent intent = new Intent(Recuperar_Contrasena_Usuario_Logueado.this, AjustesActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 } else {
+                    // Si el envío del correo electrónico no fue exitoso, mostrar un mensaje de error
                     Toast.makeText(getApplicationContext(), "El correo no es correcto, inténtelo de nuevo.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
 
     /**
      * Método que se llama cuando la actividad se vuelve visible para el usuario.

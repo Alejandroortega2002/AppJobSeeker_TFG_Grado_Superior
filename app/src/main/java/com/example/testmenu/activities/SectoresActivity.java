@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +38,8 @@ public class SectoresActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sectores);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         reciclerPorSectores = findViewById(R.id.recyclerViewSectores);
         textViewSectores = findViewById(R.id.textViewSectores);
         btnSalir = findViewById(R.id.volverAtrasSectores);
@@ -67,23 +70,33 @@ public class SectoresActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
+        // Obtener la consulta de Firebase Firestore para obtener las publicaciones según el sector y el timestamp
         Query query = publicacionFirebase.getPostBySectorAndTimestamp(sector);
+
+        // Configurar las opciones del adaptador de FirestoreRecycler
         FirestoreRecyclerOptions<Publicacion> options =
                 new FirestoreRecyclerOptions.Builder<Publicacion>()
                         .setQuery(query, Publicacion.class)
                         .build();
+
+        // Crear una instancia del adaptador de Posts y pasar las opciones y el contexto (SectoresActivity)
         postsAdapter = new PostsAdapter(options, SectoresActivity.this);
 
+        // Establecer el adaptador en el RecyclerView reciclerPorSectores
         if (reciclerPorSectores != null) {
             reciclerPorSectores.setAdapter(postsAdapter);
         }
 
+        // Iniciar la escucha del adaptador
         if (postsAdapter != null) {
             postsAdapter.startListening();
         }
 
+        // Verificar si la lista de publicaciones está vacía
         vacio();
     }
+
 
     @Override
     public void onStop() {
@@ -94,23 +107,31 @@ public class SectoresActivity extends AppCompatActivity {
     }
 
     public static void vacio() {
+        // Verificar si el RecyclerView y su adaptador no son nulos
         if (reciclerPorSectores != null && reciclerPorSectores.getAdapter() != null) {
-            // De esta manera sabes si tu RecyclerView está vacío
+            // Verificar si el RecyclerView está vacío
             if (reciclerPorSectores.getAdapter().getItemCount() == 0) {
-                txtNoHayPublicacion.setVisibility(View.VISIBLE); // HOLA QUE TAL Mostrar el TextView si el RecyclerView está vacío
+                // Mostrar el TextView txtNoHayPublicacion si el RecyclerView está vacío
+                txtNoHayPublicacion.setVisibility(View.VISIBLE);
             } else {
-                txtNoHayPublicacion.setVisibility(View.GONE); // Ocultar el TextView si el RecyclerView no está vacío
+                // Ocultar el TextView txtNoHayPublicacion si el RecyclerView no está vacío
+                txtNoHayPublicacion.setVisibility(View.GONE);
             }
         }
     }
 
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Verificar si el elemento seleccionado es el botón de inicio predeterminado del sistema
         if (item.getItemId() == android.R.id.home) {
+            // Finalizar la actividad actual y regresar a la actividad anterior
             finish();
         }
+        // Indicar que el evento de selección ha sido manejado correctamente
         return true;
     }
+
 
 }

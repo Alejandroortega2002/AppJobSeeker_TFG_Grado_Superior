@@ -159,39 +159,50 @@ public class PostDetailActivity extends AppCompatActivity {
      * Se crea una instancia del slider para mostrar las imágenes de la publicación.
      */
     public void getPost() {
+        // Obtener la publicación por su ID desde Firebase Firestore
         mPublicacionFirebase.getPostById(mExtraPostId).addOnSuccessListener(documentSnapshot -> {
+            // Verificar si la publicación existe
             if (documentSnapshot.exists()) {
+                // Obtener la URL de la primera imagen y agregarla al slider
                 if (documentSnapshot.contains("image1")) {
                     String image1 = documentSnapshot.getString("image1");
                     SliderItem item = new SliderItem();
                     item.setImageUrl(image1);
                     mSliderItems.add(item);
                 }
+                // Obtener la URL de la segunda imagen y agregarla al slider
                 if (documentSnapshot.contains("image2")) {
                     String image2 = documentSnapshot.getString("image2");
                     SliderItem item = new SliderItem();
                     item.setImageUrl(image2);
                     mSliderItems.add(item);
                 }
+                // Obtener el título y establecerlo en el TextView correspondiente
                 if (documentSnapshot.contains("titulo")) {
                     String titulo = documentSnapshot.getString("titulo");
                     mTextViewTitulo.setText(titulo);
                 }
+                // Obtener la descripción y establecerla en el TextView correspondiente
                 if (documentSnapshot.contains("descripcion")) {
                     String descripcion = documentSnapshot.getString("descripcion");
                     mTextViewDescripcion.setText(descripcion);
                 }
+                // Obtener la categoría y establecerla en el TextView correspondiente
                 if (documentSnapshot.contains("categoria")) {
                     String categoria = documentSnapshot.getString("categoria");
                     mTextViewNameCategoria.setText(categoria);
                 }
+                // Obtener el ID de usuario propietario de la publicación
                 if (documentSnapshot.contains("idUser")) {
                     idUser = documentSnapshot.getString("idUser");
+                    // Verificar si el usuario actual es el propietario de la publicación y ocultar el botón de chat
                     if (mAutentificacioFirebase.getUid().equals(idUser)) {
                         btnChat.setVisibility(View.GONE);
                     }
+                    // Obtener la información del usuario propietario de la publicación
                     getUserInfo(idUser);
                 }
+                // Configurar el slider con las imágenes obtenidas
                 instanceSlider();
             }
         });
@@ -203,19 +214,23 @@ public class PostDetailActivity extends AppCompatActivity {
      * @param idUser El identificador del usuario a consultar.
      */
     public void getUserInfo(String idUser) {
+        // Obtener la información del usuario por su ID desde Firebase Firestore
         mUsuariosFribase.getUsuarios(idUser).addOnSuccessListener(documentSnapshot -> {
+            // Verificar si la información del usuario existe
             if (documentSnapshot.exists()) {
+                // Obtener el nombre de usuario y establecerlo en el TextView correspondiente
                 if (documentSnapshot.contains("usuario")) {
                     String usuario = documentSnapshot.getString("usuario");
                     mTextViewUsername.setText(usuario);
                 }
+                // Obtener el número de teléfono y establecerlo en el TextView correspondiente
                 if (documentSnapshot.contains("telefono")) {
                     String telefono = documentSnapshot.getString("telefono");
                     mTextViewPhone.setText(telefono);
                 }
+                // Obtener la URL de la foto de perfil y cargarla en el ImageView correspondiente usando Picasso
                 if (documentSnapshot.contains("fotoPerfil")) {
                     String fotoPerfil = documentSnapshot.getString("fotoPerfil");
-                    // Carga la imagen de perfil del usuario usando la biblioteca Picasso.
                     Picasso.get().load(fotoPerfil).into(mCircleImageViewProfile);
                 }
             }

@@ -46,15 +46,21 @@ public class MensajeAdapter extends FirestoreRecyclerAdapter<Mensaje, MensajeAda
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull final Mensaje mensaje) {
-
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String mensajeId = document.getId();
+
+        // Se establece el texto del mensaje en el TextView correspondiente del ViewHolder
         holder.textViewMensaje.setText(mensaje.getMessage());
 
+        // Se formatea y se establece la fecha relativa del mensaje en el TextView correspondiente del ViewHolder
         String relativeTime = RelativeTime.timeFormatAMPM(mensaje.getTimestamp(), context);
         holder.textViewDate.setText(relativeTime);
 
+        // Se verifica si el mensaje fue enviado por el usuario actual o por otro usuario
         if (mensaje.getIdSender().equals(mAuthProvider.getUid())) {
+            // El mensaje fue enviado por el usuario actual
+
+            // Se establecen los parámetros de diseño para alinear el mensaje a la derecha
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -62,12 +68,21 @@ public class MensajeAdapter extends FirestoreRecyclerAdapter<Mensaje, MensajeAda
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             params.setMargins(150, 0, 0, 0);
             holder.linearLayoutMensaje.setLayoutParams(params);
+
+            // Se establece el padding y el fondo del LinearLayout correspondiente del ViewHolder
             holder.linearLayoutMensaje.setPadding(30, 20, 0, 20);
             holder.linearLayoutMensaje.setBackground(context.getResources().getDrawable(R.drawable.rounded_linear_layout));
+
+            // Se muestra el icono de visto en el mensaje
             holder.imageViewViewed.setVisibility(View.VISIBLE);
+
+            // Se establecen los colores del texto del mensaje y la fecha
             holder.textViewMensaje.setTextColor(Color.WHITE);
             holder.textViewDate.setTextColor(Color.LTGRAY);
         } else {
+            // El mensaje fue enviado por otro usuario
+
+            // Se establecen los parámetros de diseño para alinear el mensaje a la izquierda
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -75,18 +90,24 @@ public class MensajeAdapter extends FirestoreRecyclerAdapter<Mensaje, MensajeAda
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             params.setMargins(0, 0, 150, 0);
             holder.linearLayoutMensaje.setLayoutParams(params);
+
+            // Se establece el padding y el fondo del LinearLayout correspondiente del ViewHolder
             holder.linearLayoutMensaje.setPadding(30, 20, 30, 20);
             holder.linearLayoutMensaje.setBackground(context.getResources().getDrawable(R.drawable.rounded_linear_layout_gray));
+
+            // Se oculta el icono de visto en el mensaje
             holder.imageViewViewed.setVisibility(View.GONE);
+
+            // Se establecen los colores del texto del mensaje y la fecha
             holder.textViewMensaje.setTextColor(Color.DKGRAY);
             holder.textViewDate.setTextColor(Color.LTGRAY);
         }
 
+        // Se verifica si el mensaje ha sido visto o no, y se establece el ícono correspondiente
         if (mensaje.isViewed()) {
             holder.imageViewViewed.setImageResource(R.drawable.icon_check_blue);
         } else {
             holder.imageViewViewed.setImageResource(R.drawable.icon_check_gray);
-
         }
     }
 

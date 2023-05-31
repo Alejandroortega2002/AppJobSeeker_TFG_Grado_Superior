@@ -3,6 +3,7 @@ package com.example.testmenu.activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -122,25 +123,45 @@ public class CrearValoracionDialog extends DialogFragment {
      * @return void
      */
     public void meterDatos(String idUser) {
+        // Obtener el valor de las calificaciones del objeto estrellasCrear y convertirlo a String
         String ratings = String.valueOf(estrellasCrear.getRating());
+
+        // Obtener el texto de la valoración del objeto escribirValoracion y eliminar los espacios en blanco al principio y al final
         valoracion = escribirValoracion.getText().toString().trim();
 
+        // Obtener la marca de tiempo actual y convertirla a String
         String timestamp = String.valueOf(System.currentTimeMillis());
 
+        // Crear un objeto Valoraciones
         Valoraciones v = new Valoraciones();
+
+        // Establecer el valor de las calificaciones en el objeto Valoraciones
         v.setNota(ratings);
+
+        // Establecer el valor de la valoración en el objeto Valoraciones
         v.setValoracion(valoracion);
+
+        // Establecer el ID de usuario en el objeto Valoraciones
         v.setUserId(idUser);
+
+        // Establecer el ID del usuario que realiza la publicación en el objeto Valoraciones
         v.setUserPostId(autentificacioFirebase.getUid());
+
+        // Establecer la marca de tiempo en el objeto Valoraciones
         v.setTimeStamp(timestamp);
 
+        // Crear la valoración en Firebase Firestore y agregar un listener para recibir el resultado
         valoracionFirebase.create(v).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
+                    // Si la tarea se completa con éxito, mostrar un mensaje de éxito
                     Toast.makeText(context, "El comentario se creó correctamente", Toast.LENGTH_SHORT).show();
+
+                    // Enviar una notificación con la valoración
                     sendNotification(valoracion);
                 } else {
+                    // Si la tarea no se completa con éxito, mostrar un mensaje de error
                     Toast.makeText(context, "No se pudo crear el comentario", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -158,18 +179,26 @@ public class CrearValoracionDialog extends DialogFragment {
      * @return void
      */
     public void cargarDetallesUsuario(String userId) {
+        // Verificar si el userId no es nulo
         if (userId != null) {
+            // Obtener los detalles del usuario desde Firebase Firestore
             usuariosBBDDFirebase.getUsuarios(userId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    // Verificar si el documento existe
                     if (documentSnapshot.exists()) {
+                        // Obtener el nombre de usuario del documento
                         if (documentSnapshot.contains("usuario")) {
                             nUsuarioActivity = documentSnapshot.getString("usuario");
                             nombreUser.setText("@" + nUsuarioActivity.toUpperCase());
                         }
+
+                        // Obtener la URL de la foto de perfil del documento
                         if (documentSnapshot.contains("fotoPerfil")) {
                             String fotoPerfilActivity = documentSnapshot.getString("fotoPerfil");
+                            // Verificar si la URL de la foto de perfil no es nula
                             if (fotoPerfilActivity != null) {
+                                // Cargar la foto de perfil utilizando Picasso
                                 Picasso.get().load(fotoPerfilActivity).into(fotoPerfil);
                             }
                         }
@@ -178,6 +207,7 @@ public class CrearValoracionDialog extends DialogFragment {
             });
         }
     }
+
 
 
     /**
@@ -191,24 +221,36 @@ public class CrearValoracionDialog extends DialogFragment {
      * @return void
      */
     public void sendNotification(String comentario) {
+        // Verificar si el ID de usuario es nulo
         if (idUser == null) {
             return;
         }
+
+        // Obtener el token de notificación del usuario desde Firebase Firestore
         mTokenFirebase.getToken(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                // Verificar si el documento existe
                 if (documentSnapshot.exists()) {
+                    // Verificar si el documento contiene el token de notificación
                     if (documentSnapshot.contains("token")) {
                         String usr = autentificacioFirebase.getUid();
                         String token = documentSnapshot.getString("token");
+
+                        // Crear un mapa de datos para la notificación
                         Map<String, String> data = new HashMap<>();
                         data.put("title", "NUEVO COMENTARIO DE " + nUsuarioActivity);
                         data.put("body", valoracion);
+
+                        // Crear el objeto FCMBody con el token y los datos de la notificación
                         FCMBody body = new FCMBody(token, "high", "4500s", data);
+
+                        // Enviar la notificación utilizando la instancia de mNotificationFirebase
                         mNotificationFirebase.sendNotification(body).enqueue(new Callback<FCMResponse>() {
                             @Override
                             public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
                                 if (response.body() != null) {
+                                    // Verificar si la respuesta indica que la notificación se envió con éxito
                                     if (response.body().getSuccess() == 1) {
                                         Toast.makeText(context, "La notificación se ha enviado", Toast.LENGTH_SHORT).show();
                                     } else {
@@ -221,7 +263,7 @@ public class CrearValoracionDialog extends DialogFragment {
 
                             @Override
                             public void onFailure(Call<FCMResponse> call, Throwable t) {
-
+                                // Error al enviar la notificación
                             }
                         });
                     }

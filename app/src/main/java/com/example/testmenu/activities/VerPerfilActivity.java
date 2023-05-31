@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +40,7 @@ public class VerPerfilActivity extends AppCompatActivity {
 
     private String VPidUser;
 
-    private TextView telefono, nombreU, email, descripcion, numeroDeOrfetas, txtOfertas;
+    private TextView telefono, nombreU, email, descripcion, numeroDeOfertas, txtOfertas;
 
     private ImageView fotoBanner;
     private CircleImageView fotoPerfil;
@@ -64,6 +65,8 @@ public class VerPerfilActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_perfil);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         autentificacioFirebase = new AutentificacioFirebase();
         usuariosBBDDFirebase = new UsuariosBBDDFirebase();
         publicacionFirebase = new PublicacionFirebase();
@@ -78,7 +81,7 @@ public class VerPerfilActivity extends AppCompatActivity {
         nombreU = findViewById(R.id.VPnPerfil);
         email = findViewById(R.id.VPpEmail);
         descripcion = findViewById(R.id.VPpDescripcion);
-        numeroDeOrfetas = findViewById(R.id.VPnPublicaciones);
+        numeroDeOfertas = findViewById(R.id.VPnPublicaciones);
         fotoBanner = findViewById(R.id.VPbanner);
         fotoPerfil = findViewById(R.id.VPfotoPerfil);
         txtOfertas = findViewById(R.id.txtOfertas);
@@ -146,6 +149,8 @@ public class VerPerfilActivity extends AppCompatActivity {
      */
     public void rellenarInformacionUsuario() {
         DocumentReference documentReference = usuariosBBDDFirebase.refereciaColeccion(VPidUser);
+
+        // Agregar un SnapshotListener al DocumentReference para obtener los cambios en tiempo real
         mListener = documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -155,6 +160,8 @@ public class VerPerfilActivity extends AppCompatActivity {
                         Log.w(TAG, "Error al obtener el documento.", error);
                         return;
                     }
+
+                    // Verificar si el DocumentSnapshot existe y contiene valores
                     if (value != null && value.exists()) {
                         // Obtener los valores del objeto DocumentSnapshot
                         String nombre = value.getString("usuario");
@@ -163,33 +170,47 @@ public class VerPerfilActivity extends AppCompatActivity {
                         String descrip = value.getString("descripcion");
 
                         // Verificar si los valores obtenidos son nulos antes de establecer el texto en los TextViews
+
+                        // Verificar si el campo "fotoPerfil" existe en el DocumentSnapshot
                         if (value.contains("fotoPerfil")) {
                             String perfil = value.getString("fotoPerfil");
                             if (perfil != null && !perfil.isEmpty()) {
+                                // Cargar la foto de perfil utilizando Picasso y establecerla en la ImageView "fotoPerfil"
                                 Picasso.get().load(perfil).into(fotoPerfil);
                             }
                         }
+
+                        // Verificar si el campo "banner" existe en el DocumentSnapshot
                         if (value.contains("banner")) {
                             String banner = value.getString("banner");
                             if (banner != null && !banner.isEmpty()) {
+                                // Cargar el banner utilizando Picasso y establecerlo en la ImageView "fotoBanner"
                                 Picasso.get().load(banner).into(fotoBanner);
                             }
                         }
+
+                        // Verificar si el nombre no es nulo y establecerlo en el TextView "nombreU"
                         if (nombre != null) {
                             nombreU.setText(nombre);
                         } else {
                             nombreU.setText("Sin nombre");
                         }
+
+                        // Verificar si el correo no es nulo y establecerlo en el TextView "email"
                         if (correo != null) {
                             email.setText(correo);
                         } else {
                             email.setText("Sin correo");
                         }
+
+                        // Verificar si el número de teléfono no es nulo y establecerlo en el TextView "telefono"
                         if (telefono != null) {
                             telefono.setText(ntelefono);
                         } else {
                             telefono.setText("Sin teléfono");
                         }
+
+                        // Verificar si la descripción no es nula y establecerla en el TextView "descripcion"
                         if (descripcion != null) {
                             descripcion.setText(descrip);
                         } else {
@@ -213,12 +234,18 @@ public class VerPerfilActivity extends AppCompatActivity {
         publicacionFirebase.getPublicacionDeUsuario(VPidUser).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                // Obtener el tamaño de la lista de QueryDocumentSnapshots, que representa el número de publicaciones
                 int numeroPublicaciones = queryDocumentSnapshots.size();
+
+                // Convertir el número de publicaciones a String
                 String numeroOfertas = String.valueOf(numeroPublicaciones);
-                numeroDeOrfetas.setText(numeroOfertas);
+
+                // Establecer el número de publicaciones en el TextView "numeroDeOfertas"
+                numeroDeOfertas.setText(numeroOfertas);
             }
         });
     }
+
 
     /**
      * Comprueba que el id del usuario coincide con el que se solicita ver el perfil.
@@ -229,12 +256,23 @@ public class VerPerfilActivity extends AppCompatActivity {
      */
     public void checkUser() {
         if (!VPidUser.equals(autentificacioFirebase.getUid())) {
+            // Si el VPidUser no es igual al ID del usuario autenticado actualmente
+
+            // Desactivar el botón "btnAjustes" haciendo que no sea clickable y estableciéndolo como invisible
             btnAjustes.setClickable(false);
             btnAjustes.setVisibility(View.INVISIBLE);
+
+            // Desactivar el botón "btnverFavortitos" haciendo que no sea clickable y estableciéndolo como invisible
             btnverFavortitos.setClickable(false);
             btnverFavortitos.setVisibility(View.GONE);
+
+            // Cambiar el texto del TextView "txtOfertas" a "Ver Ofertas"
             txtOfertas.setText("Ver Ofertas");
+
+            // Mover el botón "btnValoracion" a la posición X -40 (desplazarlo hacia la izquierda)
             btnValoracion.setX(-40);
+
+            // Mover el botón "btnverOfertas" a la posición X -20 (desplazarlo hacia la izquierda)
             btnverOfertas.setX(-20);
         }
     }
