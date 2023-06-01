@@ -136,16 +136,4 @@ public class UsuariosBBDDFirebase {
         return mColeccion.document(id).update(map);
     }
 
-    public Task<Boolean> verificarExistenciaUsuario(String nombreUsuario) {
-        Query query = mColeccion.whereEqualTo("usuario", nombreUsuario).limit(1);
-
-        return query.get().continueWith(task -> {
-            if (task.isSuccessful()) {
-                return !task.getResult().isEmpty();
-            } else {
-                throw task.getException(); // Lanzar la excepción para manejarla en el lugar donde se llame a este método
-            }
-        });
-    }
-
 }

@@ -206,12 +206,12 @@ public class RegistroActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     boolean existe = !task.getResult().isEmpty();
                     if (existe) {
-                        mostrarError(Nusuario, "El nombre de usuario ya está registrado."); // Muestra un error si el nombre de usuario ya está registrado.
+                        mostrarError(Nusuario, "El nombre de usuario ya está registrado.");
                     }
-                    callback.onVerificacionCompleta(existe); // Llama al método onVerificacionCompleta() del callback indicando si existe o no la verificación.
+                    callback.onVerificacionCompleta(existe);
                 } else {
-                    mostrarError(Nusuario, "Error al verificar el nombre de usuario."); // Muestra un error si ocurre un error al verificar el nombre de usuario.
-                    callback.onVerificacionCompleta(true); // Llama al método onVerificacionCompleta() del callback indicando que existe la verificación debido a un error.
+                    mostrarError(Nusuario, "Error al verificar el nombre de usuario: " + task.getException().getMessage());
+                    callback.onVerificacionCompleta(true);
                 }
             }
         });
