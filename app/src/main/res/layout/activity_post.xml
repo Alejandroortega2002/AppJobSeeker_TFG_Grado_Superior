@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.PostActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,9 +24,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="23dp"
+                android:fontFamily="@font/roboto_bold"
                 android:text="Crear Publicación"
                 android:textAlignment="center"
-                android:fontFamily="@font/roboto_bold"
                 android:textColor="@color/white"
                 android:textSize="23dp" />
 
@@ -102,6 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_login_registro"
+                    android:fontFamily="@font/roboto_regular"
                     android:hint="Título"
                     android:inputType="text"
                     android:maxLength="50"
@@ -140,6 +142,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_login_registro"
+                    android:fontFamily="@font/roboto_regular"
                     android:hint="Precio €"
                     android:inputType="numberSigned"
                     android:maxLength="5"
@@ -176,9 +179,10 @@
                     android:id="@+id/spinnerSector"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
+                    android:background="@drawable/edittext_login_registro"
                     android:entries="@array/sectores"
-                    android:paddingLeft="10dp"
-                    android:background="@drawable/edittext_login_registro"/>
+                    android:fontFamily="@font/roboto_regular"
+                    android:paddingLeft="10dp" />
 
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -213,6 +217,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_login_registro"
+                    android:fontFamily="@font/roboto_regular"
                     android:hint="Descripción"
                     android:inputType="textMultiLine"
                     android:maxLength="500"
@@ -229,9 +234,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/roboto_regular"
             android:text="Tipos de contrato"
             android:textAlignment="center"
-            android:fontFamily="@font/roboto_regular"
             android:textColor="@color/white"
             android:textSize="17dp" />
 
@@ -281,10 +286,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="Indefinido"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/roboto_regular"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -317,10 +322,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="Temporal"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/roboto_regular"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -353,11 +358,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="Media Jornada"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="11dp"
-                    android:fontFamily="@font/roboto_regular"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -390,10 +395,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="Eventual"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/roboto_regular"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -411,8 +416,8 @@
         android:layout_gravity="bottom"
         android:layout_margin="20dp"
         android:background="@drawable/btn_pag_principales"
+        android:fontFamily="@font/roboto_bold"
         android:text="Publicar"
-        android:fontFamily="@font/roboto_regular"
         android:textColor="@color/white" />
 
     <de.hdodenhof.circleimageview.CircleImageView

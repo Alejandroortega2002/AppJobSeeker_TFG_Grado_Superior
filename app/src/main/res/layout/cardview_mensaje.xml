@@ -26,14 +26,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Nuevo mensaje"
-            android:textSize="15dp"
-            android:textColor="@color/white"/>
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
         <TextView
             android:id="@+id/textViewDateMensaje"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="fecha"
             android:textSize="12dp"
+            android:fontFamily="@font/roboto_regular"
             android:textColor="@color/colorGray"
             android:layout_marginLeft="5dp"
             android:layout_gravity="bottom"/>

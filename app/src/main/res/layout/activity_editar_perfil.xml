@@ -61,6 +61,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="#3f3f3f"
                     android:hint="Nombre de Usuario"
+                    android:fontFamily="@font/roboto_regular"
                     android:inputType="text"
                     android:textColor="@color/white" />
 
@@ -95,6 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Teléfono"
+                    android:fontFamily="@font/roboto_regular"
                     android:inputType="phone"
                     android:background="#3f3f3f"
                     android:textColor="@color/white"/>
@@ -131,6 +133,7 @@
                     android:layout_height="wrap_content"
                     android:background="#3f3f3f"
                     android:hint="Descripcion"
+                    android:fontFamily="@font/roboto_regular"
                     android:inputType="text|textMultiLine"
                     android:lines="4"
                     android:gravity="top"
@@ -157,6 +160,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:fontFamily="@font/roboto_bold"
                 android:background="@drawable/btn_pag_principales"
                 android:text="Actualizar Perfil" />
 

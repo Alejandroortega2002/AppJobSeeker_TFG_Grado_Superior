@@ -8,6 +8,12 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.PagPrincipalAtivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,6 +33,7 @@
             android:layout_height="37dp"
             android:textColor="@color/white"
             android:text="Bienvenido a"
+            android:fontFamily="@font/roboto_bold"
             android:textAlignment="center"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -36,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="88dp"
             android:text="Jobseeker"
+            android:fontFamily="@font/roboto_bold"
             android:textAlignment="center"
             android:textColor="@color/azulGeneral"
             android:textSize="48sp"
@@ -47,6 +55,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="Busca a quienes deseen trabajar, o crea ofertas para otros quienes necesiten de tus labores"
+            android:fontFamily="@font/roboto_regular"
             android:textAlignment="center"
             android:textSize="18sp" />
 
@@ -63,7 +72,8 @@
                 android:layout_height="48dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_pag_principales"
-                android:text="Inicio de sesión"/>
+                android:text="Inicio de sesión"
+                android:fontFamily="@font/roboto_bold"/>
 
 
             <Button
@@ -72,10 +82,12 @@
                 android:layout_height="48dp"
                 android:background="@drawable/btn_pag_principales"
                 android:text="Registrate"
+                android:fontFamily="@font/roboto_bold"
                 android:textAlignment="center" />
 
         </LinearLayout>
 
     </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

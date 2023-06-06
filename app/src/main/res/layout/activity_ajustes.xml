@@ -28,6 +28,7 @@
             android:layout_marginTop="10dp"
             android:text="CUENTA"
             android:textColor="@color/white"
+            android:fontFamily="@font/roboto_bold"
             android:textSize="17dp"
             android:textStyle="bold" />
 
@@ -50,6 +51,7 @@
                     android:layout_marginTop="20dp"
                     android:clickable="true"
                     android:drawableRight="@drawable/ic_mirror_back"
+                    android:fontFamily="@font/roboto_bold"
                     android:text="Editar perfil"
                     android:textSize="15dp"
                     android:textStyle="bold" />
@@ -68,6 +70,7 @@
                     android:layout_marginTop="20dp"
                     android:textColor="@color/white"
                     android:text="Restablecer contraseña"
+                    android:fontFamily="@font/roboto_bold"
                     android:textSize="15dp"
                     android:clickable="true"
 
@@ -90,6 +93,7 @@
                     android:clickable="true"
                     android:text="Cerrar sesión"
                     android:textSize="15dp"
+                    android:fontFamily="@font/roboto_bold"
                     android:textStyle="bold" />
             </LinearLayout>
             <LinearLayout
@@ -107,67 +111,10 @@
                     android:text="Eliminar cuenta"
                     android:textColor="@color/azulGeneral"
                     android:textSize="15dp"
+                    android:fontFamily="@font/roboto_bold"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/txtOtros"
-            android:layout_width="match_parent"
-            android:layout_height="22dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/white"
-            android:text="OTROS"
-            android:textSize="17dp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txtPolitica"
-                    android:layout_width="332dp"
-                    android:layout_height="22dp"
-                    android:layout_marginLeft="60dp"
-                    android:layout_marginTop="20dp"
-                    android:textColor="@color/white"
-                    android:drawableRight="@drawable/ic_mirror_back"
-                    android:text="Política y Privacidad"
-                    android:textSize="15dp"
-
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txtTerminos"
-                    android:layout_width="332dp"
-                    android:layout_height="22dp"
-                    android:layout_marginLeft="60dp"
-                    android:layout_marginTop="20dp"
-                    android:textColor="@color/white"
-                    android:drawableRight="@drawable/ic_mirror_back"
-                    android:text="Terminos y Condiciones"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-
     </LinearLayout>
 </LinearLayout>
 

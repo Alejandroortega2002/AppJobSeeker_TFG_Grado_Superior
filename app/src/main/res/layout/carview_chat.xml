@@ -45,6 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Titulo de la publicacion"
+                    android:fontFamily="@font/roboto_regular"
                     android:maxLines="1"
                     android:textColor="@color/azulGeneral"
                     android:textSize="16dp" />
@@ -54,6 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ultimo mensaje"
+                    android:fontFamily="@font/roboto_regular"
                     android:maxLines="1"
                     android:layout_marginTop="3dp"
                     android:textColor="@color/azulGeneral"

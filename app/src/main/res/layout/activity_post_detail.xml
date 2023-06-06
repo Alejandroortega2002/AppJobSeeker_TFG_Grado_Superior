@@ -88,6 +88,7 @@
                             android:id="@+id/textViewUsername"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_regular"
                             android:text="Nombre de Usuario"
                             android:textColor="@color/black" />
 
@@ -95,6 +96,7 @@
                             android:id="@+id/textViewPhone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_regular"
                             android:text="12345321" />
 
                     </LinearLayout>
@@ -105,6 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:background="@drawable/button_border"
+                        android:fontFamily="@font/roboto_bold"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:text="VER PERFIL"
@@ -120,6 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
+                android:fontFamily="@font/roboto_bold"
                 android:text="TÍTULO DE LA PUBLICACION"
                 android:textColor="@color/azulGeneral"
                 android:textSize="20dp"
@@ -151,6 +155,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:fontFamily="@font/roboto_bold"
                         android:text="Indefinido"
                         android:textColor="@color/white"
                         android:textSize="17dp"
@@ -174,6 +179,7 @@
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="25dp"
+                android:fontFamily="@font/roboto_bold"
                 android:text="Descripción"
                 android:textColor="@color/white"
                 android:textSize="16dp"
@@ -187,18 +193,19 @@
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="25dp"
+                android:fontFamily="@font/roboto_regular"
                 android:text="¿Qué es Lorem Ipsum?500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas Letraset, las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum."
                 android:textColor="@color/white" />
 
         </LinearLayout>
 
     </ScrollView>
+
     <ImageButton
         android:id="@+id/volver_inicio"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="61dp"
         android:layout_height="60dp"
         android:src="@drawable/ic_step_back" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

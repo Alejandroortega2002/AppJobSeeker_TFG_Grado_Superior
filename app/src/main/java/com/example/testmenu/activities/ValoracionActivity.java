@@ -1,6 +1,7 @@
 package com.example.testmenu.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +34,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
@@ -119,7 +122,7 @@ public class ValoracionActivity extends AppCompatActivity {
     }
 
     /**
-     * Carga las valoraciones del usuario desde Firebase y actualiza la interfaz de usuario con la media de las valoraciones y el número total de valoraciones.
+     * Carga y actualiza las valoraciones del usuario desde Firebase y actualiza la interfaz de usuario con la media de las valoraciones y el número total de valoraciones.
      * <p>
      * Obtiene documentos de las valoraciones del usuario mediante <b>getCommentsByUser<b>.
      * Si la consulta tiene éxito, se itera los documentos y se convierten en objetos de tipo <b>Valoraciones<b>, esto permite hacer una media del total de las valoraciones.
@@ -128,52 +131,57 @@ public class ValoracionActivity extends AppCompatActivity {
      * @return void
      */
     public void cargarValoraciones() {
-        valoracionFirebase.getCommentsByUser(userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                // Crear una nueva lista para almacenar las valoraciones
-                listaValoraciones = new ArrayList<>();
-
-                // Recorrer los documentos obtenidos de la consulta
-                for (DocumentSnapshot document : queryDocumentSnapshots) {
-                    // Convertir cada documento a un objeto de la clase Valoraciones
-                    Valoraciones valoracion = document.toObject(Valoraciones.class);
-
-                    // Obtener el valor de la nota y convertirlo a tipo float
-                    float rating = Float.parseFloat(valoracion.getNota());
-
-                    // Sumar el rating a la variable suma
-                    suma = suma + rating;
-                }
-
-                // Obtener el número de valoraciones realizadas
-                long numeroValoraciones = queryDocumentSnapshots.size();
-
-                // Calcular la media dividiendo la suma por el número de valoraciones
-                float media = suma / numeroValoraciones;
-
-                // Establecer el texto de la valoración y el número de valoraciones en un TextView
-                txtValoracion.setText(String.format("%.2f", media) + " [" + numeroValoraciones + "]");
-
-                // Establecer la puntuación en un RatingBar
-                estrellas.setRating(media);
-
-                // Actualizar la media del usuario en la base de datos
-                usuariosBBDDFirebase.updateMedia(userId, media).addOnSuccessListener(new OnSuccessListener<Void>() {
+        // Obtener las valoraciones del usuario en tiempo real utilizando un SnapshotListener
+        valoracionFirebase.getCommentsByUser(userId)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(Void unused) {
-                        // Actualización de la media del usuario exitosa.
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            // Manejo de errores en la obtención de las valoraciones.
+                            return;
+                        }
+
+                        // Crear una nueva lista para almacenar las valoraciones
+                        listaValoraciones = new ArrayList<>();
+
+                        // Reiniciar la variable suma
+                        suma = 0;
+
+                        // Recorrer los documentos obtenidos de la consulta
+                        for (DocumentSnapshot document : queryDocumentSnapshots) {
+                            // Convertir cada documento a un objeto de la clase Valoraciones
+                            Valoraciones valoracion = document.toObject(Valoraciones.class);
+
+                            // Obtener el valor de la nota y convertirlo a tipo float
+                            float rating = Float.parseFloat(valoracion.getNota());
+
+                            // Sumar el rating a la variable suma
+                            suma += rating;
+                        }
+
+                        // Obtener el número de valoraciones realizadas
+                        long numeroValoraciones = queryDocumentSnapshots.size();
+
+                        // Calcular la media dividiendo la suma por el número de valoraciones
+                        float media = suma / numeroValoraciones;
+
+                        // Establecer el texto de la valoración y el número de valoraciones en un TextView
+                        txtValoracion.setText(String.format("%.2f", media) + " [" + numeroValoraciones + "]");
+
+                        // Establecer la puntuación en un RatingBar
+                        estrellas.setRating(media);
+
+                        // Actualizar la media del usuario en la base de datos
+                        usuariosBBDDFirebase.updateMedia(userId, media).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                // Actualización de la media del usuario exitosa.
+                            }
+                        });
                     }
                 });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // Manejo de la falla en la obtención de las valoraciones.
-            }
-        });
     }
-
     /**
      * Método que se llama al iniciar la actividad.
      */

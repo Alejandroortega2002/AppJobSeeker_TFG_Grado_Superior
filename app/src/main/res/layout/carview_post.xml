@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:text="Food Menu1"
                     android:textAlignment="center"
+                    android:fontFamily="@font/roboto_bold"
                     android:textColor="@color/azulGeneral"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -51,6 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Tipo de contrato"
+                    android:fontFamily="@font/roboto_regular"
                     android:textAlignment="center"
                     android:textColor="@color/azulGeneral"
                     android:textSize="14sp" />
@@ -61,6 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Sector:"
+                    android:fontFamily="@font/roboto_regular"
                     android:textAlignment="center"
                     android:textColor="@color/azulGeneral"
                     android:textSize="14sp" />
@@ -71,6 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Nombre de usuario"
+                    android:fontFamily="@font/roboto_regular"
                     android:textAlignment="center"
                     android:textColor="@color/azulGeneral"
                     android:textSize="14sp" />
@@ -80,6 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Valoración de Uusario:"
+                    android:fontFamily="@font/roboto_regular"
                     android:textAlignment="center"
                     android:textColor="@color/azulGeneral"
                     android:textSize="14sp" />
@@ -126,6 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="0 Likes"
+                    android:fontFamily="@font/roboto_bold"
                     android:textAlignment="center"
                     android:textColor="@color/azulGeneral"
                     android:textSize="14sp"

@@ -108,18 +108,28 @@ public class MessageReceiver extends BroadcastReceiver {
      * @return void
      *
      */
-    public void getToken(final Mensaje message){
+    public void getToken(final Mensaje message) {
+        // Obtener el token del destinatario a través de la instancia mTokenFirebase
         mTokenFirebase.getToken(mExtraIdSender).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()){
-                    if (documentSnapshot.contains("token")){
+                if (documentSnapshot.exists()) {
+                    if (documentSnapshot.contains("token")) {
+                        // Obtener el token del documento DocumentSnapshot
                         String token = documentSnapshot.getString("token");
+
+                        // Crear una instancia de Gson para convertir el objeto Mensaje en formato JSON
                         Gson gson = new Gson();
+
+                        // Crear una lista de Mensaje y agregar el mensaje proporcionado
                         ArrayList<Mensaje> messages = new ArrayList<>();
                         messages.add(message);
+
+                        // Convertir la lista de mensajes a formato JSON
                         String mensajes = gson.toJson(messages);
-                        sendNotificaction(token,mensajes, message);
+
+                        // Llamar al método sendNotificaction() para enviar la notificación
+                        sendNotificaction(token, mensajes, message);
                     }
                 }
             }
@@ -138,45 +148,56 @@ public class MessageReceiver extends BroadcastReceiver {
      *@param message El objeto de mensaje que contiene información sobre el remitente y el receptor.
      *@return void
      */
-    public void sendNotificaction(final String token, String messages, Mensaje message){
+    public void sendNotificaction(final String token, String messages, Mensaje message) {
+        // Crear un mapa para almacenar los datos de la notificación
         final Map<String, String> data = new HashMap<>();
-        data.put("title","MENSAJE");
+
+        // Agregar los datos relevantes a enviar en la notificación al mapa
+        data.put("title", "MENSAJE");
         data.put("body", message.getMessage());
-        data.put("idNotification",String.valueOf(mExtraIdNotificaction));
-        data.put("messages",messages);
-        data.put("usernameSender",mExtraUsernameReceiver.toUpperCase());
-        data.put("usernameReceiver",mExtraUsernameSender.toUpperCase());
-        data.put("idSender",message.getIdSender());
-        data.put("idReceiver",message.getIdReceiver());
-        data.put("idChat",message.getIdChat());
+        data.put("idNotification", String.valueOf(mExtraIdNotificaction));
+        data.put("messages", messages);
+        data.put("usernameSender", mExtraUsernameReceiver.toUpperCase());
+        data.put("usernameReceiver", mExtraUsernameSender.toUpperCase());
+        data.put("idSender", message.getIdSender());
+        data.put("idReceiver", message.getIdReceiver());
+        data.put("idChat", message.getIdChat());
+        data.put("imageSender", mExtraImageReceiver);
+        data.put("imageReceiver", mExtraImageSender);
 
-        data.put("imageSender",mExtraImageReceiver);
-        data.put("imageReceiver",mExtraImageSender);
-
+        // Crear una instancia de FCMBody con el token, prioridad y tiempo de vida de la notificación
         FCMBody body = new FCMBody(token, "high", "4500s", data);
+
+        // Enviar la notificación utilizando la instancia mNotificationFirebase
         mNotificationFirebase.sendNotification(body).enqueue(new Callback<FCMResponse>() {
             @Override
             public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-
+                // Manejar la respuesta de la solicitud de envío de notificación (opcional)
             }
 
             @Override
             public void onFailure(Call<FCMResponse> call, Throwable t) {
-                Log.d("ERROR","El error fue: " + t.getMessage());
+                // Manejar el caso de fallo en la solicitud de envío de notificación
+                Log.d("ERROR", "El error fue: " + t.getMessage());
             }
         });
-
     }
     /**
      *Recupera el texto del mensaje del intent dado.
      *@param intent El intent que contiene el texto del mensaje.
      *@return El texto del mensaje si está disponible, null en caso contrario.
      */
-    public CharSequence getMessageText(Intent intent){
+    public CharSequence getMessageText(Intent intent) {
+        // Obtener los resultados de entrada remota de la intención
         Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
-        if (remoteInput!=null){
+
+        // Verificar si los resultados de entrada remota no son nulos
+        if (remoteInput != null) {
+            // Obtener el texto de la entrada remota utilizando la clave NOTIFICATION_REPLY
             return remoteInput.getCharSequence(NOTIFICATION_REPLY);
         }
+
+        // Si no hay resultados de entrada remota, retornar null
         return null;
     }
 }

@@ -31,7 +31,6 @@ public class InicioFragment extends Fragment {
     private AutentificacioFirebase mAutentificacionFirebase;
     private RecyclerView mRecyclerView;
     private PublicacionFirebase mPublicacionfirebase;
-
     private SearchView mSearchView;
     private PostsAdapter mPostsAdapter;
     private PostsAdapter mPostsAdapterBuscar;
@@ -62,16 +61,26 @@ public class InicioFragment extends Fragment {
 
     @Override
     public void onStart() {
-        super.onStart();
+        super.onStart(); // Llamada al método onStart() de la clase base
+
+        // Obtener todas las publicaciones
         Query query = mPublicacionfirebase.getAll();
+
+        // Configurar las opciones del adaptador de recycler view utilizando FirestoreRecyclerOptions
         FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
-                .setQuery(query, Publicacion.class)
+                .setQuery(query, Publicacion.class) // Establecer la consulta y el modelo de datos
                 .build();
 
+        // Crear una instancia del adaptador de publicaciones con las opciones y el contexto actual
         mPostsAdapter = new PostsAdapter(options, getContext());
+
+        // Establecer el adaptador en el recycler view
         mRecyclerView.setAdapter(mPostsAdapter);
+
+        // Iniciar la escucha de cambios en el adaptador
         mPostsAdapter.startListening();
     }
+
 
     @Override
     public void onStop() {
@@ -99,17 +108,18 @@ public class InicioFragment extends Fragment {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                buscar(query);
+                buscar(query); // Llama al método buscar() cuando se envía la consulta
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                buscar(newText);// Handle search text change if needed
+                buscar(newText); // Llama al método buscar() cuando el texto de búsqueda cambia
                 return false;
             }
         });
     }
+
 
     /**
      * Realiza una búsqueda utilizando el texto de consulta proporcionado.
@@ -122,13 +132,22 @@ public class InicioFragment extends Fragment {
      * @param query El texto de búsqueda utilizado para buscar publicaciones.
      */
     public void buscar(String query) {
+        // Realizar una consulta para obtener las publicaciones por título
         Query searchQuery = mPublicacionfirebase.getPostByTitulo(query);
+
+        // Configurar las opciones del adaptador de recycler view utilizando FirestoreRecyclerOptions
         FirestoreRecyclerOptions<Publicacion> options = new FirestoreRecyclerOptions.Builder<Publicacion>()
-                .setQuery(searchQuery, Publicacion.class)
+                .setQuery(searchQuery, Publicacion.class) // Establecer la consulta y el modelo de datos
                 .build();
 
+        // Crear una instancia del adaptador de publicaciones con las opciones y el contexto actual
         mPostsAdapterBuscar = new PostsAdapter(options, getContext());
+
+        // Establecer el adaptador en el recycler view
         mRecyclerView.setAdapter(mPostsAdapterBuscar);
+
+        // Iniciar la escucha de cambios en el adaptador
         mPostsAdapterBuscar.startListening();
     }
+
 }

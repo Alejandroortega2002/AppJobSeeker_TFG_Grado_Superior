@@ -52,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3132424243"
+                android:fontFamily="@font/roboto_bold"
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -61,6 +62,7 @@
                 android:layout_height="wrap_content"
                 android:text="TELEFONO"
                 android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -81,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -88,6 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PUBLICACIONES"
+                android:fontFamily="@font/roboto_bold"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="13sp"
@@ -109,6 +113,7 @@
                 android:layout_height="wrap_content"
                 android:text="NOMBRE DEL PERFIL"
                 android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -119,6 +124,7 @@
                 android:layout_marginTop="7dp"
                 android:text="correo@algo.com"
                 android:textColor="#9A9A9A"
+                android:fontFamily="@font/roboto_regular"
                 android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -136,6 +142,7 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="20dp"
                 android:text="Descripción"
+                android:fontFamily="@font/roboto_bold"
                 android:textColor="#BCBCBC"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -146,6 +153,7 @@
                 android:layout_height="wrap_content"
                 android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
                 android:textAlignment="center"
+                android:fontFamily="@font/roboto_regular"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -230,6 +238,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="10dp"
                     android:text="Mis Ofertas"
+                    android:fontFamily="@font/roboto_bold"
                     android:textColor="#38b6ff"
                     android:textStyle="bold" />
 
@@ -258,6 +267,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="10dp"
                     android:text="Comentarios"
+                    android:fontFamily="@font/roboto_bold"
                     android:textColor="#38b6ff"
                     android:textStyle="bold" />
 
@@ -289,6 +299,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="10dp"
                     android:text="Mis favoritos"
+                    android:fontFamily="@font/roboto_bold"
                     android:textColor="#38b6ff"
                     android:textStyle="bold" />
 

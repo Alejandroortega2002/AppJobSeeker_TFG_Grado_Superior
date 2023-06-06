@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,8 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:background="@drawable/foto_registro"
-            android:orientation="vertical">
-        </LinearLayout>
+            android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,6 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#3f3f3f"
+                    android:fontFamily="@font/roboto_regular"
                     android:hint="Nombre de Usuario"
                     android:inputType="text"
                     android:textColor="@color/white" />
@@ -86,10 +85,11 @@
                     android:id="@+id/editEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#3f3f3f"
+                    android:fontFamily="@font/roboto_regular"
                     android:hint="Correo Electrónico"
                     android:inputType="textEmailAddress"
-                    android:background="#3f3f3f"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -121,10 +121,11 @@
                     android:id="@+id/editTelefono"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#3f3f3f"
+                    android:fontFamily="@font/roboto_regular"
                     android:hint="Teléfono"
                     android:inputType="phone"
-                    android:background="#3f3f3f"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -156,10 +157,11 @@
                     android:id="@+id/editPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#3f3f3f"
+                    android:fontFamily="@font/roboto_regular"
                     android:hint="Contraseña"
                     android:inputType="textPassword"
-                    android:background="#3f3f3f"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -192,10 +194,11 @@
                     android:id="@+id/editConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#3f3f3f"
+                    android:fontFamily="@font/roboto_regular"
                     android:hint="Repetir Contraseña"
                     android:inputType="textPassword"
-                    android:background="#3f3f3f"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -210,6 +213,7 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/btn_pag_principales"
             android:backgroundTint="@color/white"
+            android:fontFamily="@font/roboto_bold"
             android:text="Registrate"
             android:textColor="@color/white" />
 
@@ -219,31 +223,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
         android:layout_gravity="bottom"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
-        android:layout_marginTop="10dp">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_regular"
             android:text="¿Ya tienes cuenta?"
-            android:textSize="17sp"/>
+            android:textColor="@color/white"
+            android:textSize="17sp" />
 
         <Button
             android:id="@+id/btnLogin"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
             android:text="INICIA SESIÓN"
             android:textColor="@color/white"
             android:textSize="14sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

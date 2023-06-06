@@ -34,6 +34,7 @@
         android:layout_weight="0"
         android:gravity="center"
         android:text="Cerrar Sesión"
+        android:fontFamily="@font/roboto_bold"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/negroFondo"
         android:textStyle="bold" />
@@ -45,6 +46,7 @@
         android:layout_marginTop="20dp"
         android:text="¿Estas seguro que quieres cerrar la sesión de esta cuenta?"
         android:gravity="center"
+        android:fontFamily="@font/roboto_regular"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/negroFondo" />
@@ -63,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="cancelar"
+            android:fontFamily="@font/roboto_bold"
             app:cornerRadius="40px"
             android:textColor="@android:color/white" />
 
@@ -70,8 +73,9 @@
             android:id="@+id/aceptar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_bold"
             android:backgroundTint="#FF0000"
             android:text="aceptar"
             android:textColor="@color/colorWhite"

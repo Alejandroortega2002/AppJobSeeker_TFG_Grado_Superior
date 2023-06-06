@@ -33,7 +33,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
-                android:text="Food Menu1"
+                android:fontFamily="@font/roboto_bold"
+                android:text="NombreUser"
                 android:textColor="@color/azulGeneral"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -44,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center_vertical"
+                android:fontFamily="@font/roboto_regular"
                 android:text="Fecha  22/07/2002"
                 android:textColor="@color/azulGeneral"
                 android:textSize="12dp" />
@@ -66,6 +68,7 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center_vertical"
             android:text="Contenido de la Valoracion"
+            android:fontFamily="@font/roboto_regular"
             android:textColor="@color/azulGeneral"
             android:textSize="12dp" />
 

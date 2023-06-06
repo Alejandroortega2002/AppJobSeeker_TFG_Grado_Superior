@@ -47,30 +47,42 @@ public class ChatFragment extends Fragment {
 
     @Override
     public void onStart() {
-        super.onStart();
+        super.onStart(); // Llamada al método onStart() de la clase base
+
+        // Obtener todos los chats del usuario actual
         Query query = mChatsFirebase.getAll(mAuthFirebase.getUid());
+
+        // Configurar las opciones del adaptador de recycler view utilizando FirestoreRecyclerOptions
         FirestoreRecyclerOptions<Chat> options =
                 new FirestoreRecyclerOptions.Builder<Chat>()
-                        .setQuery(query, Chat.class)
+                        .setQuery(query, Chat.class) // Establecer la consulta y el modelo de datos
                         .build();
+
+        // Crear una instancia del adaptador de chats con las opciones y el contexto actual
         mAdapter = new ChatsAdapter(options, getContext());
+
+        // Establecer el adaptador en el recycler view
         mRecyclerView.setAdapter(mAdapter);
+
+        // Iniciar la escucha de cambios en el adaptador
         mAdapter.startListening();
     }
+
 
     @Override
     public void onStop() {
         super.onStop();
         mAdapter.stopListening();
     }
+
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
-        if (mAdapter.getListener()!=null){
+        if (mAdapter.getListener() != null) {
             mAdapter.getListener().remove();
         }
 
-        if (mAdapter.getmListenerLastMessage()!=null){
+        if (mAdapter.getmListenerLastMessage() != null) {
             mAdapter.getmListenerLastMessage().remove();
         }
     }

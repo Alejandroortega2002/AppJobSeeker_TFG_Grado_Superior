@@ -62,7 +62,9 @@
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
                     android:text="Educación"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:fontFamily="@font/roboto_regular"
+                    />
 
             </LinearLayout>
 
@@ -102,7 +104,8 @@
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
                     android:text="Actividades Físico-Deportivas"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:fontFamily="@font/roboto_regular"/>
 
             </LinearLayout>
 
@@ -143,7 +146,8 @@
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
                     android:text="Comercio"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:fontFamily="@font/roboto_regular"/>
 
             </LinearLayout>
 
@@ -183,7 +187,8 @@
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
                     android:text="Alimentación y Hostelería"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:fontFamily="@font/roboto_regular"/>
 
             </LinearLayout>
 
@@ -224,7 +229,8 @@
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
                     android:text="Administración y Gestión"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:fontFamily="@font/roboto_regular"/>
 
             </LinearLayout>
 
@@ -265,7 +271,8 @@
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
                     android:text="Transporte"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:fontFamily="@font/roboto_regular"/>
 
             </LinearLayout>
 
@@ -305,7 +312,8 @@
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
                     android:text="Industria y Construcción"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:fontFamily="@font/roboto_regular"/>
 
             </LinearLayout>
 
@@ -346,7 +354,8 @@
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
                     android:text="Limpieza"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:fontFamily="@font/roboto_regular"/>
 
             </LinearLayout>
 
@@ -386,7 +395,8 @@
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
                     android:text="Informática y Telecomunicaciones"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:fontFamily="@font/roboto_regular"/>
 
             </LinearLayout>
 
@@ -427,7 +437,8 @@
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
                     android:text="Atención al Cliente / Servicios"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:fontFamily="@font/roboto_regular"/>
 
             </LinearLayout>
 

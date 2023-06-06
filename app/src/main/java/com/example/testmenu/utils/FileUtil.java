@@ -34,18 +34,33 @@ public class FileUtil {
      * @throws IOException si hay algún error al crear o escribir el archivo temporal
      */
     public static File from(Context context, Uri uri) throws IOException {
+        // Se abre un InputStream para leer los datos del Uri especificado
         InputStream inputStream = context.getContentResolver().openInputStream(uri);
+
+        // Se obtiene el nombre del archivo utilizando el método getFileName()
         String fileName = getFileName(context, uri);
+
+        // Se divide el nombre del archivo en dos partes: nombre y extensión
         String[] splitName = splitFileName(fileName);
+
+        // Se crea un archivo temporal con el prefijo y sufijo obtenidos del nombre del archivo
         File tempFile = File.createTempFile(splitName[0], splitName[1]);
+
+        // Se renombra el archivo temporal con el nombre original del archivo
         tempFile = rename(tempFile, fileName);
+
+        // Se indica que el archivo se borrará automáticamente cuando el programa termine
         tempFile.deleteOnExit();
+
         FileOutputStream out = null;
         try {
+            // Se crea un FileOutputStream para escribir en el archivo temporal
             out = new FileOutputStream(tempFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        // Se copian los datos del InputStream al FileOutputStream
         if (inputStream != null) {
             copy(inputStream, out);
             inputStream.close();
@@ -54,6 +69,8 @@ public class FileUtil {
         if (out != null) {
             out.close();
         }
+
+        // Se retorna el archivo temporal
         return tempFile;
     }
 
@@ -70,10 +87,12 @@ public class FileUtil {
         String extension = "";
         int i = fileName.lastIndexOf(".");
         if (i != -1) {
+            // Si se encuentra un punto en el nombre del archivo, se divide en nombre y extensión
             name = fileName.substring(0, i);
             extension = fileName.substring(i);
         }
 
+        // Se retorna un arreglo de cadenas con el nombre y la extensión del archivo
         return new String[]{name, extension};
     }
 
@@ -88,10 +107,11 @@ public class FileUtil {
     public static String getFileName(Context context, Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {
+            // Si el esquema de la Uri es "content", se realiza una consulta a través del ContentResolver
             Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
             try {
                 if (cursor != null && cursor.moveToFirst()) {
-                    // Obtener el nombre del archivo a través de la columna DISPLAY_NAME del cursor.
+                    // Se obtiene el nombre del archivo a través de la columna DISPLAY_NAME del cursor
                     result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 }
             } catch (Exception e) {
@@ -103,10 +123,11 @@ public class FileUtil {
             }
         }
         if (result == null) {
-            // Si no se puede obtener el nombre a través del cursor, se extrae del path de la Uri.
+            // Si no se puede obtener el nombre a través del cursor, se extrae del path de la Uri
             result = uri.getPath();
             int cut = result.lastIndexOf(File.separator);
             if (cut != -1) {
+                // Se obtiene el nombre del archivo a partir del último separador de directorio en el path de la Uri
                 result = result.substring(cut + 1);
             }
         }
@@ -123,15 +144,23 @@ public class FileUtil {
      * @return el nuevo archivo renombrado.
      */
     public static File rename(File file, String newName) {
+        // Se crea un nuevo objeto File con el directorio padre y el nuevo nombre
         File newFile = new File(file.getParent(), newName);
+
+        // Se verifica si el nuevo archivo es diferente al archivo original
         if (!newFile.equals(file)) {
+            // Si el nuevo archivo ya existe, se elimina el archivo existente
             if (newFile.exists() && newFile.delete()) {
                 Log.d("FileUtil", "Delete old " + newName + " file");
             }
+
+            // Se intenta cambiar el nombre del archivo original al nuevo nombre
             if (file.renameTo(newFile)) {
                 Log.d("FileUtil", "Rename file to " + newName);
             }
         }
+
+        // Se retorna el nuevo archivo
         return newFile;
     }
 
@@ -145,13 +174,19 @@ public class FileUtil {
      * @throws IOException si ocurre un error al copiar los datos.
      */
     public static long copy(InputStream input, OutputStream output) throws IOException {
-        long count = 0;
-        int n;
-        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+        long count = 0; // Variable para contar el número de bytes copiados
+        int n; // Variable para almacenar el número de bytes leídos en cada iteración
+        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE]; // Buffer para almacenar los bytes leídos
+
+        // Se realiza la copia de los bytes del InputStream al OutputStream
         while (EOF != (n = input.read(buffer))) {
+            // Se escribe el contenido del buffer en el OutputStream
             output.write(buffer, 0, n);
+            // Se actualiza el contador de bytes copiados
             count += n;
         }
+
+        // Se retorna el total de bytes copiados
         return count;
     }
 }
