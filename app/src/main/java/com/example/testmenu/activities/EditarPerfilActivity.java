@@ -279,7 +279,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
      * @param imageFile1 imagen de perfil
      * @param imageFile2 imagen de portada
      */
-    public void saveImageCoverAndProfile(File imageFile1, final File imageFile2) {
+    public void saveImageCoverAndProfile(File imageFile1, File imageFile2) {
         // Mostrar el diálogo de carga
         mDialog.show();
 
@@ -292,7 +292,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
                     mImageProvider.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            final String urlProfile = uri.toString();
+                            String urlProfile = uri.toString();
 
                             // Guardar la imagen de portada
                             mImageProvider.save(EditarPerfilActivity.this, imageFile2).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -343,7 +343,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
      * @param isProfileImage comprueba el tipo de archivo.
      * @return void
      */
-    public void saveImage(File image, final boolean isProfileImage) {
+    public void saveImage(File image, boolean isProfileImage) {
         // Mostrar el diálogo de carga
         mDialog.show();
 
@@ -356,7 +356,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
                     mImageProvider.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            final String url = uri.toString();
+                             String url = uri.toString();
 
                             // Crear un objeto Usuarios con la información del usuario y la URL de la imagen
                             Usuarios user = new Usuarios();
@@ -423,7 +423,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
      * @param numberImage número de imagen (1 o 2)
      * @return void
      */
-    public void selectOptionImagen(final int numberImage) {
+    public void selectOptionImagen(int numberImage) {
         // Configurar las opciones del selector de imágenes
         mBuilderSelector.setItems(options, new DialogInterface.OnClickListener() {
             @Override

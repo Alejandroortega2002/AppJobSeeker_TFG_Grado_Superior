@@ -38,7 +38,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
     }
 
     @Override
-    public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
+    public void onBindViewHolder(SliderAdapterVH viewHolder, int position) {
         // Obtener el objeto SliderItem en la posición especificada
         SliderItem sliderItem = mSliderItems.get(position);
         // Verificar si la URL de la imagen no es nula y no está vacía

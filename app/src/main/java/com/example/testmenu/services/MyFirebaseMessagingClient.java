@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class MyFirebaseMessagingClient extends FirebaseMessagingService {
 
-    public static final String NOTIFICATION_REPLY="NotificationReply";
+    public static String NOTIFICATION_REPLY="NotificationReply";
 
     @Override
     public void onNewToken(@NonNull String token) {
@@ -84,14 +84,14 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
      */
     public void showNotificationMessage(Map<String, String> data) {
         // Obtiene los valores de "imageSender" y "imageReceiver" del mapa de datos
-        final String imageSender = data.get("imageSender");
-        final String imageReceiver = data.get("imageReceiver");
+        String imageSender = data.get("imageSender");
+        String imageReceiver = data.get("imageReceiver");
 
         // Llama al método getImageSender() pasando los datos y las imágenes obtenidas
         getImageSender(data, imageSender, imageReceiver);
     }
 
-    public void getImageSender(final Map<String, String> data, final String imageSender, final String imageReceiver) {
+    public void getImageSender(Map<String, String> data, String imageSender, String imageReceiver) {
         // Crea un nuevo Handler para realizar operaciones en el hilo principal
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -129,7 +129,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
      * @param bitmapSender una instancia de Bitmap que representa la imagen del remitente
      * @param imageReceiver una cadena de texto que representa la URL de la imagen del receptor
      */
-    public void getImageReceiver(final Map<String, String> data, String imageReceiver, Bitmap bitmapSender) {
+    public void getImageReceiver(Map<String, String> data, String imageReceiver, Bitmap bitmapSender) {
         // Carga la imagen del receptor utilizando Picasso
         Picasso.get().load(imageReceiver).into(new Target() {
             @Override
@@ -163,22 +163,22 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
      */
     public void notifyMessage(Map<String, String> data, Bitmap bitmapSender, Bitmap bitmapReceiver) {
         // Obtiene los valores de "usernameSender", "usernameReceiver" y "lastMessage" del mapa de datos
-        final String usernameSender = data.get("usernameSender");
-        final String usernameReceiver = data.get("usernameReceiver");
-        final String lastMessage = data.get("lastMessage");
+        String usernameSender = data.get("usernameSender");
+        String usernameReceiver = data.get("usernameReceiver");
+        String lastMessage = data.get("lastMessage");
 
         // Obtiene el valor de "messages" del mapa de datos
         String messagesJson = data.get("messages");
 
         // Obtiene los valores de "imageSender" e "imageReceiver" del mapa de datos
-        final String imageSender = data.get("imageSender");
-        final String imageReceiver = data.get("imageReceiver");
+        String imageSender = data.get("imageSender");
+        String imageReceiver = data.get("imageReceiver");
 
         // Obtiene los valores de "idSender", "idReceiver", "idChat" e "idNotification" del mapa de datos
-        final String idSender = data.get("idSender");
-        final String idReceiver = data.get("idReceiver");
-        final String idChat = data.get("idChat");
-        final int idNotification = Integer.parseInt(data.get("idNotification"));
+        String idSender = data.get("idSender");
+        String idReceiver = data.get("idReceiver");
+        String idChat = data.get("idChat");
+        int idNotification = Integer.parseInt(data.get("idNotification"));
 
         // Crea un intent para enviar a MessageReceiver
         Intent intent = new Intent(this, MessageReceiver.class);
@@ -199,7 +199,7 @@ public class MyFirebaseMessagingClient extends FirebaseMessagingService {
         RemoteInput remoteInput = new RemoteInput.Builder(NOTIFICATION_REPLY).setLabel("Tu mensaje...").build();
 
         // Crea una acción de notificación que permite responder
-        final NotificationCompat.Action action = new NotificationCompat.Action.Builder(
+        NotificationCompat.Action action = new NotificationCompat.Action.Builder(
                 R.mipmap.ic_launcher,
                 "Responder",
                 pendingIntent).addRemoteInput(remoteInput)

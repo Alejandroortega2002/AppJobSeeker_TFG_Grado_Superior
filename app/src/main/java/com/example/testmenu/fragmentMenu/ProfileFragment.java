@@ -92,7 +92,7 @@ public class ProfileFragment extends Fragment {
         btnAjustesPerfil = binding.btnAjustes;
 
 
-        final FirebaseUser user = autentificacioFirebase.getUsers();
+        FirebaseUser user = autentificacioFirebase.getUsers();
         idUser = autentificacioFirebase.getUid();
 
 

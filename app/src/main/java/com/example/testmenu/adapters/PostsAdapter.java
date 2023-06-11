@@ -63,7 +63,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
     public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Publicacion publicacion) {
         // Obtiene el DocumentSnapshot de la posición actual
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
-        final String postId = document.getId();
+        String postId = document.getId();
 
         // Configura los valores en el ViewHolder
         holder.textViewTitulo.setText(publicacion.getTitulo().toUpperCase());
@@ -115,7 +115,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
      * @param holder  el ViewHolder que contiene el campo de texto donde se mostrará el número de "Me gusta"
      * @return void
      */
-    public void getNumeroDeLikes(String idPost, final ViewHolder holder) {
+    public void getNumeroDeLikes(String idPost, ViewHolder holder) {
         // Se establece un listener para recibir actualizaciones en tiempo real de los likes
         mListener = favoritosFirebase.getLikesByPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override

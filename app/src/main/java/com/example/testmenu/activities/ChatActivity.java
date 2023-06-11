@@ -235,7 +235,7 @@ public class ChatActivity extends AppCompatActivity {
         // Verifica si el texto del mensaje no está vacío.
         if (!textMensaje.isEmpty()) {
             // Crea una nueva instancia de Mensaje.
-            final Mensaje mensaje = new Mensaje();
+            Mensaje mensaje = new Mensaje();
 
             // Establece el ID del chat en el mensaje.
             mensaje.setIdChat(mExtraIdChat);

@@ -80,7 +80,7 @@ public class ValoracionesAdapter extends FirestoreRecyclerAdapter<Valoraciones, 
      * @param holder el viewholder en donde mostrar los datos de la base de datos
      * @return void
      */
-    public void cargarDetallesUsuario(String userId, final HolderValoraciones holder) {
+    public void cargarDetallesUsuario(String userId, HolderValoraciones holder) {
         if (userId != null) {
             usuariosBBDDFirebase.getUsuarios(userId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override

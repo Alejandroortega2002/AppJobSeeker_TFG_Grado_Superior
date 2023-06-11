@@ -252,7 +252,7 @@ public class RegistroActivity extends AppCompatActivity {
      * @return void
      */
 
-    public void registrarUsuario(final String nUsuario, final String numTelefono, final String email, final String contrasena) {
+    public void registrarUsuario(String nUsuario, String numTelefono, String email, String contrasena) {
         mDialog.show(); // Muestra un diálogo de carga o progreso.
 
         // Realiza el registro del usuario en Firebase Authentication.

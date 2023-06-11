@@ -80,7 +80,7 @@ public class MessageReceiver extends BroadcastReceiver {
      * @return void
      */
     public void sendMensaje(String message) {
-        final Mensaje mensaje = new Mensaje();
+        Mensaje mensaje = new Mensaje();
         mensaje.setIdChat(mExtraIdChat);
         mensaje.setIdSender(mExtraIdSender);
         mensaje.setIdReceiver(mExtraIdReceiver);
@@ -108,7 +108,7 @@ public class MessageReceiver extends BroadcastReceiver {
      * @return void
      *
      */
-    public void getToken(final Mensaje message) {
+    public void getToken( Mensaje message) {
         // Obtener el token del destinatario a través de la instancia mTokenFirebase
         mTokenFirebase.getToken(mExtraIdSender).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -148,9 +148,9 @@ public class MessageReceiver extends BroadcastReceiver {
      *@param message El objeto de mensaje que contiene información sobre el remitente y el receptor.
      *@return void
      */
-    public void sendNotificaction(final String token, String messages, Mensaje message) {
+    public void sendNotificaction(String token, String messages, Mensaje message) {
         // Crear un mapa para almacenar los datos de la notificación
-        final Map<String, String> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>();
 
         // Agregar los datos relevantes a enviar en la notificación al mapa
         data.put("title", "MENSAJE");

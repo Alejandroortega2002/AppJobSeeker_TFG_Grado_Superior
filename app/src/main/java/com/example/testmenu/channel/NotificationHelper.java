@@ -20,8 +20,8 @@ import com.example.testmenu.entidades.Mensaje;
 import java.util.Date;
 
 public class NotificationHelper extends ContextWrapper {
-    private static final String CHANNEL_ID = "com.example.testmenu";
-    private static final String CHANNEL_NAME = "com.example.TestMenu";
+    static String CHANNEL_ID = "com.example.testmenu";
+    static String CHANNEL_NAME = "com.example.TestMenu";
 
     private NotificationManager manager;
 

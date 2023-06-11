@@ -45,9 +45,9 @@ public class MensajeAdapter extends FirestoreRecyclerAdapter<Mensaje, MensajeAda
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull final Mensaje mensaje) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Mensaje mensaje) {
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
-        final String mensajeId = document.getId();
+        String mensajeId = document.getId();
 
         // Se establece el texto del mensaje en el TextView correspondiente del ViewHolder
         holder.textViewMensaje.setText(mensaje.getMessage());

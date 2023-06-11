@@ -17,7 +17,7 @@ public class ViewedMensajeHelper {
      * @param status el nuevo estado en línea del usuario
      * @param context el contexto de la aplicación
      */
-    public static void updateOnline(boolean status, final Context context) {
+    public static void updateOnline(boolean status, Context context) {
         UsuariosBBDDFirebase mUsuariosBBDDFirebase = new UsuariosBBDDFirebase();
         AutentificacioFirebase mAutentificacioFirebase = new AutentificacioFirebase();
 
@@ -42,7 +42,7 @@ public class ViewedMensajeHelper {
      * @param context el contexto de la aplicación
      * @return true si la aplicación está en segundo plano, false en caso contrario
      */
-    public static boolean isApplicationSentToBackground(final Context context) {
+    public static boolean isApplicationSentToBackground(Context context) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
 

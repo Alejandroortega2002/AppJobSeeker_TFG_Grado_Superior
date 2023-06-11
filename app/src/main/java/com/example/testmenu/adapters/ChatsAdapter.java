@@ -58,7 +58,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Chat chat) {
         // Obtener el DocumentSnapshot del elemento en la posición especificada
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
-        final String chatId = document.getId();
+        String chatId = document.getId();
 
         // Obtener la información del usuario correspondiente al chat
         if (mAuthProvider.getUid().equals(chat.getIdUser1())){
@@ -177,7 +177,7 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
      * @param holder el viewholder en donde mostrar la info
      * @return void
      */
-    public void getUserInfo(String idUser, final ViewHolder holder) {
+    public void getUserInfo(String idUser, ViewHolder holder) {
         // Se realiza una consulta a la base de datos para obtener la información del usuario
         mUsersProvider.getUsuarios(idUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override

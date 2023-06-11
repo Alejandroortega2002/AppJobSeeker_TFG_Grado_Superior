@@ -9,10 +9,10 @@ import java.util.Date;
 
 public class RelativeTime extends Application {
 
-    private static final int SECOND_MILLIS = 1000;
-    private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
-    private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
-    private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
+    static int SECOND_MILLIS = 1000;
+    static int MINUTE_MILLIS = 60 * SECOND_MILLIS;
+    static int HOUR_MILLIS = 60 * MINUTE_MILLIS;
+    static int DAY_MILLIS = 24 * HOUR_MILLIS;
 
     /**
      * Retorna una descripción del tiempo transcurrido desde un momento dado hasta el momento actual.
@@ -33,7 +33,7 @@ public class RelativeTime extends Application {
         }
 
         // Se calcula la diferencia de tiempo entre el momento actual y el tiempo proporcionado
-        final long diff = now - time;
+        long diff = now - time;
 
         // Se verifica la diferencia de tiempo y se devuelve la descripción correspondiente
         if (diff < MINUTE_MILLIS) {
@@ -81,7 +81,7 @@ public class RelativeTime extends Application {
         }
 
         // Se calcula la diferencia de tiempo entre el momento actual y el tiempo proporcionado
-        final long diff = now - time;
+        long diff = now - time;
 
         // Se realizan comparaciones en función de la diferencia de tiempo y se retorna la descripción adecuada
         if (diff < 24 * HOUR_MILLIS) {

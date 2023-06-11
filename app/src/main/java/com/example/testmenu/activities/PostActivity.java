@@ -78,7 +78,7 @@ public class PostActivity extends AppCompatActivity {
     private int GALLERY_REQUEST_CODE = 1;
     private int GALLERY_REQUEST_CODE_2 = 2;
     private int PHOTO_REQUEST_CODE = 3;
-    private final int PHOTO_REQUEST_CODE_2 = 4;
+    private int PHOTO_REQUEST_CODE_2 = 4;
 
     //FOTO1
     private String mAbsolutePhotoPath;
@@ -183,7 +183,7 @@ public class PostActivity extends AppCompatActivity {
      *
      * @param numberImage el número de imagen que se seleccionará (1 o 2).
      */
-    public void selectOptionImagen(final int numberImage) {
+    public void selectOptionImagen(int numberImage) {
         // Configura un cuadro de diálogo que muestra las opciones para seleccionar o tomar una foto
         AlertDialog.Builder mBuilderSelector = new AlertDialog.Builder(this);
         mBuilderSelector.setTitle("Selecciona una opción:");
@@ -327,7 +327,7 @@ public class PostActivity extends AppCompatActivity {
      * @param imageFile2 archivo de imagen 2 a guardar
      */
 
-    public void saveImage(File imageFile1, final File imageFile2) {
+    public void saveImage(File imageFile1, File imageFile2) {
         // Guardar la primera imagen
         mImagenFirebase.save(PostActivity.this, imageFile1).addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
@@ -336,7 +336,7 @@ public class PostActivity extends AppCompatActivity {
             }
             // Obtener la URL de la primera imagen guardada
             mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
-                final String url = uri.toString();
+                String url = uri.toString();
 
                 // Guardar la segunda imagen
                 mImagenFirebase.save(PostActivity.this, imageFile2).addOnCompleteListener(taskImage2 -> {
@@ -347,7 +347,7 @@ public class PostActivity extends AppCompatActivity {
 
                     // Obtener la URL de la segunda imagen guardada
                     mImagenFirebase.getStorage().getDownloadUrl().addOnSuccessListener(uri2 -> {
-                        final String url2 = uri2.toString();
+                        String url2 = uri2.toString();
 
                         // Crear la publicación y guardarla en Firestore
                         Publicacion publicacion = new Publicacion(mTitulo.toLowerCase(),

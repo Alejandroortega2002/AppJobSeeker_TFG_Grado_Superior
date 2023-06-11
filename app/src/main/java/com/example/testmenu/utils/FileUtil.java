@@ -18,8 +18,8 @@ import java.io.OutputStream;
 
 public class FileUtil {
 
-    private static final int EOF = -1;
-    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
+    static int EOF = -1;
+    static int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
     public FileUtil() {
 

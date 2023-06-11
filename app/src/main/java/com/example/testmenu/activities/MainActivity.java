@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private UsuariosBBDDFirebase mUsuarioFirebase;
 
     // Declare the launcher at the top of your Activity/Fragment:
-    private final ActivityResultLauncher<String> requestPermissionLauncher =
+    private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
                     // FCM SDK (and your app) can post notifications.

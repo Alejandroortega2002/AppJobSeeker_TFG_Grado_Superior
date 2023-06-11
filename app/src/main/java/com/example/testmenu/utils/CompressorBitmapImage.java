@@ -28,7 +28,7 @@ public class CompressorBitmapImage {
      */
     public static byte[] getImage(Context ctx, String path, int width, int height) {
         // Se obtiene el archivo de la ruta especificada.
-        final File file_thumb_path = new File(path);
+        File file_thumb_path = new File(path);
         Bitmap thumb_bitmap = null;
 
         // Se comprime la imagen a los parámetros especificados.
