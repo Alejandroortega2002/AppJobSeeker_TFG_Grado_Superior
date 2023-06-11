@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.testmenu.R;
 import com.example.testmenu.activities.PostActivity;
@@ -29,7 +30,9 @@ public class InicioFragment extends Fragment {
     private View mView;
     private FloatingActionButton mFab;
     private AutentificacioFirebase mAutentificacionFirebase;
-    private RecyclerView mRecyclerView;
+    static RecyclerView mRecyclerView;
+
+    static TextView txtNoHayPublicacion;
     private PublicacionFirebase mPublicacionfirebase;
     private SearchView mSearchView;
     private PostsAdapter mPostsAdapter;
@@ -45,6 +48,9 @@ public class InicioFragment extends Fragment {
         mFab = mView.findViewById(R.id.fab);
         mRecyclerView = mView.findViewById(R.id.recyclerViewInicio);
         mSearchView = mView.findViewById(R.id.buscarInicio);
+        txtNoHayPublicacion = mView.findViewById(R.id.txtNoHayPublicacion);
+
+        txtNoHayPublicacion.setVisibility(View.GONE);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -74,11 +80,18 @@ public class InicioFragment extends Fragment {
         // Crear una instancia del adaptador de publicaciones con las opciones y el contexto actual
         mPostsAdapter = new PostsAdapter(options, getContext());
 
-        // Establecer el adaptador en el recycler view
-        mRecyclerView.setAdapter(mPostsAdapter);
+        // Establecer el adaptador en el RecyclerView reciclerPorSectores
+        if (mRecyclerView != null) {
+            mRecyclerView.setAdapter(mPostsAdapter);
+        }
 
-        // Iniciar la escucha de cambios en el adaptador
-        mPostsAdapter.startListening();
+        // Iniciar la escucha del adaptador
+        if (mPostsAdapter != null) {
+            mPostsAdapter.startListening();
+        }
+
+        // Verificar si la lista de publicaciones está vacía
+        vacio();
     }
 
 
@@ -149,5 +162,20 @@ public class InicioFragment extends Fragment {
         // Iniciar la escucha de cambios en el adaptador
         mPostsAdapterBuscar.startListening();
     }
+
+    public static void vacio() {
+        // Verificar si el RecyclerView y su adaptador no son nulos
+        if (mRecyclerView != null && mRecyclerView.getAdapter() != null) {
+            // Verificar si el RecyclerView está vacío
+            if (mRecyclerView.getAdapter().getItemCount() == 0) {
+                // Mostrar el TextView txtNoHayPublicacion si el RecyclerView está vacío
+                txtNoHayPublicacion.setVisibility(View.VISIBLE);
+            } else {
+                // Ocultar el TextView txtNoHayPublicacion si el RecyclerView no está vacío
+                txtNoHayPublicacion.setVisibility(View.GONE);
+            }
+        }
+    }
+
 
 }

@@ -93,4 +93,18 @@
             app:layout_behavior="com.google.android.material.appbar.AppBarLaout$ScrollingViewBehavior" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/txtNoHayValoraciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No hay ninguna Valoración"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginTop="50dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:fontFamily="@font/roboto_regular"
+        android:textSize="15sp"
+        android:visibility="invisible"
+        android:textStyle="bold" />
+
 </FrameLayout>

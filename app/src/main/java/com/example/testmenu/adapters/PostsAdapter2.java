@@ -18,13 +18,20 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testmenu.R;
+import com.example.testmenu.activities.MisFavoritosActivity;
+import com.example.testmenu.activities.MisOfertasActivity;
+import com.example.testmenu.activities.MisOfertasActivity2;
 import com.example.testmenu.activities.PostDetailActivity;
+import com.example.testmenu.activities.SectoresActivity;
+import com.example.testmenu.activities.ValoracionActivity;
 import com.example.testmenu.entidades.Favoritos;
 import com.example.testmenu.entidades.Publicacion;
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.FavoritosFirebase;
 import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
+import com.example.testmenu.fragmentMenu.ChatFragment;
+import com.example.testmenu.fragmentMenu.InicioFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -124,8 +131,8 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * Obtiene el número de "Me gusta" para una publicación específica de la base de datos de Firebase y actualiza
      * el campo de texto correspondiente en el ViewHolder con el número de "Me gusta".
      *
-     * @param idPost  el ID de la publicación para la que se desea obtener el número de "Me gusta"
-     * @param holder  el ViewHolder que contiene el campo de texto donde se mostrará el número de "Me gusta"
+     * @param idPost el ID de la publicación para la que se desea obtener el número de "Me gusta"
+     * @param holder el ViewHolder que contiene el campo de texto donde se mostrará el número de "Me gusta"
      * @return void
      */
     public void getNumeroDeLikes(String idPost, final PostsAdapter2.ViewHolder holder) {
@@ -148,7 +155,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
      * Realiza la acción de dar o quitar un "me gusta" a una publicación.
      *
      * @param favoritos representa el "me gusta" que se quiere dar/quitar.
-     * @param holder objeto de la clase ViewHolder que contiene la vista del elemento de la lista de publicaciones.
+     * @param holder    objeto de la clase ViewHolder que contiene la vista del elemento de la lista de publicaciones.
      */
     public void favoritos(final Favoritos favoritos, final PostsAdapter2.ViewHolder holder) {
         // Obtiene el documento de "like" por publicación y usuario
@@ -173,7 +180,6 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
             }
         });
     }
-
 
 
     /**
@@ -242,6 +248,7 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
 
     /**
      * Se borra la oferta cuyo id equivalga a la del parámetro
+     *
      * @param id id de publicación
      * @return void
      */
@@ -342,6 +349,16 @@ public class PostsAdapter2 extends FirestoreRecyclerAdapter<Publicacion, PostsAd
 
         // Mostrar el cuadro de diálogo personalizado
         customDialog.show();
+    }
+
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
+        // Llamar al método vacio() después de que los datos se hayan cargado en el adaptador
+        MisOfertasActivity2.vacio();
+        MisOfertasActivity.vacio();
+        MisFavoritosActivity.vacio();
+
     }
 
 

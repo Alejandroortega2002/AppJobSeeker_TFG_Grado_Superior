@@ -14,11 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testmenu.R;
 import com.example.testmenu.activities.ChatActivity;
+import com.example.testmenu.activities.ValoracionActivity;
 import com.example.testmenu.entidades.Chat;
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.ChatsFirebase;
 import com.example.testmenu.firebase.MensajeFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
+import com.example.testmenu.fragmentMenu.ChatFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -224,6 +226,14 @@ public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.Vi
             frameLayoutMessageNotRead = view.findViewById(R.id.frameLayoutMessageNotRead);
             viewHolder = view;
         }
+    }
+
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
+        // Llamar al método vacio() después de que los datos se hayan cargado en el adaptador
+        ChatFragment.vacio();
+
     }
 
 }

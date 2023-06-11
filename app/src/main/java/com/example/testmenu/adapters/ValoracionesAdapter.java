@@ -11,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testmenu.R;
+import com.example.testmenu.activities.MisOfertasActivity;
+import com.example.testmenu.activities.MisOfertasActivity2;
+import com.example.testmenu.activities.ValoracionActivity;
 import com.example.testmenu.entidades.Valoraciones;
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
@@ -115,5 +118,13 @@ public class ValoracionesAdapter extends FirestoreRecyclerAdapter<Valoraciones, 
             contenido = itemView.findViewById(R.id.contenidoValoracion);
             estrellas = itemView.findViewById(R.id.estrellasCard);
         }
+    }
+
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
+        // Llamar al método vacio() después de que los datos se hayan cargado en el adaptador
+        ValoracionActivity.vacio();
+
     }
 }

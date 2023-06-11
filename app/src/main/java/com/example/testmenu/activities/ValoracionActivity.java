@@ -53,13 +53,15 @@ public class ValoracionActivity extends AppCompatActivity {
 
     private String userId;
 
-    private TextView txtValoracion, txtNombreUsuario;
+    private TextView txtValoracion;
+    private TextView txtNombreUsuario;
+    static TextView txtNoHayValoraciones;
 
     private RatingBar estrellas;
 
     private CircleImageView fotoPerfilValoracion;
 
-    private RecyclerView reciclerValoraciones;
+    static RecyclerView reciclerValoraciones;
 
     private AutentificacioFirebase autentificacioFirebase;
     private UsuariosBBDDFirebase usuariosBBDDFirebase;
@@ -104,6 +106,9 @@ public class ValoracionActivity extends AppCompatActivity {
         btnCrearValoracion = findViewById(R.id.btnValorar);
         reciclerValoraciones = findViewById(R.id.recyclerViewValoraciones);
         btnSalir = findViewById(R.id.volverAtrasValoraciones);
+        txtNoHayValoraciones = findViewById(R.id.txtNoHayValoraciones);
+
+        txtNoHayValoraciones.setVisibility(View.GONE);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ValoracionActivity.this);
         reciclerValoraciones.setLayoutManager(linearLayoutManager);
@@ -181,6 +186,7 @@ public class ValoracionActivity extends AppCompatActivity {
                         });
                     }
                 });
+
     }
     /**
      * Método que se llama al iniciar la actividad.
@@ -206,6 +212,9 @@ public class ValoracionActivity extends AppCompatActivity {
 
         // Iniciar la escucha del adaptador para mantenerlo actualizado con los cambios en los datos
         valoracionesAdapter.startListening();
+
+        // Llamar al método vacio() aquí, después de cargar los datos en el RecyclerView
+        vacio();
     }
 
 
@@ -260,6 +269,20 @@ public class ValoracionActivity extends AppCompatActivity {
                     }
                 }
             });
+        }
+    }
+
+    public static void vacio() {
+        // Verificar si el RecyclerView y su adaptador no son nulos
+        if (reciclerValoraciones != null && reciclerValoraciones.getAdapter() != null) {
+            // Verificar si el RecyclerView está vacío
+            if (reciclerValoraciones.getAdapter().getItemCount() == 0) {
+                // Mostrar el TextView txtNoHayPublicacion si el RecyclerView está vacío
+                txtNoHayValoraciones.setVisibility(View.VISIBLE);
+            } else {
+                // Ocultar el TextView txtNoHayPublicacion si el RecyclerView no está vacío
+                txtNoHayValoraciones.setVisibility(View.GONE);
+            }
         }
     }
 }

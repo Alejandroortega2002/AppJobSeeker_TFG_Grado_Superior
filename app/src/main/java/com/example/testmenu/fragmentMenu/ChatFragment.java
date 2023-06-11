@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,7 +23,9 @@ import com.google.firebase.firestore.Query;
 public class ChatFragment extends Fragment {
 
     private ChatsAdapter mAdapter;
-    private RecyclerView mRecyclerView;
+    static RecyclerView mRecyclerView;
+
+    static TextView txtNoHayChat;
     private AutentificacioFirebase mAuthFirebase;
     private View mView;
     private ChatsFirebase mChatsFirebase;
@@ -37,6 +40,9 @@ public class ChatFragment extends Fragment {
 
         mView = inflater.inflate(R.layout.fragment_chat, container, false);
         mRecyclerView = mView.findViewById(R.id.recyclerViewChats);
+        txtNoHayChat = mView.findViewById(R.id.txtNoHayChat);
+
+        txtNoHayChat.setVisibility(View.GONE);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -66,6 +72,8 @@ public class ChatFragment extends Fragment {
 
         // Iniciar la escucha de cambios en el adaptador
         mAdapter.startListening();
+
+        vacio();
     }
 
 
@@ -84,6 +92,20 @@ public class ChatFragment extends Fragment {
 
         if (mAdapter.getmListenerLastMessage() != null) {
             mAdapter.getmListenerLastMessage().remove();
+        }
+    }
+
+    public static void vacio() {
+        // Verificar si el RecyclerView y su adaptador no son nulos
+        if (mRecyclerView != null && mRecyclerView.getAdapter() != null) {
+            // Verificar si el RecyclerView está vacío
+            if (mRecyclerView.getAdapter().getItemCount() == 0) {
+                // Mostrar el TextView txtNoHayPublicacion si el RecyclerView está vacío
+                txtNoHayChat.setVisibility(View.VISIBLE);
+            } else {
+                // Ocultar el TextView txtNoHayPublicacion si el RecyclerView no está vacío
+                txtNoHayChat.setVisibility(View.GONE);
+            }
         }
     }
 }

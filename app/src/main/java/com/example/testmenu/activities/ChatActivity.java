@@ -473,7 +473,7 @@ public class ChatActivity extends AppCompatActivity {
      *
      * @param mensaje El mensaje que se va a enviar.
      */
-    public void getToken(final Mensaje mensaje) {
+    public void getToken(Mensaje mensaje) {
         String idUser = "";
         if (mAuthFirebase.getUid().equals(mExtraIdUser1)) {
             idUser = mExtraIdUser2;
@@ -511,7 +511,7 @@ public class ChatActivity extends AppCompatActivity {
      * @return void
      */
 
-    public void getLastThreeMessages(Mensaje message, final String token) {
+    public void getLastThreeMessages(Mensaje message, String token) {
         // Obtener los últimos tres mensajes de la conversación y el remitente actual
         mMensajeFirebase.getLastThreeMensajeByChatAndSender(mExtraIdChat, mAuthFirebase.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -557,9 +557,9 @@ public class ChatActivity extends AppCompatActivity {
      * @return void
      */
 
-    public void sendNotification(final String token, String messages, Mensaje message) {
+    public void sendNotification(String token, String messages, Mensaje message) {
         // Crear un mapa de datos para la notificación
-        final Map<String, String> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>();
         data.put("title", "MENSAJE");
         data.put("body", message.getMessage());
         data.put("idNotification", String.valueOf(mIdNotificationChat));

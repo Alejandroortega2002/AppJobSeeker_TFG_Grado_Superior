@@ -32,8 +32,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class AjustesActivity extends AppCompatActivity {
     private ImageButton btnSalir;
     private TextView btnCerrarSesion, btnBorrarCuenta, btnEditarPerfil, btnRestablecerContrasena;
-
-
     private ChatsFirebase chatsFirebase;
     private PublicacionFirebase publicacionFirebase;
     private ValoracionFirebase valoracionFirebase;

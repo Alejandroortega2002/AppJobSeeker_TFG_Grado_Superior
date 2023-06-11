@@ -15,19 +15,22 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testmenu.R;
+import com.example.testmenu.activities.MisFavoritosActivity;
+import com.example.testmenu.activities.MisOfertasActivity;
 import com.example.testmenu.activities.PostDetailActivity;
 import com.example.testmenu.activities.SectoresActivity;
+import com.example.testmenu.activities.ValoracionActivity;
 import com.example.testmenu.entidades.Favoritos;
 import com.example.testmenu.entidades.Publicacion;
 import com.example.testmenu.firebase.AutentificacioFirebase;
 import com.example.testmenu.firebase.FavoritosFirebase;
 import com.example.testmenu.firebase.PublicacionFirebase;
 import com.example.testmenu.firebase.UsuariosBBDDFirebase;
+import com.example.testmenu.fragmentMenu.ChatFragment;
+import com.example.testmenu.fragmentMenu.InicioFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -243,7 +246,6 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
             textViewSector = view.findViewById(R.id.textViewSector);
             imageViewPost = view.findViewById(R.id.imageViewPostCard);
             nombreUsuario = view.findViewById(R.id.nombreUsuario);
-            // fechaPublicacion = view.findViewById(R.id.fechaPublicacion);
             txtFavoritos = view.findViewById(R.id.txtFavoritos);
             imgFavoritos = view.findViewById(R.id.imgFavoritos);
             mediaUsuario = view.findViewById(R.id.mediaUsuarios);
@@ -254,8 +256,9 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Publicacion, PostsAda
     @Override
     public void onDataChanged() {
         super.onDataChanged();
-
-        SectoresActivity.vacio(); // Llamar al método vacio() después de que los datos se hayan cargado en el adaptador
+        // Llamar al método vacio() después de que los datos se hayan cargado en el adaptador
+        SectoresActivity.vacio();
+        InicioFragment.vacio();
     }
 
 

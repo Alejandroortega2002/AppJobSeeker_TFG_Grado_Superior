@@ -82,8 +82,8 @@ public class MessageReceiver extends BroadcastReceiver {
     public void sendMensaje(String message) {
         final Mensaje mensaje = new Mensaje();
         mensaje.setIdChat(mExtraIdChat);
-        mensaje.setIdSender(mExtraIdReceiver);
-        mensaje.setIdReceiver(mExtraIdSender);
+        mensaje.setIdSender(mExtraIdSender);
+        mensaje.setIdReceiver(mExtraIdReceiver);
         mensaje.setTimestamp(new Date().getTime());
         mensaje.setViewed(false);
         mensaje.setIdChat(mExtraIdChat);

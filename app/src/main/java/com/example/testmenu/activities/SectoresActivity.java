@@ -25,7 +25,7 @@ import com.google.firebase.firestore.Query;
 public class SectoresActivity extends AppCompatActivity {
     private ImageButton btnSalir;
     private TextView textViewSectores;
-     static TextView txtNoHayPublicacion;
+    static TextView txtNoHayPublicacion;
     private String sector;
 
     static RecyclerView reciclerPorSectores;

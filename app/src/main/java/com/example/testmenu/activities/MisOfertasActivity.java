@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.testmenu.R;
 import com.example.testmenu.adapters.PostsAdapter;
@@ -28,10 +29,11 @@ import com.google.firebase.firestore.Query;
 public class MisOfertasActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private RecyclerView recyclerView;
+    static RecyclerView recyclerView;
 
     private ImageButton btnSalir;
 
+    static TextView txtNoHayPublicacion;
     private AutentificacioFirebase mAutentificacionFirebase;
     private PublicacionFirebase mPublicacionfirebase;
     private PostsAdapter2 mPostsAdapter2;
@@ -51,6 +53,9 @@ public class MisOfertasActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerViewInicio);
         btnSalir = findViewById(R.id.volverAtrasMisOfertas);
+        txtNoHayPublicacion = findViewById(R.id.txtNoHayPublicacion);
+
+        txtNoHayPublicacion.setVisibility(View.GONE);
 
         mAutentificacionFirebase = new AutentificacioFirebase();
         mPublicacionfirebase = new PublicacionFirebase();
@@ -80,6 +85,8 @@ public class MisOfertasActivity extends AppCompatActivity {
         recyclerView.setAdapter(mPostsAdapter2);
         mPostsAdapter2.startListening();
         ViewedMensajeHelper.updateOnline(true, MisOfertasActivity.this);
+
+        vacio();
     }
 
     /**
@@ -99,4 +106,19 @@ public class MisOfertasActivity extends AppCompatActivity {
         super.onPause();
         ViewedMensajeHelper.updateOnline(false, MisOfertasActivity.this);
     }
+
+    public static void vacio() {
+        // Verificar si el RecyclerView y su adaptador no son nulos
+        if (recyclerView != null && recyclerView.getAdapter() != null) {
+            // Verificar si el RecyclerView está vacío
+            if (recyclerView.getAdapter().getItemCount() == 0) {
+                // Mostrar el TextView txtNoHayPublicacion si el RecyclerView está vacío
+                txtNoHayPublicacion.setVisibility(View.VISIBLE);
+            } else {
+                // Ocultar el TextView txtNoHayPublicacion si el RecyclerView no está vacío
+                txtNoHayPublicacion.setVisibility(View.GONE);
+            }
+        }
+    }
+
 }

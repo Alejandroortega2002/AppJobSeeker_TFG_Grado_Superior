@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.testmenu.R;
 import com.example.testmenu.adapters.PostsAdapter2;
@@ -31,10 +33,10 @@ import java.util.List;
 public class MisFavoritosActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private RecyclerView recyclerView;
-
+    static RecyclerView recyclerView;
     private ImageButton btnSalir;
 
+    static TextView txtNoHayFavoritos;
     private AutentificacioFirebase mAutentificacionFirebase;
     private PublicacionFirebase mPublicacionfirebase;
 
@@ -59,6 +61,9 @@ public class MisFavoritosActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerViewInicioFavorito);
         btnSalir = findViewById(R.id.volverAtrasFavoritos);
+        txtNoHayFavoritos = findViewById(R.id.txtNoHayFavoritos);
+
+        txtNoHayFavoritos.setVisibility(View.VISIBLE);
 
         postIds = new ArrayList<>();
         mAutentificacionFirebase = new AutentificacioFirebase();
@@ -101,6 +106,8 @@ public class MisFavoritosActivity extends AppCompatActivity {
                 mPostsAdapter2.startListening();
             }
         });
+
+        vacio();
     }
 
 
@@ -112,6 +119,20 @@ public class MisFavoritosActivity extends AppCompatActivity {
         super.onStop();
         if (mPostsAdapter2 != null) {
             mPostsAdapter2.stopListening();
+        }
+    }
+
+    public static void vacio() {
+        // Verificar si el RecyclerView y su adaptador no son nulos
+        if (recyclerView != null && recyclerView.getAdapter() != null) {
+            // Verificar si el RecyclerView está vacío
+            if (recyclerView.getAdapter().getItemCount() == 0) {
+                // Mostrar el TextView txtNoHayPublicacion si el RecyclerView está vacío
+                txtNoHayFavoritos.setVisibility(View.VISIBLE);
+            } else {
+                // Ocultar el TextView txtNoHayPublicacion si el RecyclerView no está vacío
+                txtNoHayFavoritos.setVisibility(View.GONE);
+            }
         }
     }
 }
